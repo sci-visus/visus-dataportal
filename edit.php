@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 function debug_to_console( $data ) {
     $output = $data;
     if ( is_array( $output ) )
@@ -8,7 +11,7 @@ function debug_to_console( $data ) {
 	
 }
 
-$config_file="visus.config";
+$config_file=$_SESSION["config_file"];
 
 // Basic example of PHP script to handle with jQuery-Tabledit plug-in.
 // Note that is just an example. Should take precautions such as filtering the input data.

@@ -1,3 +1,11 @@
+<?php
+// Start the session
+session_start();
+
+if(!isset($_SESSION["config_file"]))
+  $_SESSION["config_file"] = "visus.config";
+?>
+
 <html lang="en">
 <head>
 <!-- Force latest IE rendering engine or ChromeFrame if installed -->
@@ -50,7 +58,7 @@
       <ul class="nav navbar-nav navbar-right">
       <li>
       <button type="button" class="btn-info navbar-btn btn-lg">
-          <span class="glyphicon glyphicon-wrench"></span>
+          <a href="settings.php"><span class="glyphicon glyphicon-wrench"></span></a>
         </button>
       </li>
     </ul>
@@ -67,7 +75,7 @@
 <?php
 
 $dom=new DOMDocument();
-$dom->load("visus.config");
+$dom->load($_SESSION["config_file"]);
 
 $root=$dom->documentElement;
 

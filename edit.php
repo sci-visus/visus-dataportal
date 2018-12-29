@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 //var_dump($input);
 //file_put_contents("debug.txt", ob_get_clean());
 
+if($input['name'] === '' or $input['url'] === ''){
+	echo "invalid input";
+	return;
+}
+
 $dom=new DOMDocument();
 $dom->load($config_file);
 

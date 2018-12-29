@@ -20,7 +20,12 @@
 .navbar
 {
 	border-bottom:1px solid #999;
-	background: #EAECF9;
+	background: #F1F1F1;
+}
+
+.nav>li{
+  padding-right: 10px;
+  padding-left: 10px;
 }
 </style>
       
@@ -35,11 +40,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-     <a class="navbar-brand" href="#"><image src="site_logo.gif" height="120%"/></a>
+     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="120%"/></a>
    </div>
    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-right">
-      <li><button type="button" class="btn btn-primary navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
+    <ul class="nav navbar-nav">
+      <li><button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
+      </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li>
+      <button type="button" class="btn-info navbar-btn btn-lg">
+          <span class="glyphicon glyphicon-wrench"></span>
+        </button>
       </li>
     </ul>
    </div>
@@ -78,6 +90,9 @@ foreach ($datasets as $dataset) {
 	echo "<tr>","<td hidden>$name</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."$name</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."$url</td>","</tr>";
 
 }
+
+echo "<tr hidden>","<td hidden>NaN</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."</td>","</tr>";
+
 echo "</tbody>";
 echo "</table>";
 echo "</div>";
@@ -112,19 +127,30 @@ $('#datasets').Tabledit({
       console.log(jqXHR);
       console.log(textStatus);
       console.log(errorThrown);
-        },
+	  
+	  console.log("found "+ $("tr:last>td>span").text());
+	  if($("tr:last>td>span")[0].innerHTML=="NaN") {
+		  console.log("Invalid content, removing new dataset")
+		  $("tr:last").remove();
+	  }
+  },
 //  debug: true,
 });
 
 $("#add").click(function(e){
     var table = $(this).attr('for-table');  //get the target table selector
     var $tr = $(table + ">tbody>tr:last-child").clone(true, true);  //clone the last row
+	$tr.show();
+	
     var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
     $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
     $tr.find("span.tabledit-identifier").text(nextID);  //set the row identifier
     $(table + ">tbody").append($tr);    //add the row to the table
     $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
-    $tr.find("input:not([type=hidden]), select").val("");   //wipe out the inputs.
+    $tr.find("input, select").val("");   //wipe out the inputs.
+	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
+	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
+	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");
 });
 
 </script>

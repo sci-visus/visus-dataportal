@@ -24,9 +24,9 @@ if(!isset($_SESSION["config_file"]))
 
     <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="ext/js/bootstrap.min.js"></script>
+    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="ext/js/jquery.tabledit.min.js"></script>
+    <script src="ext/bootstrap-3.3.7/jquery/jquery.tabledit.min.js"></script>
       
 </head>
 <body>

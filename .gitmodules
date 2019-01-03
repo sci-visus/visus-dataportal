@@ -1,0 +1,3 @@
+[submodule "ext/visus"]
+	path = ext/visus
+	url = https://github.com/sci-visus/visus_javascript.git

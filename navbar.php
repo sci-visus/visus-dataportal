@@ -41,7 +41,11 @@ require('config.php');
       <button type="button" class="btn btn-default navbar-btn">
       <a href="datasets.php"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure</a>
       </button>
-      <!--<button type="button" class="btn btn-primary navbar-btn btn-lg" onclick='javascript:location.href ="datasets.php"'>Data</button> -->
+      </li>
+      <li>
+      <button type="button" class="btn btn-default navbar-btn">
+      <a href="viewer"><span class="glyphicon glyphicon-picture"></span>&nbsp;View</a>
+      </button>
       </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

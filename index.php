@@ -16,7 +16,7 @@ require('config.php');
 
     <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="ext/js/bootstrap.min.js"></script>
+    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
       
       <style>
 	  .card{
@@ -50,7 +50,7 @@ $(function(){
             <span style="font-size:70px" class="glyphicon glyphicon-th-list"></span>
            
             <div class="card-body">
-              <h4 class="card-title">List and configure</h4>
+              <h4 class="card-title">List and Configure</h4>
               <p class="card-text">Explore and configure the data served by this ViSUS server installation.</p>
             </div>
             <div class="card-footer">
@@ -63,7 +63,7 @@ $(function(){
           <div class="card">
             <span style="font-size:70px" class="glyphicon glyphicon-import"></span>
             <div class="card-body">
-              <h4 class="card-title">Import data</h4>
+              <h4 class="card-title">Import Data</h4>
               <p class="card-text">Import data from image format and NetCDF files.</p>
             </div>
             <div class="card-footer">
@@ -80,7 +80,7 @@ $(function(){
               <p class="card-text">Visualize data currently hosted on this ViSUS server.</p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-primary">View</a>
+              <a href="viewer" class="btn btn-primary">View</a>
             </div>
           </div>
         </div>

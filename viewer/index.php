@@ -54,7 +54,8 @@ $(function(){
      $("img[src='site_logo.gif']").attr('src', '../site_logo.gif');
      $("a[href='datasets.php']").attr('href', '../datasets.php');
      $("a[href='index.php']").attr('href', '../index.php');
-     $("a[href='viewer']").attr('href', '../viewer');
+     $("a[href='viewer/']").attr('href', '../viewer/');
+	 $("a[href='upload/']").attr('href', '../upload/');
      $("a[href='logout.php']").attr('href', '../logout.php');
   } );
 });

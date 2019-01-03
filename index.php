@@ -67,7 +67,7 @@ $(function(){
               <p class="card-text">Import data from image format and NetCDF files.</p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-primary">Import Data</a>
+              <a href="upload/" class="btn btn-primary">Import Data</a>
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@ $(function(){
               <p class="card-text">Visualize data currently hosted on this ViSUS server.</p>
             </div>
             <div class="card-footer">
-              <a href="viewer" class="btn btn-primary">View</a>
+              <a href="viewer/" class="btn btn-primary">View</a>
             </div>
           </div>
         </div>

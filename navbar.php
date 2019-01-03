@@ -44,7 +44,12 @@ require('config.php');
       </li>
       <li>
       <button type="button" class="btn btn-default navbar-btn">
-      <a href="viewer"><span class="glyphicon glyphicon-picture"></span>&nbsp;View</a>
+      <a href="upload/"><span class="glyphicon glyphicon-import"></span>&nbsp;Import</a>
+      </button>
+      </li>
+      <li>
+      <button type="button" class="btn btn-default navbar-btn">
+      <a href="viewer/"><span class="glyphicon glyphicon-picture"></span>&nbsp;View</a>
       </button>
       </li>
       </ul>

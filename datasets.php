@@ -21,13 +21,12 @@ if(!isset($_SESSION["config_file"]))
 <title>ViSUS Config</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap styles -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- blueimp Gallery styles -->
-<link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-tabledit@1.0.0/jquery.tabledit.min.js"></script>
+    <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
+    <script src="ext/js/bootstrap.min.js"></script>
+    
+    <script src="ext/js/jquery.tabledit.min.js"></script>
 
 <style>
 .navbar
@@ -45,18 +44,19 @@ if(!isset($_SESSION["config_file"]))
 </head>
 <body>
 <div id="nav-placeholder"></div>
+
 <script>
 $(function(){
   $("#nav-placeholder").load("navbar.php");
 });
 
 function updateServer(){
-	 $.ajax({
-	   type: "POST",
-	     url: "configure_datasets.php",
-	       data: { name: "John" }
+	$.ajax({
+	  type: "POST",
+	  url: "configure_datasets.php",
+	  data: { name: "John" }
   }).done(function( msg ) {
-    console.log( "Server update: " + msg );
+    alert( "Data Saved: " + msg );
   });    
 }
 </script>
@@ -79,7 +79,7 @@ function updateServer(){
           <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
         </li>
         <li>
-          <button type="button" class="btn btn-warning navbar-btn" onclick="javascript:updateServer()"><span class="glyphicon glyphicon-upload"></span>&nbsp;Update Server</button>
+          <button type="button" class="btn btn-default navbar-btn" onclick="javascript:updateServer()">Update Server</button>
         </li>
       </ul>
     </div>

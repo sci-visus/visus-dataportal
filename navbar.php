@@ -1,8 +1,7 @@
 <?php
 require('config.php');
 ?>
-
-  <style>
+<style>
 .navbar
 {
 	border-bottom:1px solid #999;
@@ -14,8 +13,8 @@ require('config.php');
   padding-left: 10px;
 }
 </style>
-      
-<nav class="navbar navbar-fixed-top">
+     
+<nav class="navbar navbar-fixed-top navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header"> 
     <button type="button" class="navbar-toggle collapsed " data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -24,7 +23,7 @@ require('config.php');
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="120%"/></a>
+     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="100%"/></a>
    </div>
    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
@@ -41,19 +40,18 @@ require('config.php');
       </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      <li hidden>
+      <!-- <li >
       <button type="button" class="btn-info navbar-btn btn-lg" hidden>
           <a href="settings.php"><span class="glyphicon glyphicon-wrench"></span></a>
         </button>
-      </li>
+      </li> -->
       <?php if(!empty($_SESSION['user'])){ ?>
       <li>
       <button type="button" class="btn btn-warning navbar-btn">
       <a href="logout.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
       </button>
-      <?php } ?>
       </li>
-	  
+	  <?php } ?>
 	  
     </ul>
    </div>

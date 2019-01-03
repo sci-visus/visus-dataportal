@@ -8,34 +8,21 @@ require('config.php');
   <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>ViSUS DataPortal</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- blueimp Gallery styles -->
-    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-    <!-- Custom styles for this template -->
-    <link href="css/heroic-features.css" rel="stylesheet">
-
-  <style>
-.navbar
-{
-	border-bottom:1px solid #999;
-	background: #F1F1F1;
-}
-
-.nav>li{
-  padding-right: 10px;
-  padding-left: 10px;
-}
-</style>
+    <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
+    <script src="ext/js/bootstrap.min.js"></script>
       
+      <style>
+	  .card{
+	    padding-bottom: 20px;
+	  }
+	  </style>
 </head>
 <body>
  <div id="nav-placeholder"></div>
@@ -46,13 +33,13 @@ $(function(){
 </script>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="padding-top:20px">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
         <h1 class="display-3">&gt;Welcome to the ViSUS DataPortal</h1>
-        <p class="lead" style="text-align:center">From here you can configure your ViSUS server and import/convert your data.</p>
-        <!-- <a href="datasets.php" class="btn btn-primary btn-lg" >Explore the data on this server</a> -->
+        <p class="lead" style="text-align:center">From here you can configure your ViSUS server on <b><?php print gethostname(); ?></b> </p>
+        <!-- <a href="datasets.php" class="btn btn-primary btn-lg" >Configure</a> -->
       </header>
 
       <!-- Page Features -->

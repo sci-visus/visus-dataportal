@@ -1,30 +1,29 @@
 <?php
-// Start the session
-session_start();
-
-if(!isset($_SESSION["config_file"]))
-  $_SESSION["config_file"] = "visus.config";
+require('config.php');
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<!-- Force latest IE rendering engine or ChromeFrame if installed -->
-<!--[if IE]>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<![endif]-->
-<meta charset="utf-8">
-<title>ViSUS Config</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap styles -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- blueimp Gallery styles -->
-<link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+  <head>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-tabledit@1.0.0/jquery.tabledit.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<style>
+    <title>ViSUS DataPortal</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+
+  <style>
 .navbar
 {
 	border-bottom:1px solid #999;
@@ -39,129 +38,80 @@ if(!isset($_SESSION["config_file"]))
       
 </head>
 <body>
-<nav class="navbar navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header"> 
-    <button type="button" class="navbar-toggle collapsed " data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="120%"/></a>
-   </div>
-   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav">
-      <li><button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
-      </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-      <li>
-      <button type="button" class="btn-info navbar-btn btn-lg">
-          <a href="settings.php"><span class="glyphicon glyphicon-wrench"></span></a>
-        </button>
-      </li>
-    </ul>
-   </div>
-  </div>
-  
- </nav>
- 
-<div class="container" style="margin-top:50px">
- 	
-  <h2>List of datasets</h2>
-  <p>This is the list of the datasets on this server</p> 
-    
-<?php
-
-$dom=new DOMDocument();
-$dom->load($_SESSION["config_file"]);
-
-$root=$dom->documentElement;
-
-$datasets=$root->getElementsByTagName('dataset');
-
-echo '<div class="table-responsive">';
-
-echo '<table class="table table-striped table-hover table-bordered" id="datasets">';
-
-echo "<thead>";
-echo "<tr>",'<th hidden> Old Name</th>','<th>Name</th>','<th>URL</th>',"</tr>";
-echo "</thead>";
-
-echo "<tbody>";
-foreach ($datasets as $dataset) {
-	$name=$dataset->getAttribute('name');
-	$url=$dataset->getAttribute('url');
-
-#    $name=$dataset->getElementsByTagName('name')->item(0)->textContent;
-	echo "<tr>","<td hidden>$name</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."$name</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."$url</td>","</tr>";
-
-}
-
-echo "<tr hidden>","<td hidden>NaN</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."</td>","</tr>";
-
-echo "</tbody>";
-echo "</table>";
-echo "</div>";
-
-?>
-</div>
-
+ <div id="nav-placeholder"></div>
 <script>
-$('#datasets').Tabledit({
-	url: 'edit.php',
-	columns: {
-	  identifier: [0, 'old_name'],                    
-	  editable: [[1, 'name'], [2, 'url']]
-	},
-  
-  restoreButton: false,
-	
-  onAjax: function(action, serialize) { 
-	
-		console.log("on Ajax"); 
-		console.log("action : ", action); 
-		console.log("data : ", serialize); 
-  },
-	
-  onSuccess: function(data, textStatus, jqXHR) {
-      console.log(data);
-      console.log(textStatus);
-      console.log(jqXHR);
-  },
-  
-  onFail: function(jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR);
-      console.log(textStatus);
-      console.log(errorThrown);
-	  
-	  console.log("found "+ $("tr:last>td>span").text());
-	  if($("tr:last>td>span")[0].innerHTML=="NaN") {
-		  console.log("Invalid content, removing new dataset")
-		  $("tr:last").remove();
-	  }
-  },
-//  debug: true,
+$(function(){
+  $("#nav-placeholder").load("navbar.php");
 });
-
-$("#add").click(function(e){
-    var table = $(this).attr('for-table');  //get the target table selector
-    var $tr = $(table + ">tbody>tr:last-child").clone(true, true);  //clone the last row
-	$tr.show();
-	
-    var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
-    $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
-    $tr.find("span.tabledit-identifier").text(nextID);  //set the row identifier
-    $(table + ">tbody").append($tr);    //add the row to the table
-    $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
-    $tr.find("input, select").val("");   //wipe out the inputs.
-	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
-	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
-	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");
-});
-
 </script>
 
-</body>
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Jumbotron Header -->
+      <header class="jumbotron my-4">
+        <h1 class="display-3">&gt;Welcome to the ViSUS DataPortal</h1>
+        <p class="lead" style="text-align:center">From here you can configure your ViSUS server and import/convert your data.</p>
+        <!-- <a href="datasets.php" class="btn btn-primary btn-lg" >Explore the data on this server</a> -->
+      </header>
+
+      <!-- Page Features -->
+      <div class="row text-center justify-content-md-center">
+
+        <div class="col-md-2 col-md-offset-3 box">
+          <div class="card">
+            <span style="font-size:70px" class="glyphicon glyphicon-th-list"></span>
+           
+            <div class="card-body">
+              <h4 class="card-title">List and configure</h4>
+              <p class="card-text">Explore and configure the data served by this ViSUS server installation.</p>
+            </div>
+            <div class="card-footer">
+              <a href="datasets.php" class="btn btn-primary">Configure</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 box">
+          <div class="card">
+            <span style="font-size:70px" class="glyphicon glyphicon-import"></span>
+            <div class="card-body">
+              <h4 class="card-title">Import data</h4>
+              <p class="card-text">Import data from image format and NetCDF files.</p>
+            </div>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">Import Data</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 box">
+          <div class="card">
+            <span style="font-size:70px" class="glyphicon glyphicon-picture"></span>
+            <div class="card-body">
+              <h4 class="card-title">Explore Data</h4>
+              <p class="card-text">Visualize data currently hosted on this ViSUS server.</p>
+            </div>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark" hidden>
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; ViSUS.org 2019</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+  </body>
+
 </html>

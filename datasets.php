@@ -49,6 +49,16 @@ if(!isset($_SESSION["config_file"]))
 $(function(){
   $("#nav-placeholder").load("navbar.php");
 });
+
+function updateServer(){
+	 $.ajax({
+	   type: "POST",
+	     url: "configure_datasets.php",
+	       data: { name: "John" }
+  }).done(function( msg ) {
+    console.log( "Server update: " + msg );
+  });    
+}
 </script>
  
 <div class="container" style="margin-top: 50px">
@@ -67,6 +77,9 @@ $(function(){
       <ul class="nav navbar-nav">
         <li>
           <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-warning navbar-btn" onclick="javascript:updateServer()"><span class="glyphicon glyphicon-upload"></span>&nbsp;Update Server</button>
         </li>
       </ul>
     </div>

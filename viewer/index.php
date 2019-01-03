@@ -29,16 +29,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 </script>
-<!-- saved from url=(0043)https://klacansky.com/open-scivis-datasets/ -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <title>ViSUS WebViewer</title>
         
-     <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
-    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+     <link rel="stylesheet" href="../ext/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="../ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
+    <script src="../ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -51,7 +50,7 @@
 
 <script>
 $(function(){
-  $("#nav-placeholder").load("navbar.php");
+  $("#nav-placeholder").load("../navbar.php", function(){ $("img[src='site_logo.gif']").attr('src', '../site_logo.gif');} );
 });
 </script>
 
@@ -60,7 +59,7 @@ $(function(){
       <table cellspacing="0" cellpadding="0" style='height:100%;width:100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0;'>
         <tr>
           <td align="center" class="datagrid" height="18px">
-            <div id='status_bar' style="float:top" hidden><img src="img/spinner.gif" height="10px" ><label id='status' style="color: blue"></label></div>
+            <div id='status_bar' style="float:top" hidden><img src="../ext/visus/img/spinner.gif" height="10px" ><label id='status' style="color: blue"></label></div>
           </td>
         </tr>
         <tr style='height:100%;width:100%'>
@@ -198,6 +197,5 @@ $(function(){
   <script src="../viewer/config.js"></script>
   <script src="../ext/visus/src/viewer.js"></script>
   
-
 </body>
 </html>

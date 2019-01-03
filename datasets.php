@@ -2,11 +2,11 @@
 require('req_login.php');
 
 if(isset($_POST["config_path"])){
-	 //echo "Set current config file to: ". htmlspecialchars($_POST["config_path"]);
-	 $_SESSION["config_file"]=htmlspecialchars($_POST["config_path"]);	
+  //echo "Set current config file to: ". htmlspecialchars($_POST["config_path"]);
+  $_SESSION["config_file"]=htmlspecialchars($_POST["config_path"]);	
 }
 
-if(!isset($_SESSION["config_file"]))
+if(!isset($_SESSION["config_file"]) or $_SESSION["config_file"]==="")
   $_SESSION["config_file"] = $default_config_file;
   
 ?>
@@ -60,7 +60,7 @@ function updateServer(){
                 <h4 class="modal-title">Server updating...</h4>
               </div>
               <div class="col" style="padding:20px">
-                <p>The server is updating the configuration, all changes should be effective in 1-2 min.</p>
+                <p>The server is updating the configuration, all changes should be effective in 1-2 min.<br/>Koffefe?</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

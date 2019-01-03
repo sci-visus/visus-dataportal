@@ -47,7 +47,7 @@ require('config.php');
       </li> -->
       <?php if(!empty($_SESSION['user'])){ ?>
       <li>
-      <button type="button" class="btn btn-warning navbar-btn">
+      <button type="button" class="btn btn-danger navbar-btn">
       <a href="logout.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
       </button>
       </li>

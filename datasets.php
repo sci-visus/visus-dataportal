@@ -27,19 +27,6 @@ if(!isset($_SESSION["config_file"]))
     <script src="ext/js/bootstrap.min.js"></script>
     
     <script src="ext/js/jquery.tabledit.min.js"></script>
-
-<style>
-.navbar
-{
-	border-bottom:1px solid #999;
-	background: #F1F1F1;
-}
-
-.nav>li{
-  padding-right: 10px;
-  padding-left: 10px;
-}
-</style>
       
 </head>
 <body>
@@ -54,13 +41,34 @@ function updateServer(){
 	$.ajax({
 	  type: "POST",
 	  url: "configure_datasets.php",
-	  data: { name: "John" }
-  }).done(function( msg ) {
-    alert( "Data Saved: " + msg );
+	success: function (data, text) {
+      $("#updateConfigModal").modal()
+    },
+    error: function (request, status, error) {
+        console.log( "Server error: " + error );
+    }
   });    
 }
 </script>
  
+ <div id="updateConfigModal" class="modal fade modal-fullscreen" role="dialog">
+          <div class="modal-dialog">
+            <!-- Share Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Server updating...</h4>
+              </div>
+              <div class="col" style="padding:20px">
+                <p>The server is updating the configuration, all changes should be effective in 1-2 min.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
 <div class="container" style="margin-top: 50px">
  	
   <h2>List of datasets</h2>
@@ -79,7 +87,7 @@ function updateServer(){
           <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
         </li>
         <li>
-          <button type="button" class="btn btn-default navbar-btn" onclick="javascript:updateServer()">Update Server</button>
+          <button type="button" class="btn btn-warning navbar-btn" onclick="javascript:updateServer()">Update Server</button>
         </li>
       </ul>
     </div>

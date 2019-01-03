@@ -8,6 +8,11 @@ require('config.php');
 	background: #F1F1F1;
 }
 
+.navbar-toggle
+{
+	background-color:#999;
+}
+
 .nav>li{
   padding-right: 10px;
   padding-left: 10px;

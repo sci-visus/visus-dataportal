@@ -210,10 +210,11 @@ function checkListDatasets(){
 	  type: "POST",
 	  url: "list_datasets.php",
 	success: function (data, text) {
-		console.log("success: "+data);
+		names=data.split(",");
+		//console.log(names);
 		$('#datasets > tbody > tr').each( function() {
 		   var name=$(this).children("td:eq(1)").children("input").val();
-		   if(data.indexOf(name) != -1){
+		   if(names.indexOf(name) != -1){
 			 $(this).children("td:eq(1)").attr("style", "color:green");
 		   }
 		   else

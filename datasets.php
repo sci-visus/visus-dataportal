@@ -185,8 +185,8 @@ $("#add").click(function(e){
 
 <script>
    function addNewFromPost(name, url){
-	console.log(name);
-	console.log(url);
+	//console.log(name);
+	//console.log(url);
 	
     var $tr = $("#datasets>tbody>tr:last-child").clone(true, true);  //clone the last row
 	$tr.prop("hidden",false);
@@ -198,8 +198,9 @@ $("#add").click(function(e){
     $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
     $tr.find("input, select").val("");   //wipe out the inputs.
 	
-	$tr.children("td:eq(1)").html(name);
-	$tr.children("td:eq(2)").html(url);
+	$tr.children("td:eq(0)").children("input").val("NaN");
+	$tr.children("td:eq(1)").children("input").val(name);
+	$tr.children("td:eq(2)").children("input").val(url);
   }
 </script>
 

@@ -42,6 +42,7 @@ if ($input['old_name'] === 'NaN') {
 	   $newel=$dom->createElement("dataset");
 	   $newel->setAttribute("name",$input["name"]);
 	   $newel->setAttribute("url", $input["url"]);
+           $newel->setAttribute("permissions", "public");
 	   $root->appendChild($newel);
   }else{  
 	foreach ($datasets as $dataset) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Convert</title>
     <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
     <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -78,8 +78,10 @@
 				
 				$ext = $file_parts['extension'];
 				$fname = $file_parts['filename'];
-				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") 
-					$img=$dir."/".$f;			
+				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") {
+					$img=$dir."/".$f;
+                                        break;			
+                                }
 			}
 			
 			$iX=intval($X);
@@ -90,7 +92,8 @@
 			if($iZ == 1) $iZ = 2;
 			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
 			$dim="$X $Y $Z";
-			
+
+			// echo "scripts/convert_single.sh \"$visus_exe\" \"$dir\" \"$fname\" \"$img\" \"$dim\" \"$dtype_full\"";
 			// data_dir filename input_file box dim dtype 
 		    $output=shell_exec("scripts/convert_single.sh \"$visus_exe\" \"$dir\" \"$fname\" \"$img\" \"$dim\" \"$dtype_full\"");
 			

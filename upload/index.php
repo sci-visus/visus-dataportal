@@ -146,34 +146,18 @@ require('../local.php');
                 ?>
               </select>
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
-			  
-              <script>
-              $("#folder_path"). change(function(){
-                 var dir = $(this).children("option:selected").text();
-				 $("#convert-type").trigger("change");
-                /* $.ajax({
-                      type: "POST",
-                      url: "list_files.php",
-                    success: function (data, text) {
-                      
-                    },
-                    error: function (request, status, error) {
-                        console.log( "Server error: " + error );
-                    }
-                  });*/ 
-              });
-              </script>
+			
           </div>
           <div class="form-row">
           <label for="convert-type">Type of input data</label>
-          <select id="convert-type" name="convert-type" size="1" class="form-control">
+          <select id="convert-type" name="convert-type" size="1" class="form-control" onChange="javascript:convertChange()">
             <option value="None"></option>
           	<option value="single">Single file</option>
             <option value="stack" disabled>Stack of images</option>
           </select>
           <script>
-              $("#convert-type").change(function(){
-                 var type = $(this).children("option:selected").val();
+              function convertChange(){
+                 var type = $("#convert-type").children("option:selected").val();
 				 if(type==="single"){
                    $.ajax({
                       type: "POST",
@@ -190,6 +174,22 @@ require('../local.php');
                     }
                   });
 				 }
+              };
+			  
+			  
+              $("#folder_path"). change(function(){
+                 var dir = $(this).children("option:selected").text();
+				 convertChange();
+                /* $.ajax({
+                      type: "POST",
+                      url: "list_files.php",
+                    success: function (data, text) {
+                      
+                    },
+                    error: function (request, status, error) {
+                        console.log( "Server error: " + error );
+                    }
+                  });*/ 
               });
               </script>
            <blockquote id="img_info" hidden="hidden"></blockquote>

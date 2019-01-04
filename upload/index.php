@@ -197,13 +197,13 @@ require('../local.php');
             <div class="form-row">
             <label>Size</label>
               <div class="col">
-              <input type="text" class="form-control" id="X" name="X" placeholder="Size X"/>
+              <input type="text" class="form-control" id="X" name="X" size="1" placeholder="Size X"/>
               </div>
               <div class="col">
-              <input type="text" class="form-control" id="Y" name="Y" placeholder="Size Y"/>
+              <input type="text" class="form-control" id="Y" name="Y" size="1" placeholder="Size Y"/>
                </div>
               <div class="col">
-              <input type="text" class="form-control" id="Z" name="Z" placeholder="Size Z"/>
+              <input type="text" class="form-control" id="Z" name="Z" size="1" placeholder="Size Z"/>
               </div>
             </div>
             <div class="form-row">

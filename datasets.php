@@ -49,6 +49,7 @@ function updateServer(){
     }
   });    
 }
+
 </script>
  
  <div id="updateConfigModal" class="modal fade modal-fullscreen" role="dialog">
@@ -107,7 +108,7 @@ echo '<div class="table-responsive">';
 echo '<table class="table table-striped table-hover table-bordered" id="datasets">';
 
 echo "<thead>";
-echo "<tr>",'<th hidden> Old Name</th>','<th>Name</th>','<th>URL</th>',"</tr>";
+echo "<tr>",'<th hidden> Old Name</th>','<th>Name (<span style="color:green">online</span>, <span style="color:red">offline</span>)</th>','<th>URL</th>',"</tr>";
 echo "</thead>";
 
 echo "<tbody>";
@@ -200,8 +201,31 @@ $("#add").click(function(e){
 	
 	$tr.children("td:eq(0)").children("input").val("NaN");
 	$tr.children("td:eq(1)").children("input").val(name);
-	$tr.children("td:eq(2)").children("input").val(url);
+	$tr.children("td:eq(2)").children("input").val("file://"+url);
   }
+  
+  
+function checkListDatasets(){
+	$.ajax({
+	  type: "POST",
+	  url: "list_datasets.php",
+	success: function (data, text) {
+		console.log("success: "+data);
+		$('#datasets > tbody > tr').each( function() {
+		   var name=$(this).children("td:eq(1)").children("input").val();
+		   if(data.indexOf(name) != -1){
+			 $(this).children("td:eq(1)").attr("style", "color:green");
+		   }
+		   else
+		     $(this).children("td:eq(1)").attr("style", "color:red");
+		});
+      
+    },
+    error: function (request, status, error) {
+        console.log( "Server error: " + error );
+    }
+  });    
+}
 </script>
 
 <?php
@@ -210,9 +234,14 @@ if(isset($_POST["fname"]) and isset($_POST["furl"])){
 	  $url=strip_tags(trim($_POST['furl']));
 	  
 	  echo '<script type="text/javascript">',
-			        'addNewFromPost("'.$name.'", "'.$url.'")',
+			        'addNewFromPost("'.$name.'", "'.$url.'");',
+					
     			 '</script>';
 }
+
+echo '<script type="text/javascript">',
+			        'checkListDatasets();',
+    			 '</script>';
 ?>
 </body>
 </html>

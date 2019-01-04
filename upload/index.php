@@ -1,5 +1,6 @@
 <?php
 require('../req_login.php');
+require('../local.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -110,7 +111,7 @@ require('../req_login.php');
           <button type="button" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#fileManagerModal">File Manager</button>
         </li>
         <li>
-          <button type="button" class="btn btn-warning navbar-btn" data-toggle="collapse" data-target="#imagePanel1">Convert Image Data</button>
+          <button type="button" class="btn btn-warning navbar-btn" data-toggle="collapse" data-target="#imagePanel1">Convert Image/RAW Data</button>
         </li>
       </ul>
     </div>
@@ -120,52 +121,123 @@ require('../req_login.php');
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            Image Data Conversion
+            Image/RAW Data Conversion
           </h4>
         </div>
+        
         <div class="panel-collapse">
-          <div class="panel-body">Select dataset folder
-          <div class="form-group">
-          <select id="folder-select" name="folder-select" size="1" class="form-control">
-		  <option value="-1"></option>
-          <?php 		
-			$dir = "../upload/files/";
-			$dp = opendir ($dir);
-			while ($folder = readdir($dp)){
-				if(!is_file($folder) AND (substr($folder,0,1)!='.')){
-					$folders = explode (' ', $folder);
-					foreach ($folders as $index => $map){
-						echo "<option value=\"$index\">$map</option>";
-					}
-				}
-			}
-			?>
-          </select>
+          <form class="form-horizontal" action="../convert.php" method="post" enctype="multipart/form-data">
+          <div class="panel-body">
           
+          <div class="form-row">
+              <label for="folder_path">Dataset folder</label>
+              <select id="folder_path" name="folder_path" size="1" class="form-control">
+              <option value="None"></option>
+              <?php 		
+                $dp = opendir ($data_dir);
+                while ($folder = readdir($dp)){
+                    if(!is_file($folder) AND (substr($folder,0,1)!='.')){
+                        $folders = explode (' ', $folder);
+                        foreach ($folders as $index => $map){
+                            echo "<option value=\"$map\">$map</option>";
+                        }
+                    }
+                }
+                ?>
+              </select>
+              <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
+			  
+              <script>
+              $("#folder_path"). change(function(){
+                 var dir = $(this).children("option:selected").text();
+                /* $.ajax({
+                      type: "POST",
+                      url: "list_files.php",
+                    success: function (data, text) {
+                      
+                    },
+                    error: function (request, status, error) {
+                        console.log( "Server error: " + error );
+                    }
+                  });*/ 
+              });
+              </script>
+          </div>
+          <div class="form-row">
+          <label for="convert-type">Type of input data</label>
+          <select id="convert-type" name="convert-type" size="1" class="form-control">
+            <option value="None"></option>
+          	<option value="single">Single file</option>
+            <option value="stack" disabled>Stack of images</option>
+          </select>
           <script>
-		  $("#folder-select"). change(function(){
-             var dir = $(this).children("option:selected").text();
-			/* $.ajax({
-				  type: "POST",
-				  url: "list_files.php",
-				success: function (data, text) {
-				  
-				},
-				error: function (request, status, error) {
-					console.log( "Server error: " + error );
-				}
-			  });*/ 
-		  });
-		  </script>
+              $("#convert-type").change(function(){
+                 var type = $(this).children("option:selected").val();
+				 if(type==="single"){
+                   $.ajax({
+                      type: "POST",
+                      url: "../image_info.php",
+					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path").children("option:selected").text() },
+                    success: function (data, text) {
+                      console.log(data);
+					  console.log(text);
+					  $("#img_info").html(data);
+					  $("#img_info").show();
+                    },
+                    error: function (request, status, error) {
+                        console.log( "Server error: " + error );
+                    }
+                  });
+				 }
+              });
+              </script>
+           <blockquote id="img_info" hidden="hidden"></blockquote>
+          </div>
           
-          <select id="dataset-type" name="dataset-type" size="1" class="form-control">
-          <option></option>
-          </select>
+            <div class="form-row">
+            <label>Size</label>
+              <div class="col">
+              <input type="text" class="form-control" id="X" name="X" placeholder="Size X"/>
+              </div>
+              <div class="col">
+              <input type="text" class="form-control" id="Y" name="Y" placeholder="Size Y"/>
+               </div>
+              <div class="col">
+              <input type="text" class="form-control" id="Z" name="Z" placeholder="Size Z"/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+              <label for="dtype">Data Type</label>
+              <select id="dtype" name="dtype" size="1" class="form-control">
+                <option value="float32">float32</option>
+                <option value="float64">float64</option>
+                <option value="int32">int32</option>
+                <option value="int64">int64</option>
+                <option value="int8">int8</option>
+                <option value="int16">unsigned int16</option>
+                <option value="uint32">unsigned int32</option>
+                <option value="uint64">unsigned int64</option>
+                <option value="uint8">unsigned int8</option>
+                <option value="uint16">unsigned int16</option>
+              </select>
+              </div>
+              <div class="col">
+              <label for="ncomp">Number of components</label>
+              <select id="ncomp" name="ncomp" size="1" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              </div>
+            </div>
           
           </div>
-          </div>
-          <div class="panel-footer"></div>
+          <div class="panel-footer"><button type="submit" class="btn btn-primary">Convert</button></div>
+          </form>
         </div>
+        
       </div>
     </div>
    

@@ -7,4 +7,7 @@
 	
   // Default server config file location (on the server's filesystem)	
   $default_config_file="/home/visus/visus.config";
+  
+  // Data directory
+  $data_dir="/server/data/dir";
 ?>

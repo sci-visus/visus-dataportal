@@ -150,6 +150,7 @@ require('../local.php');
               <script>
               $("#folder_path"). change(function(){
                  var dir = $(this).children("option:selected").text();
+				 $("#convert-type").trigger("change");
                 /* $.ajax({
                       type: "POST",
                       url: "list_files.php",

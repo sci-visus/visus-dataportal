@@ -87,11 +87,12 @@ function updateServer(){
           <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
         </li>
         <li>
-          <button type="button" class="btn btn-warning navbar-btn" onclick="javascript:updateServer()">Update Server</button>
+          <button type="button" class="btn btn-warning navbar-btn" onClick="javascript:updateServer()">Update Server</button>
         </li>
       </ul>
     </div>
    </nav>
+   
 <?php
 
 $dom=new DOMDocument();
@@ -168,7 +169,7 @@ $('#datasets').Tabledit({
 $("#add").click(function(e){
     var table = $(this).attr('for-table');  //get the target table selector
     var $tr = $(table + ">tbody>tr:last-child").clone(true, true);  //clone the last row
-	$tr.show();
+	$tr.prop("hidden",false);
 	
     var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
     $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
@@ -180,8 +181,37 @@ $("#add").click(function(e){
 	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
 	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");
 });
-
 </script>
 
+<script>
+   function addNewFromPost(name, url){
+	console.log(name);
+	console.log(url);
+	
+    var $tr = $("#datasets>tbody>tr:last-child").clone(true, true);  //clone the last row
+	$tr.prop("hidden",false);
+	
+	var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
+    $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
+    $tr.find("span.tabledit-identifier").text(nextID);  //set the row identifier
+    $("#datasets>tbody").append($tr);    //add the row to the table
+    $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
+    $tr.find("input, select").val("");   //wipe out the inputs.
+	
+	$tr.children("td:eq(1)").html(name);
+	$tr.children("td:eq(2)").html(url);
+  }
+</script>
+
+<?php
+if(isset($_POST["fname"]) and isset($_POST["furl"])){
+	  $name=strip_tags(trim($_POST['fname']));
+	  $url=strip_tags(trim($_POST['furl']));
+	  
+	  echo '<script type="text/javascript">',
+			        'addNewFromPost("'.$name.'", "'.$url.'")',
+    			 '</script>';
+}
+?>
 </body>
 </html>

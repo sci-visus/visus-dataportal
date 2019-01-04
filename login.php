@@ -26,17 +26,12 @@
 <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- blueimp Gallery styles -->
-    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
+    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="ext/bootstrap-3.3.7/jquery/jquery.tabledit.min.js"></script>
 
-    <style type="text/css">
-        body { background: url(assets/bglight.png); }
-        .hero-unit { background-color: #fff; }
-        .center { display: block; margin: 0 auto; }
-    </style>
 </head>
 
 <body>

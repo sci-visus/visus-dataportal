@@ -1,5 +1,6 @@
 <?php 
   // This is a local site configuration file
+  // please customize all the variables 
 	
   // Admin credentials for this server
   $admin_user="admin"; 
@@ -9,5 +10,8 @@
   $default_config_file="/home/visus/visus.config";
   
   // Data directory
-  $data_dir="/server/data/dir";
+  $data_dir="/main/folder/to/upload/your/data";
+  
+  // visus executable
+  $visus_exe="/path/to/visus/executable"
 ?>

@@ -92,7 +92,7 @@
 			$dim="$X $Y $Z";
 			
 			// data_dir filename input_file box dim dtype 
-		    $output=shell_exec("scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"");
+		    $output=shell_exec("scripts/convert_single.sh \"$visus_exe\" \"$dir\" \"$fname\" \"$img\" \"$dim\" \"$dtype_full\"");
 			
 			if(strpos($output, "All done") !== false){
 				echo '<script type="text/javascript">',

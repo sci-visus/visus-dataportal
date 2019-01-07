@@ -10,9 +10,9 @@ require('../local.php');
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 		<title>File manager</title>
         
-        <link rel="stylesheet" href="../ext/bootstrap-3.3.7/css/bootstrap.min.css">
         <script src="../ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
         <script src="../ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="../ext/bootstrap-3.3.7/css/bootstrap.min.css">
     
 
 		<!-- Require JS (REQUIRED) -->
@@ -108,7 +108,7 @@ require('../local.php');
   <div class="container-fluid">
       <ul class="nav navbar-nav">
         <li>
-          <button type="button" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#fileManagerModal">File Manager</button>
+          <button type="button" class="btn btn-success navbar-btn" data-toggle="collapse" data-target="#filemanagerPanel">File Manager</button>
         </li>
         <li>
           <button type="button" class="btn btn-warning navbar-btn" data-toggle="collapse" data-target="#imagePanel1">Convert Image/RAW Data</button>
@@ -117,11 +117,12 @@ require('../local.php');
     </div>
    </nav>
    
-   <div class="panel-group collapse" id="imagePanel1">
+   <div class="panel-collapse collapse" id="imagePanel1">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
             Image/RAW Data Conversion
+            <a class="collapsed" id="imagePanelCollapseLink" data-parent="#imagePanel1" data-toggle="collapse" href="#imagePanel1" role="button"><span class="close">&times;</span></a>
           </h4>
         </div>
         
@@ -133,17 +134,6 @@ require('../local.php');
               <label for="folder_path">Dataset folder</label>
               <select id="folder_path" name="folder_path" size="1" class="form-control">
               <option value="None"></option>
-              <?php 		
-                $dp = opendir ($data_dir);
-                while ($folder = readdir($dp)){
-                    if(!is_file($folder) AND (substr($folder,0,1)!='.')){
-                        $folders = explode (' ', $folder);
-                        foreach ($folders as $index => $map){
-                            echo "<option value=\"$map\">$map</option>";
-                        }
-                    }
-                }
-                ?>
               </select>
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
 			
@@ -242,14 +232,25 @@ require('../local.php');
       </div>
     </div>
    
-	<div id="fileManagerModal" class="modal fade modal-fullscreen" role="dialog">
+	<!--<div id="fileManagerModal" class="modal fade modal-fullscreen" role="dialog">
           <div class="modal-dialog">
-            <!-- Share Modal content-->
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">File Manager</h4>
               </div>
+             -->
+     <div class="panel-group collapse" id="filemanagerPanel">
+      <div class="panel panel-default" role="tab">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            Data File Manager <a aria-controls="example1" aria-expanded="true" data-parent="#filemanagerPanel" data-toggle="collapse" href="#filemanagerPanel" role="button"><span class="close">&times;</span></a>
+          </h4>
+        </div>
+        
+        <div class="panel-collapse">
+        
+          <div class="panel-body">
              
               <div id="elfinder"></div>
               
@@ -264,15 +265,48 @@ require('../local.php');
             </ul>
         </div>
     </div>
+    
+    </div>
+          <div class="panel-footer">
+        </div>
+        
+      </div>
+    </div>
+    
+    <script>
+	
+	$('#imagePanel1').on('show.bs.collapse', function (e) {
+		$.ajax({
+				  type: "POST",
+				  url: "../list_folders.php",
+				success: function (data, text) {
+					console.log(data);
+				  $("#folder_path").html(data);
+				  
+				},
+				error: function (request, status, error) {
+					console.log( "Server error: " + error );
+				}
+			  });
+			  
+		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
+	});
+	
+	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
+	    $('#imagePanel1').removeClass("in"); // workaround to collapse the panel
+	});
+	</script>
+    
+    <!--
               <div class="modal-footer">
               
                  <button type="button" class="btn btn-default" data-dismiss="modal">I'm done with those files</button> 
               </div>
             </div>
           </div>
-        </div>
+        </div> 
 		
    </div>
-   
+   -->
 	</body>
 </html>

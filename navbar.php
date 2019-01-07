@@ -17,9 +17,13 @@ require('config.php');
   padding-right: 10px;
   padding-left: 10px;
 }
+
+.navbar-nav>li>a:hover {
+    color: black;
+}
 </style>
      
-<nav class="navbar navbar-fixed-top navbar-inverse">
+<nav class="navbar navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header"> 
     <button type="button" class="navbar-toggle collapsed " data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -28,29 +32,29 @@ require('config.php');
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="100%"/></a>
+     <a class="navbar-brand" href="https://www.visus.org"><image src="site_logo.gif" height="200%"/></a>
    </div>
    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
       <li>
-      <button type="button" class="btn btn-default navbar-btn">
-      <a href="index.php"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a>
-      </button>
+      <a href="index.php" class="btn btn-default navbar-btn">
+      <span class="glyphicon glyphicon-home"></span>&nbsp;Home
+      </a>
       </li>
       <li>
-      <button type="button" class="btn btn-default navbar-btn">
-      <a href="datasets.php"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure</a>
-      </button>
+      <a href="datasets.php" class="btn btn-default navbar-btn">
+      <span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure
+      </a>
       </li>
       <li>
-      <button type="button" class="btn btn-default navbar-btn">
-      <a href="upload/"><span class="glyphicon glyphicon-import"></span>&nbsp;Import</a>
-      </button>
+      <a href="upload/" class="btn btn-default navbar-btn">
+      <span class="glyphicon glyphicon-import"></span>&nbsp;Import
+      </a>
       </li>
       <li>
-      <button type="button" class="btn btn-default navbar-btn">
-      <a href="viewer/"><span class="glyphicon glyphicon-picture"></span>&nbsp;View</a>
-      </button>
+      <a href="viewer/" class="btn btn-default navbar-btn">
+      <span class="glyphicon glyphicon-picture"></span>&nbsp;View
+      </a>
       </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -61,9 +65,9 @@ require('config.php');
       </li> -->
       <?php if(!empty($_SESSION['user'])){ ?>
       <li>
-      <button type="button" class="btn btn-danger navbar-btn">
-      <a href="logout.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a>
-      </button>
+      <a href="logout.php" class="btn btn-danger navbar-btn">
+      <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
+      </a>
       </li>
 	  <?php } ?>
 	  

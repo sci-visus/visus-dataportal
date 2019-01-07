@@ -99,7 +99,7 @@ require('../local.php');
       } );
     });
     </script>
-  <div class="container" style="margin-top: 50px">
+  <div class="container" style="margin-top: 70px">
  	
   <h2>Manage files on this server</h2>
   <p>Here you an manage your project folders containing your datasets.</p> 

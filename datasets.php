@@ -70,7 +70,7 @@ function updateServer(){
           </div>
         </div>
         
-<div class="container" style="margin-top: 50px">
+<div class="container" style="margin-top: 70px">
  	
   <h2>List of datasets</h2>
   <p>This is the list of the datasets defined in the following config file:</p> 
@@ -117,11 +117,11 @@ foreach ($datasets as $dataset) {
 	$url=$dataset->getAttribute('url');
 
 #    $name=$dataset->getElementsByTagName('name')->item(0)->textContent;
-	echo "<tr>","<td hidden>$name</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."$name</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."$url</td>","</tr>";
+	echo "<tr>","<td hidden>$name</td>",'<td style="word-wrap: break-word;min-width: 30px;max-width: 60px;">'."$name</td>",'<td style="word-wrap: break-word;min-width: 200px;max-width: 200px;">'."$url</td>","</tr>";
 
 }
 
-echo "<tr hidden>","<td hidden>NaN</td>",'<td style="word-wrap: break-word;min-width: 60px;max-width: 60px;">'."</td>",'<td style="word-wrap: break-word;min-width: 160px;max-width: 160px;">'."</td>","</tr>";
+echo "<tr hidden>","<td hidden>NaN</td>",'<td style="word-wrap: break-word;min-width: 30px;max-width: 60px;">'."</td>",'<td style="word-wrap: break-word;min-width: 200px;max-width: 200px;">'."</td>","</tr>";
 
 echo "</tbody>";
 echo "</table>";

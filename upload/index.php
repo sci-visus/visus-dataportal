@@ -218,7 +218,7 @@ require('../local.php');
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path">Dataset folder</label>
-              <select id="folder_path" name="folder_path" size="1" class="form-control" onChange="convertChange()">
+              <select id="folder_path" name="folder_path" size="1" class="form-control" onChange="javascript:convertChange()">
               <option value="None"></option>
               </select> 
 			
@@ -228,8 +228,6 @@ require('../local.php');
           
           <script>
               function convertChange(){
-                 var type = $("#convert-type").children("option:selected").val();
-				 if(type==="single"){
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
@@ -244,24 +242,9 @@ require('../local.php');
                         console.log( "Server error: " + error );
                     }
                   });
-				 }
+				 
               };
 			  
-			  
-              $("#folder_path"). change(function(){
-                 var dir = $(this).children("option:selected").text();
-				 convertChange();
-                /* $.ajax({
-                      type: "POST",
-                      url: "list_files.php",
-                    success: function (data, text) {
-                      
-                    },
-                    error: function (request, status, error) {
-                        console.log( "Server error: " + error );
-                    }
-                  });*/ 
-              });
               </script>
            <blockquote id="img_info" hidden="hidden"></blockquote>
           </div>
@@ -356,6 +339,7 @@ require('../local.php');
 				success: function (data, text) {
 					//console.log(data);
 				    $("#folder_path").html(data);
+					convertChange();
 				  
 				},
 				error: function (request, status, error) {
@@ -365,7 +349,7 @@ require('../local.php');
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#convertPanel').addClass("collapse");
-		console.log("collapsed convert image");
+		
 	});
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
@@ -376,9 +360,7 @@ require('../local.php');
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
 			$("#convertPanel").collapse("hide");
-			//.addClass("collapse");
-			//$("#convertPanel").removeClass("in");
-			$('#filemanagerPanel').collapse("hide");//.hide();
+			$('#filemanagerPanel').collapse("hide");
 		}
 	}
 	</script>

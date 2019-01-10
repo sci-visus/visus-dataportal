@@ -14,9 +14,9 @@ require('config.php');
 
     <title>ViSUS DataPortal</title>
 
-    <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
-    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="ext/bootstrap/css/bootstrap.min.css">
+    <script src="ext/bootstrap/jquery/jquery.min.js"></script>
+    <script src="ext/bootstrap/js/bootstrap.min.js"></script>
       
       <style>
 	  .card{
@@ -63,11 +63,11 @@ $(function(){
           <div class="card">
             <span style="font-size:70px" class="glyphicon glyphicon-import"></span>
             <div class="card-body">
-              <h4 class="card-title">Import Data</h4>
-              <p class="card-text">Import data from image format and NetCDF files.</p>
+              <h4 class="card-title">Data</h4>
+              <p class="card-text">Manage, import and convert your data.</p>
             </div>
             <div class="card-footer">
-              <a href="upload/" class="btn btn-primary">Import Data</a>
+              <a href="upload/" class="btn btn-primary">Data</a>
             </div>
           </div>
         </div>

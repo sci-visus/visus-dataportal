@@ -48,7 +48,7 @@ require('config.php');
       </li>
       <li>
       <a href="upload/" class="btn btn-default navbar-btn">
-      <span class="glyphicon glyphicon-import"></span>&nbsp;Import
+      <span class="glyphicon glyphicon-import"></span>&nbsp;Data
       </a>
       </li>
       <li>

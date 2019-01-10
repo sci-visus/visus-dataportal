@@ -22,11 +22,11 @@ if(!isset($_SESSION["config_file"]) or $_SESSION["config_file"]==="")
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="ext/bootstrap-3.3.7/css/bootstrap.min.css">
-    <script src="ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="ext/bootstrap/css/bootstrap.min.css">
+    <script src="ext/bootstrap/jquery/jquery.min.js"></script>
+    <script src="ext/bootstrap/js/bootstrap.min.js"></script>
     
-    <script src="ext/bootstrap-3.3.7/jquery/jquery.tabledit.min.js"></script>
+    <script src="ext/bootstrap/jquery/jquery.tabledit.min.js"></script>
       
 </head>
 <body>

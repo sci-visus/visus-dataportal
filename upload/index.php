@@ -69,9 +69,11 @@ require('../local.php');
 			});
 		</script>
         
-        <script src="../ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-        <script src="../ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="../ext/bootstrap-3.3.7/css/bootstrap.min.css">
+        <script src="../ext/bootstrap/jquery/jquery.min.js"></script>
+        
+        <script src="../ext/bootstrap/js/bootstrap.min.js"></script>
+       
+        <link rel="stylesheet" href="../ext/bootstrap/css/bootstrap.min.css">
         
         <style>
 		.modal-dialog {
@@ -96,7 +98,7 @@ require('../local.php');
               </div>
               
                 <div class="col" style="padding:20px; text-align:center">
-                  <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:500px"></textarea>
+                  <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:50%"></textarea>
                 </div>
                 
               <div class="modal-footer">
@@ -150,40 +152,80 @@ require('../local.php');
           <button type="button" class="btn btn-success navbar-btn" data-toggle="collapse" data-target="#filemanagerPanel">File Manager</button>
         </li>
         <li>
-          <button type="button" class="btn btn-warning navbar-btn" data-toggle="collapse" data-target="#imagePanel1">Convert Image/RAW Data</button>
+          <button type="button" class="btn btn-warning navbar-btn" data-toggle="collapse" data-target="#convertPanel">Convert</button>
         </li>
       </ul>
     </div>
    </nav>
    
-   <div class="panel-collapse collapse" id="imagePanel1">
+   <div class="panel-group" id="convertPanel">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            Image/RAW Data Conversion
-            <a class="collapsed" id="imagePanelCollapseLink" data-parent="#imagePanel1" data-toggle="collapse" href="#imagePanel1" role="button"><span class="close">&times;</span></a>
+            Convert
+            <a class="collapsed" id="convertCollapseLink" data-parent="#convertPanel" data-toggle="collapse" href="#convertPanel" role="button"><span class="close">&times;</span></a>
+          </h4>
+        </div>
+        
+    <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-6 mb-3 mb-md-0">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Single file</h5>
+                <p class="card-text">Convert one single file.</p>
+                <a href='javascript:selectConvert(1)' class="btn btn-primary">Convert</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Stack of images/files</h5>
+                <p class="card-text">Convert a set of images/files into one dataset.</p>
+                <a href="#!" class="btn btn-primary" disabled>Convert</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+   
+          <div class="panel-footer">
+        </div>
+        
+       </div>
+    </div>
+    
+    
+   
+   <div class="panel-collapse collapse" id="imageSinglePanel">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            Single Image/RAW Data Conversion
+            <a class="collapsed" id="imagePanelCollapseLink" data-parent="#imageSinglePanel" data-toggle="collapse" href="#imageSinglePanel" role="button"><span class="close">&times;</span></a>
           </h4>
         </div>
         
         <div class="panel-collapse">
           <form class="form-horizontal" action="../convert.php" method="post" enctype="multipart/form-data">
           <div class="panel-body">
-          
+          <blockquote>
+    Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for one single image or raw file.<br/>
+         Use the <a href='javascript:$('#filemanagerPanel').collapse("show")'>File Manager</a> to upload your data.
+    </blockquote>
           <div class="form-row">
-              <label for="folder_path">Dataset folder</label>
-              <select id="folder_path" name="folder_path" size="1" class="form-control">
-              <option value="None"></option>
-              </select>
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
+              <label for="folder_path">Dataset folder</label>
+              <select id="folder_path" name="folder_path" size="1" class="form-control" onChange="convertChange()">
+              <option value="None"></option>
+              </select> 
 			
           </div>
           <div class="form-row">
-          <label for="convert-type">Type of input data</label>
-          <select id="convert-type" name="convert-type" size="1" class="form-control" onChange="javascript:convertChange()">
-            <option value="None"></option>
-          	<option value="single">Single file</option>
-            <option value="stack" disabled>Stack of images</option>
-          </select>
+          <input id="convert-type" name="convert-type" type="hidden" value="single"/>
+          
           <script>
               function convertChange(){
                  var type = $("#convert-type").children("option:selected").val();
@@ -307,7 +349,7 @@ require('../local.php');
     
     <script>
 	
-	$('#imagePanel1').on('show.bs.collapse', function (e) {
+	$('#imageSinglePanel').on('show.bs.collapse', function (e) {
 		$.ajax({
 				  type: "POST",
 				  url: "../list_folders.php",
@@ -322,11 +364,23 @@ require('../local.php');
 			  });
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
+		$('#convertPanel').addClass("collapse");
+		console.log("collapsed convert image");
 	});
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
-	    $('#imagePanel1').removeClass("in"); // workaround to collapse the panel
+		$('#imageSinglePanel').collapse("hide");
 	});
+	
+	function selectConvert(n){
+		if (n ==1){
+			$("#imageSinglePanel").collapse("show");
+			$("#convertPanel").collapse("hide");
+			//.addClass("collapse");
+			//$("#convertPanel").removeClass("in");
+			$('#filemanagerPanel').collapse("hide");//.hide();
+		}
+	}
 	</script>
    
    <script>

@@ -14,16 +14,14 @@
    }
 
    $sql =<<<EOF
-      SELECT params from Conversion WHERE id=$id;
+      SELECT logfile from Conversion WHERE id=$id;
 EOF;
 
    $ret = $db->query($sql);
    
    while($row = $ret->fetchArray(SQLITE3_ASSOC) ) { 
-	  $params=json_decode($row['params']);
-          
-          $log=file_get_contents($params->{'dir'}."/convert.log");
-          echo $log;
+      $log=file_get_contents($row['logfile']);
+	  echo $log;
 	
 	  $ret = $db->exec($sql);
 	   if(!$ret) {

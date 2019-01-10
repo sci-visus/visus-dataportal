@@ -24,19 +24,48 @@
 				
 				$ext = $file_parts['extension'];
 				$fname = $file_parts['filename'];
-				
-                                if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") {
-					$img=$dir."/".$f;
-                                        break;			
-				}
+				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") 
+					$img=$dir."/".$f;			
 			}
-
-                        if($img!==""){
-                        		
-                           $params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
-                           $json_params = json_encode($params);
+			
+			$iX=intval($X);
+			$iY=intval($Y);
+			$iZ=intval($Z);
+			if($iX == 1) $iX = 2;
+			if($iY == 1) $iY = 2;
+			if($iZ == 1) $iZ = 2;
+			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
+			$dim="$X $Y $Z";
+			
+			date_default_timezone_set('America/Denver');
+			$current_date = date('Y-m-d H:i:s');
+			
+			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
+            $json_params = json_encode($params);
 			//echo  $json_params;
-			    
+			
+			// data_dir filename input_file box dim dtype 
+			$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
+			
+			$logfile="$dir/convert-".strtotime($current_date).".log";
+			$pidfile="$dir/convert-".strtotime($current_date).".pid";
+			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $logfile, $pidfile));
+			$pid=file_get_contents($pidfile);
+			
+			$output=file_get_contents($logfile);
+			
+			/*
+			if(strpos($output, "All done") !== false){
+				echo '<script type="text/javascript">',
+			        'updateStatus('.json_encode($output).', "<b style=\"color: green\">Success</b>", "'.$dir."/".$fname.'.idx","'.$fname.'")',
+    			 '</script>';
+			}
+			else
+			   echo '<script type="text/javascript">',
+			        'updateStatus('.json_encode($output).', "<b style=\"color: red\">Failed</b>","","")',
+    			 '</script>';
+				*/ 
+		    
 			   class MyDB extends SQLite3 {
 				  function __construct() {
 					 $this->open('db/conversion.db');
@@ -49,8 +78,8 @@
 			   }
 			
 			   $sql =<<<EOF
-				  INSERT INTO conversion (name,type,status,params,pid,time)
-				  VALUES ('$fname', '$ctype', 'STARTED', '$json_params', '$pid', CURRENT_TIMESTAMP); 
+				  INSERT INTO conversion (name,type,status,params,pid,time,logfile)
+				  VALUES ('$fname', '$ctype', 'STARTED', '$json_params', '$pid', '$current_date','$logfile'); 
 EOF;
 			
 			   $ret = $db->exec($sql);
@@ -58,32 +87,7 @@ EOF;
 				  echo $db->lastErrorMsg();
 			   } 
 			   $db->close();
-
-			
-			$iX=intval($X);
-			$iY=intval($Y);
-			$iZ=intval($Z);
-			if($iX == 1) $iX = 2;
-			if($iY == 1) $iY = 2;
-			if($iZ == 1) $iZ = 2;
-			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
-			$dim="$X $Y $Z";
-			
-			// data_dir filename input_file box dim dtype 
-			$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
-			//echo $cmd;
-
-			$outputfile="$dir/convert.log";
-			$pidfile="$dir/convert.pid";
-			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $outputfile, $pidfile));
-			$pid=file_get_contents($pidfile);
-			
-			$output=file_get_contents($outputfile);
-			
 		}
-             }
-             else
-               echo "data file not found";
 
 		header("Location: upload/index.php");
 		die("Redirecting to: upload"); 

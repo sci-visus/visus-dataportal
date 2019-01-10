@@ -60,7 +60,7 @@ EOF;
 	  echo "<td>". $row['time'] ."</td>\n";
 	  echo "<td><a class=\"btn btn-warning\" href=\"javascript:getLog(".$row['id'].")\">Log</a></td>\n";
 	  
-	  //if($status==="DONE"){
+	 // if($status==="DONE"){
 	  echo '<td> <form action="../datasets.php" method="post" enctype="multipart/form-data"> 
                         <input type="hidden" name="furl" id="furl" value="'.$params->{"dir"}."/".$params->{"fname"}.".idx".'" />                          
                         <input type="hidden" name="fname" id="fname" value="'.$params->{"fname"}.'" /> 

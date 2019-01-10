@@ -24,45 +24,15 @@
 				
 				$ext = $file_parts['extension'];
 				$fname = $file_parts['filename'];
-				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") 
-					$img=$dir."/".$f;			
+				
+                                if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") {
+					$img=$dir."/".$f;
+                                        break;			
+				}
 			}
-			
-			$iX=intval($X);
-			$iY=intval($Y);
-			$iZ=intval($Z);
-			if($iX == 1) $iX = 2;
-			if($iY == 1) $iY = 2;
-			if($iZ == 1) $iZ = 2;
-			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
-			$dim="$X $Y $Z";
-			
-			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
-            $json_params = json_encode($params);
-			//echo  $json_params;
-			
-			// data_dir filename input_file box dim dtype 
-			$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
-			
-			$outputfile="$dir/convert.log";
-			$pidfile="$dir/convert.pid";
-			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $outputfile, $pidfile));
-			$pid=file_get_contents($pidfile);
-			
-			$output=file_get_contents($outputfile);
-			
-			/*
-			if(strpos($output, "All done") !== false){
-				echo '<script type="text/javascript">',
-			        'updateStatus('.json_encode($output).', "<b style=\"color: green\">Success</b>", "'.$dir."/".$fname.'.idx","'.$fname.'")',
-    			 '</script>';
-			}
-			else
-			   echo '<script type="text/javascript">',
-			        'updateStatus('.json_encode($output).', "<b style=\"color: red\">Failed</b>","","")',
-    			 '</script>';
-				*/ 
-		    
+
+                        if($img!==""){
+                        		    
 			   class MyDB extends SQLite3 {
 				  function __construct() {
 					 $this->open('db/conversion.db');
@@ -84,7 +54,36 @@ EOF;
 				  echo $db->lastErrorMsg();
 			   } 
 			   $db->close();
+
+			
+			$iX=intval($X);
+			$iY=intval($Y);
+			$iZ=intval($Z);
+			if($iX == 1) $iX = 2;
+			if($iY == 1) $iY = 2;
+			if($iZ == 1) $iZ = 2;
+			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
+			$dim="$X $Y $Z";
+			
+			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
+            $json_params = json_encode($params);
+			//echo  $json_params;
+			
+			// data_dir filename input_file box dim dtype 
+			$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
+			//echo $cmd;
+
+			$outputfile="$dir/convert.log";
+			$pidfile="$dir/convert.pid";
+			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $outputfile, $pidfile));
+			$pid=file_get_contents($pidfile);
+			
+			$output=file_get_contents($outputfile);
+			
 		}
+             }
+             else
+               echo "data file not found";
 
 		header("Location: upload/index.php");
 		die("Redirecting to: upload"); 

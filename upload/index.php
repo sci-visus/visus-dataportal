@@ -231,7 +231,7 @@ require('../local.php');
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
-					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path").children("option:selected").text() },
+					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path").find("option:selected").text() },
                     success: function (data, text) {
                       //console.log(data);
 					  //console.log(text);

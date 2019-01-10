@@ -39,7 +39,7 @@ EOF;
       echo "<td>". $row['name'] . "</td>\n";
       
 	  $params=json_decode($row['params']);
-      $log=file_get_contents($params->{'dir'}."/convert.log");
+      $log=file_get_contents($row["logfile"]);
 	  if(strpos($log, "All done") !== false){
 		if($status!=="DONE"){
         $sql =<<<EOF

@@ -21,8 +21,9 @@ EOF;
    
    while($row = $ret->fetchArray(SQLITE3_ASSOC) ) { 
 	  $params=json_decode($row['params']);
-      $log=file_get_contents($params->{'dir'}."/convert.log");
-	  echo $log;
+          
+          $log=file_get_contents($params->{'dir'}."/convert.log");
+          echo $log;
 	
 	  $ret = $db->exec($sql);
 	   if(!$ret) {

@@ -32,7 +32,11 @@
 			}
 
                         if($img!==""){
-                        		    
+                        		
+                           $params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
+                           $json_params = json_encode($params);
+			//echo  $json_params;
+			    
 			   class MyDB extends SQLite3 {
 				  function __construct() {
 					 $this->open('db/conversion.db');
@@ -64,10 +68,6 @@ EOF;
 			if($iZ == 1) $iZ = 2;
 			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
 			$dim="$X $Y $Z";
-			
-			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
-            $json_params = json_encode($params);
-			//echo  $json_params;
 			
 			// data_dir filename input_file box dim dtype 
 			$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";

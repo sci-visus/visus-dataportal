@@ -96,7 +96,7 @@ require('../local.php');
               </div>
               
                 <div class="col" style="padding:20px; text-align:center">
-                  <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:50%"></textarea>
+                  <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:500px"></textarea>
                 </div>
                 
               <div class="modal-footer">

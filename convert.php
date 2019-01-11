@@ -2,7 +2,7 @@
 	require("req_login.php");
 	 
     if(!empty($_POST)){ 
-	    $dir=$data_dir."/".strip_tags(trim($_POST['folder_path']));
+	$dir=$data_dir."/".strip_tags(trim($_POST['folder_path']));
 		
         $X=strip_tags(trim($_POST['X']));
         $Y=strip_tags(trim($_POST['Y']));
@@ -24,11 +24,14 @@
 				
 				$ext = $file_parts['extension'];
 				$fname = $file_parts['filename'];
-				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") 
-					$img=$dir."/".$f;			
+				if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") {
+					$img=$dir."/".$f;
+					break;			
+				}
 			}
+			if($img!==""){
 			
-			$iX=intval($X);
+                        $iX=intval($X);
 			$iY=intval($Y);
 			$iZ=intval($Z);
 			if($iX == 1) $iX = 2;
@@ -88,6 +91,7 @@ EOF;
 			   } 
 			   $db->close();
 		}
+             }
 
 		header("Location: upload/index.php");
 		die("Redirecting to: upload"); 

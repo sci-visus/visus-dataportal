@@ -41,6 +41,7 @@ require('config.php');
       <span class="glyphicon glyphicon-home"></span>&nbsp;Home
       </a>
       </li>
+      <?php // if(!empty($_SESSION['user'])){ ?>
       <li>
       <a href="datasets.php" class="btn btn-default navbar-btn">
       <span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure
@@ -51,6 +52,7 @@ require('config.php');
       <span class="glyphicon glyphicon-import"></span>&nbsp;Data
       </a>
       </li>
+      <?php //} ?>
       <li>
       <a href="viewer/" class="btn btn-default navbar-btn">
       <span class="glyphicon glyphicon-picture"></span>&nbsp;View
@@ -58,19 +60,18 @@ require('config.php');
       </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      <!-- <li >
-      <button type="button" class="btn-info navbar-btn btn-lg" hidden>
-          <a href="settings.php"><span class="glyphicon glyphicon-wrench"></span></a>
-        </button>
-      </li> -->
+      
       <?php if(!empty($_SESSION['user'])){ ?>
       <li>
       <a href="logout.php" class="btn btn-danger navbar-btn">
       <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
       </a>
       </li>
-	  <?php } ?>
-	  
+	  <?php } else { ?>
+	  <li >
+          <a class="btn btn-info navbar-btn" href="login.php"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Login</a>
+      </li>
+      <?php } ?>
     </ul>
    </div>
   </div>

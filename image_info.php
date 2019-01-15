@@ -10,7 +10,7 @@
             $file_parts = pathinfo($dir."/".$f);
 			
 			$ext = $file_parts['extension'];
-			if($ext==="jpg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
+			if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
                 $img=$dir."/".$f;
 				break;
 			}

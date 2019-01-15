@@ -184,7 +184,7 @@ require('../local.php');
               <div class="card-body">
                 <h5 class="card-title">Stack of images/files</h5>
                 <p class="card-text">Convert a set of images/files into one dataset.</p>
-                <a href="#!" class="btn btn-primary" disabled>Convert</a>
+                <a href="javascript:selectConvert(2)" class="btn btn-primary">Convert</a>
               </div>
             </div>
           </div>
@@ -295,6 +295,103 @@ require('../local.php');
         
       </div>
     </div>
+    
+    <div class="panel-collapse collapse" id="imageStackPanel">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            Stack Image/RAW Data Conversion
+            <a class="collapsed" id="imageStackPanelCollapseLink" data-parent="#imageStackPanel" data-toggle="collapse" href="#imageStackPanel" role="button"><span class="close">&times;</span></a>
+          </h4>
+        </div>
+        
+        <div class="panel-collapse">
+          <form class="form-horizontal" action="../convert.php" method="post" enctype="multipart/form-data">
+          <div class="panel-body">
+          <blockquote>
+    Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for a sat of images or raw files.<br/>
+         Use the <a href='javascript:$('#filemanagerPanel').collapse("show")'>File Manager</a> to upload your data.
+    </blockquote>
+          <div class="form-row">
+              <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
+              <label for="folder_path_stack">Dataset folder</label>
+              <select id="folder_path_stack" name="folder_path" size="1" class="form-control" onChange="javascript:convertStackChange()">
+              <option value="None"></option>
+              </select> 
+			
+          </div>
+          <div class="form-row">
+          <input id="convert-type" name="convert-type" type="hidden" value="stack"/>
+          
+          <script>
+              function convertStackChange(){
+                   $.ajax({
+                      type: "POST",
+                      url: "../image_info_stack.php",
+					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path_stack").find("option:selected").text() },
+                    success: function (data, text) {
+                      console.log(data);
+					  //console.log(text);
+					  $("#stack_info").html(data);
+					  $("#stack_info").show();
+                    },
+                    error: function (request, status, error) {
+                        console.log( "Server error: " + error );
+                    }
+                  });
+				 
+              };
+			  
+              </script>
+           <blockquote id="stack_info" hidden="hidden"></blockquote>
+          </div>
+          
+            <div class="form-row">
+            <label>Size</label>
+              <div class="col">
+              <input type="text" class="form-control" id="X" name="X" size="1" placeholder="Size X"/>
+              </div>
+              <div class="col">
+              <input type="text" class="form-control" id="Y" name="Y" size="1" placeholder="Size Y"/>
+               </div>
+              <div class="col">
+              <input type="text" class="form-control" id="Z" name="Z" size="1" placeholder="Size Z"/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+              <label for="dtype">Data Type</label>
+              <select id="dtype" name="dtype" size="1" class="form-control">
+                <option value="float32">float32</option>
+                <option value="float64">float64</option>
+                <option value="int32">int32</option>
+                <option value="int64">int64</option>
+                <option value="int8">int8</option>
+                <option value="int16">unsigned int16</option>
+                <option value="uint32">unsigned int32</option>
+                <option value="uint64">unsigned int64</option>
+                <option value="uint8">unsigned int8</option>
+                <option value="uint16">unsigned int16</option>
+              </select>
+              </div>
+              <div class="col">
+              <label for="ncomp">Number of components</label>
+              <select id="ncomp" name="ncomp" size="1" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              </div>
+            </div>
+          
+          </div>
+          <div class="panel-footer"><button type="submit" class="btn btn-primary">Convert</button></div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
    
      <div class="panel-group collapse" id="filemanagerPanel">
       <div class="panel panel-default" role="tab">
@@ -352,6 +449,27 @@ require('../local.php');
 		
 	});
 	
+	$('#imageStackPanel').on('show.bs.collapse', function (e) {
+		$.ajax({
+				  type: "POST",
+				  url: "../list_folders.php",
+				success: function (data, text) {
+					//console.log(data);
+				    $("#folder_path_stack").html(data);
+					convertStackChange();
+				  
+				},
+				error: function (request, status, error) {
+					console.log( "Server error: " + error );
+				}
+			  });
+			  
+		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
+		$('#convertPanel').addClass("collapse");
+		$('#imageSinglePanel').collapse("hide");
+		
+	});
+	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
 		$('#imageSinglePanel').collapse("hide");
 	});
@@ -359,6 +477,11 @@ require('../local.php');
 	function selectConvert(n){
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
+			$("#convertPanel").collapse("hide");
+			$('#filemanagerPanel').collapse("hide");
+		}
+		else if (n ==2){
+			$("#imageStackPanel").collapse("show");
 			$("#convertPanel").collapse("hide");
 			$('#filemanagerPanel').collapse("hide");
 		}

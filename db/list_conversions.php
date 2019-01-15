@@ -41,8 +41,8 @@ EOF;
 	  $params=json_decode($row['params']);
       $log=file_get_contents($row["logfile"]);
 	  if(strpos($log, "All done") !== false){
-		if($status!=="DONE"){
-        $sql =<<<EOF
+		if($status!=="DONE" and $isrun==="NO"){
+          $sql =<<<EOF
 	    UPDATE Conversion set status = "DONE" where name="$name";
 EOF;
           $ret = $db->query($sql);

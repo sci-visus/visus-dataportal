@@ -35,9 +35,12 @@
         
         <title>ViSUS WebViewer</title>
         
-     <link rel="stylesheet" href="../ext/bootstrap-3.3.7/css/bootstrap.min.css">
-    <script src="../ext/bootstrap-3.3.7/jquery/jquery.min.js"></script>
-    <script src="../ext/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+   
+        <script src="../ext/bootstrap/jquery/jquery.min.js"></script>
+        
+        <script src="../ext/bootstrap/js/bootstrap.min.js"></script>
+       
+        <link rel="stylesheet" href="../ext/bootstrap/css/bootstrap.min.css">
 
 </head>
 

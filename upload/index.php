@@ -228,6 +228,9 @@ require('../local.php');
           
           <script>
               function convertChange(){
+                   $("#img_info").html("Getting info from image data...<br/>");
+		   $("#img_info").show();
+			 
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
@@ -325,6 +328,9 @@ require('../local.php');
           
           <script>
               function convertStackChange(){
+                   $("#stack_info").html("Getting info from image data...<br/>");
+		   $("#stack_info").show();
+
                    $.ajax({
                       type: "POST",
                       url: "../image_info_stack.php",
@@ -472,6 +478,7 @@ require('../local.php');
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
 		$('#imageSinglePanel').collapse("hide");
+                $('#imageStackPanel').collapse("hide");
 	});
 	
 	function selectConvert(n){

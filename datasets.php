@@ -178,6 +178,8 @@ $("#add").click(function(e){
     $(table + ">tbody").append($tr);    //add the row to the table
     $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
     $tr.find("input, select").val("");   //wipe out the inputs.
+    $tr.children("td:eq(0)").children("input").val("NaN");
+
 	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
 	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
 	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");

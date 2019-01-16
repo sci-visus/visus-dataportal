@@ -113,7 +113,7 @@ $(function(){
              
             <div class="table-responsive">
 
-               <table class="table table-striped table-hover table-bordered" id="conversions">
+               <table class="table table-striped table-hover table-bordered" id="datasets">
                 <!--
                 <thead><tr><th>Name</th><th>Running</th><th>Type</th><th>Start Time</th><th>Log</th><th>Actions</th></tr></thead>-->
                 
@@ -135,7 +135,7 @@ $(function(){
     <script>
 	   function view(name){
 		   var url="viewer/?server="+encodeURI(DEFAULT_SERVER)+"&dataset="+encodeURI(name);
-		   window.location(url);
+		   window.location=url;
 	   }
 	   
 	   function updateList(){
@@ -144,14 +144,15 @@ $(function(){
 			  url: "list_datasets.php",
 			success: function (data, text) {
 				names=data.split(",");
-				//console.log(names);
+				console.log(names);
 				var rows;
 				for(var i = 0; i < names.length; i++) {
 					var n = names[i];
-					rows="<tr><td>"+n+'</td><td><a type="button" class="btn btn-default navbar-btn" href="javascript:view(\""+n+"\")>View</a></td></tr>';
+					if(n=="") continue;
+					rows+="<tr><td>"+n+'</td><td><a type="button" class="btn btn-default navbar-btn" href=\'javascript:view(\"'+n+'\")\'>View</a></td></tr>';
 				}
 				
-				$('#datasets > tbody > tr').html(rows);
+				$('#datasets > tbody').html(rows);
 				
 				/*$('#datasets > tbody > tr').each( function() {
 				   var name=$(this).children("td:eq(1)").children("input").val();

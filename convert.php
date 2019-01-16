@@ -85,16 +85,21 @@ EOF;
 			$img="";
 			$fname="";
 			$dp = opendir ($dir);
+			$files = array();
+			
+			$img_count=0;
 			while ($f = readdir($dp)){
 				//echo $dir."/".$f."\n";
 				$file_parts = pathinfo($dir."/".$f);
 				
 				$ext = $file_parts['extension'];
-				$fname = $file_parts['filename'];
-				if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="raw") {
-					$img=$dir."/".$f;		
-					break;
+				if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
+					$img=$dir."/".$f;
+					$files[$img_count]=$img;
+					
+					$img_count++;
 				}
+				
 			}
 			
 			$foldername=basename($dir);
@@ -105,23 +110,50 @@ EOF;
 			if($iX == 1) $iX = 2;
 			if($iY == 1) $iY = 2;
 			if($iZ == 1) $iZ = 2;
-			$box="0 ".strval($iX-1)." 0 ".strval($iY-1)." 0 ".strval($iZ-1); // not used for single image
+			$box_array=array(0, $iX-1, 0, strval($iY-1),  0, strval($iZ-1));
+			$box_str=implode(" ",$box_array);
+			$box_split=split(" ", $box_str);
 			$dim="$X $Y $Z";
 			
 			date_default_timezone_set('America/Denver');
 			$current_date = date('Y-m-d H:i:s');
 			
-			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $foldername, 'box' => $box, 'dtype' => $dtype_full);
+			$convert_script="$dir/convert-".strtotime($current_date).".sh";
+			
+			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $foldername, 'box' => $box_str, 'dtype' => $dtype_full, 'cscript' => $convert_script);
             $json_params = json_encode($params);
 			//echo  $json_params;
 			
+			$cfile = fopen($convert_script, "w") or die("Unable to open file!");
+			
+			fwrite($cfile, "#!/bin/bash \n");
+			fwrite($cfile, "export CONVERT=$visus_exe \n");
+			
+			$idxfile=$dir.'/'.$foldername.'.idx';
+			
+			fwrite($cfile, '$CONVERT create "'.$idxfile.'" --box "'.$box_str.'" --fields "data '.$dtype_full.'" --time 0 0 time%05d/'."\n");
+			
+			sort($files); // sorting input files in alphabetical order
+			
+			$counter=0;
+			foreach ($files as $f) {
+				fwrite($cfile,'$CONVERT import "'.$f.'" export "'.$idxfile.'" --field data --box "0 '.$box_split[1].' 0 '.$box_split[3].' '.strval($counter).' '.strval($counter).'" \\'."\n");
+				$counter++;
+			}
+			
+			fclose($cfile);
+			
 			// visus_exe data_dir filename box dtype 
-			$cmd="scripts/convert_demo_hearth.sh $visus_exe $dir $foldername \"$box\" \"$dtype_full\"";
+			//$cmd="scripts/convert_demo_hearth.sh $visus_exe $dir $foldername \"$box\" \"$dtype_full\"";
+			
+			$cmd="sh $convert_script";
 			
 			$logfile="$dir/convert-".strtotime($current_date).".log";
 			$pidfile="$dir/convert-".strtotime($current_date).".pid";
+		
 			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $logfile, $pidfile));
 			$pid=file_get_contents($pidfile);
+			
 			
 			$output=file_get_contents($logfile);
 			

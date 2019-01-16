@@ -44,18 +44,18 @@ require('config.php');
       <?php // if(!empty($_SESSION['user'])){ ?>
       <li>
       <a href="datasets.php" class="btn btn-default navbar-btn">
-      <span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure
+      <span class="glyphicon glyphicon-th-list"></span>&nbsp;Configure Server
       </a>
       </li>
       <li>
       <a href="upload/" class="btn btn-default navbar-btn">
-      <span class="glyphicon glyphicon-import"></span>&nbsp;Data
+      <span class="glyphicon glyphicon-import"></span>&nbsp;Manage Data
       </a>
       </li>
       <?php //} ?>
       <li>
       <a href="viewer/" class="btn btn-default navbar-btn">
-      <span class="glyphicon glyphicon-picture"></span>&nbsp;View
+      <span class="glyphicon glyphicon-picture"></span>&nbsp;Explore Data
       </a>
       </li>
       </ul>

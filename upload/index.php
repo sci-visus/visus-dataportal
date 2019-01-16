@@ -580,7 +580,7 @@ require('../local.php');
 
                <table class="table table-striped table-hover table-bordered" id="conversions">
                 
-                <thead><tr><th>Name</th><th>Status</th><th>Running</th><th>Type</th><th>Start Time</th><th>Log</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Name</th><!--<th>Status</th>--><th>Running</th><th>Type</th><th>Start Time</th><th>Log</th><th>Actions</th></tr></thead>
                 
                 <tbody>
                   

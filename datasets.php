@@ -61,7 +61,7 @@ function updateServer(){
                 <h4 class="modal-title">Server updating...</h4>
               </div>
               <div class="col" style="padding:20px">
-                <p>The server is updating the configuration, all changes should be effective in 1-2 min.<br/>Koffefe?</p>
+                <p>The server is updating the configuration, all changes should be effective in 1-2 mins.<br/></p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -178,8 +178,6 @@ $("#add").click(function(e){
     $(table + ">tbody").append($tr);    //add the row to the table
     $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
     $tr.find("input, select").val("");   //wipe out the inputs.
-    $tr.children("td:eq(0)").children("input").val("NaN");
-
 	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
 	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
 	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");

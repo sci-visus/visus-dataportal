@@ -53,7 +53,7 @@ EOF;
 		  $status="ERROR";
 	  }
 	  
-	  echo "<td>". $status ."</td>\n";
+	  //echo "<td>". $status ."</td>\n";
 	  
 	  echo "<td>". $isrun ."</td>\n";
       echo "<td>". $row['type'] ."</td>\n";

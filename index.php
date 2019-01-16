@@ -37,8 +37,8 @@ $(function(){
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
-        <h1 class="display-3">&gt;Welcome to the ViSUS DataPortal</h1>
-        <p class="lead" style="text-align:center">From here you can configure your ViSUS server on <b><?php print gethostname(); ?></b> </p>
+        <h1 class="display-3">&gt;ViSUS DataPortal</h1>
+        <p class="lead" style="text-align:center">Ciao, you are working on the host <b><?php print gethostname(); ?></b>, from here you can:</p>
         <!-- <a href="datasets.php" class="btn btn-primary btn-lg" >Configure</a> -->
       </header>
 
@@ -50,8 +50,8 @@ $(function(){
             <span style="font-size:70px" class="glyphicon glyphicon-th-list"></span>
            
             <div class="card-body">
-              <h4 class="card-title">List and Configure</h4>
-              <p class="card-text">Explore and configure the data served by this ViSUS server installation.</p>
+              <h4 class="card-title">Configure</h4>
+              <p class="card-text">Configure the data served by this ViSUS server installation.</p>
             </div>
             <div class="card-footer">
               <a href="datasets.php" class="btn btn-primary">Configure</a>
@@ -63,7 +63,7 @@ $(function(){
           <div class="card">
             <span style="font-size:70px" class="glyphicon glyphicon-import"></span>
             <div class="card-body">
-              <h4 class="card-title">Data</h4>
+              <h4 class="card-title">Manage Data</h4>
               <p class="card-text">Manage, import and convert your data.</p>
             </div>
             <div class="card-footer">
@@ -98,6 +98,79 @@ $(function(){
       </div>
       <!-- /.container -->
     </footer>
+    
+    <div class="panel-group" id="conversionsPanel">
+      <div class="panel panel-default" role="tab">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            List of datasets on this server<a aria-controls="example1" aria-expanded="true" href="javascript:updateList()" role="button"><span class="glyphicon glyphicon-refresh close"></span></a>
+          </h4>
+        </div>
+        
+        <div class="panel">
+        
+          <div class="panel-body">
+             
+            <div class="table-responsive">
+
+               <table class="table table-striped table-hover table-bordered" id="conversions">
+                <!--
+                <thead><tr><th>Name</th><th>Running</th><th>Type</th><th>Start Time</th><th>Log</th><th>Actions</th></tr></thead>-->
+                
+                <tbody>
+                  
+                </tbody>
+                
+               </table>
+            </div>
+  
+   		   </div>
+          <div class="panel-footer">
+        </div>
+        
+      </div>
+    </div>
+    
+    <script src="viewer/config.js"></script>
+    <script>
+	   function view(name){
+		   var url="viewer/?server="+encodeURI(DEFAULT_SERVER)+"&dataset="+encodeURI(name);
+		   window.location(url);
+	   }
+	   
+	   function updateList(){
+			$.ajax({
+			  type: "POST",
+			  url: "list_datasets.php",
+			success: function (data, text) {
+				names=data.split(",");
+				//console.log(names);
+				var rows;
+				for(var i = 0; i < names.length; i++) {
+					var n = names[i];
+					rows="<tr><td>"+n+'</td><td><a type="button" class="btn btn-default navbar-btn" href="javascript:view(\""+n+"\")>View</a></td></tr>';
+				}
+				
+				$('#datasets > tbody > tr').html(rows);
+				
+				/*$('#datasets > tbody > tr').each( function() {
+				   var name=$(this).children("td:eq(1)").children("input").val();
+				   if(names.indexOf(name) != -1){
+					 $(this).children("td:eq(1)").attr("style", "color:green");
+				   }
+				   else
+					 $(this).children("td:eq(1)").attr("style", "color:red");
+				});*/
+			  
+			},
+			error: function (request, status, error) {
+				console.log( "Server error: " + error );
+			}
+		  });    
+		}
+	
+	    updateList(); 
+	</script>
 
   </body>
 

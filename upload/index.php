@@ -209,11 +209,11 @@ require('../local.php');
         </div>
         
         <div class="panel-collapse">
-          <form class="form-horizontal" action="../convert.php" method="post" enctype="multipart/form-data">
+          <form class="form-horizontal" id="single_form" action="../convert.php" method="post" enctype="multipart/form-data">
           <div class="panel-body">
           <blockquote>
     Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for one single image or raw file.<br/>
-         Use the <a href='javascript:$('#filemanagerPanel').collapse("show")'>File Manager</a> to upload your data.
+         Use the <a href='javascript:$("#filemanagerPanel").collapse("show")'>File Manager</a> to upload your data.
     </blockquote>
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
@@ -228,9 +228,6 @@ require('../local.php');
           
           <script>
               function convertChange(){
-                   $("#img_info").html("Getting info from image data...<br/>");
-		   $("#img_info").show();
-			 
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
@@ -238,8 +235,34 @@ require('../local.php');
                     success: function (data, text) {
                       //console.log(data);
 					  //console.log(text);
-					  $("#img_info").html(data);
-					  $("#img_info").show();
+					  var res=jQuery.parseJSON(data);
+					  if(res["err"]){
+						  $("#stack_info").html(res["err"]);
+					      $("#stack_info").show();
+					  }else{
+						  
+						  var str="Dimensions: "+res["dims"]+"<br/>";
+						  var fields=res["fields"]
+						  for(var i = 0; i < fields.length; i++) {
+								var f = fields[i];
+								str+="Data type: "+f;
+								var d = f.split("[");
+								$("#single_form").find('#dtype').val(d[0]);
+								if(d.length > 1)
+								  $("#single_form").find('#ncomp').val(d[1].split("]"));
+								else 
+								  $("#single_form").find('#ncomp').val("1");
+								//$("#single_form").find('#dtype>option:eq(2)').prop('selected', true);
+						  }
+						  
+						  var dims = res["dims"].split(" ");
+						  $("#single_form").find("#X").val(dims[0]);
+						  $("#single_form").find("#Y").val(dims[1]);
+						  $("#single_form").find("#Z").val(1);
+						  
+						  $("#img_info").html(str);
+						  $("#img_info").show();
+					  }
                     },
                     error: function (request, status, error) {
                         console.log( "Server error: " + error );
@@ -309,11 +332,11 @@ require('../local.php');
         </div>
         
         <div class="panel-collapse">
-          <form class="form-horizontal" action="../convert.php" method="post" enctype="multipart/form-data">
+          <form class="form-horizontal" id="stack_form" action="../convert.php" method="post" enctype="multipart/form-data">
           <div class="panel-body">
           <blockquote>
     Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for a sat of images or raw files.<br/>
-         Use the <a href='javascript:$('#filemanagerPanel').collapse("show")'>File Manager</a> to upload your data.
+         Use the <a href='javascript:$("#filemanagerPanel").collapse("show")'>File Manager</a> to upload your data.
     </blockquote>
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
@@ -328,22 +351,47 @@ require('../local.php');
           
           <script>
               function convertStackChange(){
-                   $("#stack_info").html("Getting info from image data...<br/>");
-		   $("#stack_info").show();
-
                    $.ajax({
                       type: "POST",
                       url: "../image_info_stack.php",
 					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path_stack").find("option:selected").text() },
                     success: function (data, text) {
-                      console.log(data);
+                      //console.log(data);
 					  //console.log(text);
-					  $("#stack_info").html(data);
-					  $("#stack_info").show();
+					  var res=jQuery.parseJSON(data);
+					  if(res["err"]){
+						  $("#stack_info").html(res["err"]);
+					      $("#stack_info").show();
+					  }else{
+						  
+						  var str="Single file dimensions: "+res["dims"]+"<br/>";
+						  str+="Number of files: "+res["count"]+"<br/>";
+						  var fields=res["fields"];
+						  for(var i = 0; i < fields.length; i++) {
+								var f = fields[i];
+								str+="Data type: "+f;
+								var d = f.split("[");
+								$("#stack_form").find('#dtype').val(d[0]);
+								if(d.length > 1)
+								  $("#stack_form").find('#ncomp').val(d[1].split("]"));
+								else 
+								  $("#stack_form").find('#ncomp').val("1");
+								//$("#single_form").find('#dtype>option:eq(2)').prop('selected', true);
+						  }
+						  
+						  var dims = res["dims"].split(" ");
+						  $("#stack_form").find("#X").val(dims[0]);
+						  $("#stack_form").find("#Y").val(dims[1]);
+						  $("#stack_form").find("#Z").val(res["count"]);
+						  
+						  $("#stack_info").html(str);
+						  $("#stack_info").show();
+					  }
                     },
                     error: function (request, status, error) {
                         console.log( "Server error: " + error );
                     }
+					
                   });
 				 
               };
@@ -452,6 +500,7 @@ require('../local.php');
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#convertPanel').addClass("collapse");
+		$('#imageStackPanel').collapse("hide");
 		
 	});
 	
@@ -478,7 +527,7 @@ require('../local.php');
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
 		$('#imageSinglePanel').collapse("hide");
-                $('#imageStackPanel').collapse("hide");
+		$('#imageStackPanel').collapse("hide");
 	});
 	
 	function selectConvert(n){

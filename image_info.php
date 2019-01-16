@@ -31,17 +31,26 @@
 		   //print htmlspecialchars($dtypeinfo);
 		  
 		   $dims=substr($output, $dpos+8, $formatpos-$dpos-strlen("format=")-3);
-		   echo "Dimensions: $dims<br />\n";
+		   //echo "Dimensions: $dims<br />\n";
 		   
 		   $dom=new DOMDocument();
 		   $dom->loadXML($dtypeinfo);
 		
 		   $root=$dom->documentElement;
 		   $fields=$root->getElementsByTagName('field');
+		   $fields_array=array();
+		   $f_count=0;
 		   foreach ($fields as $field) {
+			   //$fieldname=$field->getAttribute("name");
 			   $dtype=$field->getAttribute("dtype");
-			   echo "DataType: $dtype<br />\n";
+			   $fields_array[$f_count]=$dtype;
+			   $f_count++;
+			   //echo "DataType: $dtype<br />\n";
 		   }
+		   
+		   $res = array('dims' => $dims, 'fields' => $fields_array);
+           $json_res = json_encode($res);
+		   echo $json_res;
 			
 		/*	// Use EXIF info
         $exif = exif_read_data($img, 'IFD0');
@@ -64,6 +73,6 @@
 		}*/
 		}
 		else
-		   echo "No image file found, I can't guess datatype and size...<br />\n";
+		   echo json_encode(array("err" => "No image file found, I can't guess datatype and size...<br />\n"));
     } 
 ?> 

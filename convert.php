@@ -112,7 +112,7 @@ EOF;
 			if($iZ == 1) $iZ = 2;
 			$box_array=array(0, $iX-1, 0, strval($iY-1),  0, strval($iZ-1));
 			$box_str=implode(" ",$box_array);
-			$box_split=str_split(" ", $box_str);
+			$box_split=explode(" ", $box_str);
 			$dim="$X $Y $Z";
 			
 			date_default_timezone_set('America/Denver');

@@ -13,5 +13,8 @@
   $data_dir="/main/folder/to/upload/your/data";
   
   // visus executable
-  $visus_exe="/path/to/visus/executable"
+  $visus_exe="/path/to/visus/executable";
+  
+  // mod_visus_url
+  $mod_visus_url="http://localhost/mod_visus?";
 ?>

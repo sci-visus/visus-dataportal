@@ -160,11 +160,11 @@ require('../local.php');
     });
     </script>
   <div class="container" style="margin-top: 70px">
- 	
+  <!--	
   <h2>Manage files on this server</h2>
   <p>Here you an manage your project folders containing your datasets.</p> 
     
-  <nav class="navbar">
+ <nav class="navbar">
   <div class="container-fluid">
       <ul class="nav navbar-nav">
         <li>
@@ -176,13 +176,14 @@ require('../local.php');
       </ul>
     </div>
    </nav>
+   -->
    
    <div class="panel-group" id="convertPanel">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
             Convert
-            <a class="collapsed" id="convertCollapseLink" data-parent="#convertPanel" data-toggle="collapse" href="#convertPanel" role="button"><span class="close">&times;</span></a>
+           <!-- <a class="collapsed" id="convertCollapseLink" data-parent="#convertPanel" data-toggle="collapse" href="#convertPanel" role="button"><span class="close">&times;</span></a>-->
           </h4>
         </div>
         
@@ -234,7 +235,7 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path">Dataset file</label>
               <input type="text" id="folder_path" name="folder_path" class="form-control" onChange="javascript:fileChange()" />
-              <button type="button" class="browse" id="imageUpload" onClick="javascript:browseFile(false)" > Browse </button>
+              <button type="button" class="btn btn-warning" id="imageUpload" onClick="javascript:browseFile(false)" > Browse </button>
 			
           </div>
           <div class="form-row">
@@ -408,7 +409,7 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path_stack">Dataset folder</label>
               <input type="text" id="folder_path_stack" name="folder_path_stack" class="form-control" onChange="javascript:convertStackChange()" />
-              <button type="button" class="browse" id="folderUpload" onClick="javascript:browseFile(true)" > Browse </button>
+              <button type="button" class="btn btn-warning" id="folderUpload" onClick="javascript:browseFile(true)" > Browse </button>
 			
           </div>
           <div class="form-row">
@@ -564,7 +565,7 @@ require('../local.php');
 			  });
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
-		$('#convertPanel').addClass("collapse");
+		//$('#convertPanel').addClass("collapse");
 		$('#imageStackPanel').collapse("hide");
 		
 	});
@@ -585,7 +586,7 @@ require('../local.php');
 			  });
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
-		$('#convertPanel').addClass("collapse");
+		//$('#convertPanel').addClass("collapse");
 		$('#imageSinglePanel').collapse("hide");
 		
 	});
@@ -598,12 +599,12 @@ require('../local.php');
 	function selectConvert(n){
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
-			$("#convertPanel").collapse("hide");
+			//$("#convertPanel").collapse("hide");
 			$('#filemanagerPanel').collapse("hide");
 		}
 		else if (n ==2){
 			$("#imageStackPanel").collapse("show");
-			$("#convertPanel").collapse("hide");
+			//$("#convertPanel").collapse("hide");
 			$('#filemanagerPanel').collapse("hide");
 		}
 	}

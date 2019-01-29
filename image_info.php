@@ -4,18 +4,23 @@
     if(!empty($_POST)){ 
 	    $dir=$_POST['dir'];
 		$img="";
-        $dp = opendir ($dir);
-        while ($f = readdir($dp)){
-			//echo $dir."/".$f."\n";
-            $file_parts = pathinfo($dir."/".$f);
-			
-			$ext = $file_parts['extension'];
-			if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
-                $img=$dir."/".$f;
-				break;
+		
+		if(is_dir($dir)){
+			$dp = opendir ($dir);
+			while ($f = readdir($dp)){
+				//echo $dir."/".$f."\n";
+				$file_parts = pathinfo($dir."/".$f);
+				
+				$ext = $file_parts['extension'];
+				if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
+					$img=$dir."/".$f;
+					break;
+				}			
 			}
-            
 		}
+		else
+		  $img = $dir;
+		  
 		
 		if($img!=""){
 			$output=shell_exec("scripts/image_info.sh \"$visus_exe\" \"$img\"");

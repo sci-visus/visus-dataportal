@@ -89,23 +89,42 @@ require('../local.php');
 
 	<div id="nav-placeholder"></div>
 	
-    <div id="logModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Conversion Log</h4>
-              </div>
-              
-                <div class="col" style="padding:20px; text-align:center">
-                  <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:500px"></textarea>
+      <div id="logModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Conversion Log</h4>
+                  </div>
+                  
+                    <div class="col" style="padding:20px; text-align:center">
+                      <textarea class="form-control" id="conv_log" style="min-width: 70%; min-height:500px"></textarea>
+                    </div>
+                    
+                  <div class="modal-footer">
+                    <button type="button" class="close" data-dismiss="modal">Close</button>
+                  </div>
                 </div>
-                
-              <div class="modal-footer">
-                <button type="button" class="close" data-dismiss="modal">Close</button>
-              </div>
-            </div>
+          </div>
       </div>
+      
+      <div id="fileModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">File/Folder selection</h4>
+                  </div>
+                  
+                    <div class="col" style="padding:20px; text-align:center">
+                      <div id="elfinder_select"></div>
+                    </div>
+                    
+                  <div class="modal-footer">
+                    <button type="button" class="close" data-dismiss="modal" onClick="javascript:selectFile()">Select</button>
+                  </div>
+                </div>
+          </div>
       </div>
    
    <script>
@@ -211,27 +230,77 @@ require('../local.php');
         <div class="panel-collapse">
           <form class="form-horizontal" id="single_form" action="../convert.php" method="post" enctype="multipart/form-data">
           <div class="panel-body">
-          <blockquote>
-    Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for one single image or raw file.<br/>
-         Use the <a href='javascript:$("#filemanagerPanel").collapse("show")'>File Manager</a> to upload your data.
-    </blockquote>
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
-              <label for="folder_path">Dataset folder</label>
-              <select id="folder_path" name="folder_path" size="1" class="form-control" onChange="javascript:convertChange()">
-              <option value="None"></option>
-              </select> 
+              <label for="folder_path">Dataset file</label>
+              <input type="text" id="folder_path" name="folder_path" class="form-control" onChange="javascript:fileChange()" />
+              <button type="button" class="browse" id="imageUpload" onClick="javascript:browseFile(false)" > Browse </button>
 			
           </div>
           <div class="form-row">
           <input id="convert-type" name="convert-type" type="hidden" value="single"/>
           
+          <script type="text/javascript">
+		  // TODO  better handle those selection variables
+		    var elf_selected='';
+			var was_folder=false;
+			
+			function processFile(file, is_folder){
+				//console.log("selected file "+file);
+				if(is_folder){
+				  $("#folder_path_stack").val(file);
+				  convertStackChange();
+				}
+				else {
+				  $("#folder_path").val(file);
+				  fileChange();
+				}
+			}
+			function browseFile(is_folder){
+				$('#fileModal').modal();
+				var elf = $('#elfinder_select').elfinder({
+					url : 'php/connector.minimal.php',  // connector URL (REQUIRED)
+					getFileCallback : function(file) {
+						processFile(file.url, is_folder);
+						$('#fileModal').modal('hide');
+					},
+					commandsOptions: {
+						getfile: {
+							//oncomplete: 'destroy',
+							folders  : false //is_folder
+						}
+
+					},
+					handlers : {
+						select : function(event, elfinderInstance) {
+							var selected = event.data.selected;
+							
+							if (selected.length) {
+							  elf_selected=elfinderInstance.url(selected[0]);
+							  
+							  was_folder=is_folder;
+							}
+	
+						}
+					},
+					resizable: true
+				}).elfinder('instance');
+			}     
+			
+			function selectFile(){
+				$('#fileModal').modal('hide');
+				processFile(elf_selected, was_folder);
+			}
+				
+				
+          </script>
+                
           <script>
-              function convertChange(){
+              function fileChange(){
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
-					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path").find("option:selected").text() },
+					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path").val() },
                     success: function (data, text) {
                       //console.log(data);
 					  //console.log(text);
@@ -334,16 +403,12 @@ require('../local.php');
         <div class="panel-collapse">
           <form class="form-horizontal" id="stack_form" action="../convert.php" method="post" enctype="multipart/form-data">
           <div class="panel-body">
-          <blockquote>
-    Note: make sure your data is uploaded into a folder. <br/>This conversion process will automatically look into the selected folder for a sat of images or raw files.<br/>
-         Use the <a href='javascript:$("#filemanagerPanel").collapse("show")'>File Manager</a> to upload your data.
-    </blockquote>
+          
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path_stack">Dataset folder</label>
-              <select id="folder_path_stack" name="folder_path" size="1" class="form-control" onChange="javascript:convertStackChange()">
-              <option value="None"></option>
-              </select> 
+              <input type="text" id="folder_path_stack" name="folder_path_stack" class="form-control" onChange="javascript:convertStackChange()" />
+              <button type="button" class="browse" id="folderUpload" onClick="javascript:browseFile(true)" > Browse </button>
 			
           </div>
           <div class="form-row">
@@ -354,7 +419,7 @@ require('../local.php');
                    $.ajax({
                       type: "POST",
                       url: "../image_info_stack.php",
-					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path_stack").find("option:selected").text() },
+					  data: { dir: $("#data_dir").val()+"/"+$("#folder_path_stack").val() },
                     success: function (data, text) {
                       //console.log(data);
 					  //console.log(text);
@@ -490,7 +555,7 @@ require('../local.php');
 				success: function (data, text) {
 					//console.log(data);
 				    $("#folder_path").html(data);
-					convertChange();
+					fileChange();
 				  
 				},
 				error: function (request, status, error) {

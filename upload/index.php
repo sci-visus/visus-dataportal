@@ -119,7 +119,7 @@ require('../local.php');
                     <div class="col" style="padding:20px; text-align:center">
                       <div id="elfinder_select"></div>
                     </div>
-                    
+                    <input type="hidden" id="selection_type" value=""/>
                   <div class="modal-footer">
                     <button type="button" class="close" data-dismiss="modal" onClick="javascript:selectFile()">Select</button>
                   </div>
@@ -235,7 +235,7 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path">Dataset file</label>
               <input type="text" id="folder_path" name="folder_path" class="form-control" onChange="javascript:fileChange()" />
-              <button type="button" class="btn btn-warning" id="imageUpload" onClick="javascript:browseFile(false)" > Browse </button>
+              <button type="button" class="btn btn-warning" id="imageUpload" onClick='javascript:browseFile("false")' > Browse </button>
 			
           </div>
           <div class="form-row">
@@ -247,8 +247,8 @@ require('../local.php');
 			var was_folder=false;
 			
 			function processFile(file, is_folder){
-				//console.log("selected file "+file);
-				if(is_folder){
+				console.log("selected file "+file+" isfolder "+ is_folder);
+				if(is_folder=="true"){
 				  $("#folder_path_stack").val(file);
 				  convertStackChange();
 				}
@@ -259,11 +259,18 @@ require('../local.php');
 			}
 			function browseFile(is_folder){
 				$('#fileModal').modal();
+				
+				if(is_folder=="true")
+				  $('#selection_type').val("folder");
+				else
+				  $('#selection_type').val("file");
+				
 				var elf = $('#elfinder_select').elfinder({
 					url : 'php/connector.minimal.php',  // connector URL (REQUIRED)
 					getFileCallback : function(file) {
 						processFile(file.url, is_folder);
 						$('#fileModal').modal('hide');
+						elf_selected=file.url;
 					},
 					commandsOptions: {
 						getfile: {
@@ -278,7 +285,6 @@ require('../local.php');
 							
 							if (selected.length) {
 							  elf_selected=elfinderInstance.url(selected[0]);
-							  
 							  was_folder=is_folder;
 							}
 	
@@ -290,7 +296,7 @@ require('../local.php');
 			
 			function selectFile(){
 				$('#fileModal').modal('hide');
-				processFile(elf_selected, was_folder);
+				processFile(elf_selected, $('#selection_type').val()=="folder" ? "true":"false");
 			}
 				
 				
@@ -409,7 +415,7 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path_stack">Dataset folder</label>
               <input type="text" id="folder_path_stack" name="folder_path_stack" class="form-control" onChange="javascript:convertStackChange()" />
-              <button type="button" class="btn btn-warning" id="folderUpload" onClick="javascript:browseFile(true)" > Browse </button>
+              <button type="button" class="btn btn-warning" id="folderUpload" onClick='javascript:browseFile("true")' > Browse </button>
 			
           </div>
           <div class="form-row">
@@ -550,7 +556,7 @@ require('../local.php');
     <script>
 	
 	$('#imageSinglePanel').on('show.bs.collapse', function (e) {
-		$.ajax({
+		/*$.ajax({
 				  type: "POST",
 				  url: "../list_folders.php",
 				success: function (data, text) {
@@ -562,7 +568,7 @@ require('../local.php');
 				error: function (request, status, error) {
 					console.log( "Server error: " + error );
 				}
-			  });
+			  }); */
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		//$('#convertPanel').addClass("collapse");
@@ -571,7 +577,7 @@ require('../local.php');
 	});
 	
 	$('#imageStackPanel').on('show.bs.collapse', function (e) {
-		$.ajax({
+		/*$.ajax({
 				  type: "POST",
 				  url: "../list_folders.php",
 				success: function (data, text) {
@@ -583,7 +589,7 @@ require('../local.php');
 				error: function (request, status, error) {
 					console.log( "Server error: " + error );
 				}
-			  });
+			  }); */
 			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		//$('#convertPanel').addClass("collapse");

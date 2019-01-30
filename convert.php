@@ -2,22 +2,28 @@
 	require("req_login.php");
 	 
     if(!empty($_POST)){ 
-	    $dir=$data_dir."/".strip_tags(trim($_POST['folder_path']));
-		
+        $ctype=strip_tags(trim($_POST['convert-type']));
+
         $X=strip_tags(trim($_POST['X']));
         $Y=strip_tags(trim($_POST['Y']));
 		$Z=strip_tags(trim($_POST['Z']));
 		$ncomp=strip_tags(trim($_POST['ncomp']));
 		$dtype=strip_tags(trim($_POST['dtype']));
         
-		$dtype_full="$ncomp*$dtype";
-		
-		$ctype=strip_tags(trim($_POST['convert-type']));
+		$dtype_full="$ncomp*$dtype";	
 		
 		if($ctype==="single"){
-			$img="";
+                        
+			$img=$data_dir."/".strip_tags(trim($_POST['folder_path']));
+                        $dir=dirname($img);
+
+			$file_parts = pathinfo($img);
+				
+		        $ext = $file_parts['extension'];
+			$fname = $file_parts['filename'];
+				
 			$fname="";
-			$dp = opendir ($dir);
+			/*$dp = opendir ($dir);
 			while ($f = readdir($dp)){
 				//echo $dir."/".$f."\n";
 				$file_parts = pathinfo($dir."/".$f);
@@ -28,7 +34,7 @@
 					$img=$dir."/".$f;
 					break;	
 				}
-			}
+			}*/
 			
 			$foldername=basename($dir);
 			
@@ -82,6 +88,8 @@ EOF;
 		}
 		
 		else if($ctype==="stack"){
+                        $dir=$data_dir."/".strip_tags(trim($_POST['folder_path_stack']));
+			
 			$img="";
 			$fname="";
 			$dp = opendir ($dir);
@@ -124,7 +132,7 @@ EOF;
             $json_params = json_encode($params);
 			//echo  $json_params;
 			
-			$cfile = fopen($convert_script, "w") or die("Unable to open file!");
+			$cfile = fopen($convert_script, "w") or die("Unable to open file $convert_script!");
 			
 			fwrite($cfile, "#!/bin/bash \n");
 			fwrite($cfile, "export CONVERT=$visus_exe \n");

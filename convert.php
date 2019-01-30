@@ -17,7 +17,9 @@
 			$img=$data_dir."/".strip_tags(trim($_POST['folder_path']));
             $dir=$out_data_dir."/".strip_tags(trim($_POST['out_dir_single']));//dirname($img);
             $fname = strip_tags(trim($_POST['out_name_single']));
-			
+			if (!file_exists($dir)) {
+                            mkdir($dir, 0777, true);
+                        }
 			//$file_parts = pathinfo($img);
 				
 		    //$ext = $file_parts['extension'];
@@ -92,6 +94,9 @@ EOF;
 			
             $outdir=$out_data_dir."/".strip_tags(trim($_POST['out_dir_stack']));
             $fname = strip_tags(trim($_POST['out_name_stack']));
+			if (!file_exists($outdir)) {
+                            mkdir($outdir, 0777, true);
+                        }
 			
 			$img="";
 			$dp = opendir ($dir);
@@ -126,9 +131,9 @@ EOF;
 			date_default_timezone_set('America/Denver');
 			$current_date = date('Y-m-d H:i:s');
 			
-			$convert_script="$dir/convert-".strtotime($current_date).".sh";
+			$convert_script="$outdir/convert-".strtotime($current_date).".sh";
 			
-			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'outdir' => $outdir, 'fname' => $fname, 'box' => $box_str, 'dtype' => $dtype_full, 'cscript' => $convert_script);
+			$params = array('visus_exe' => $visus_exe, 'dir' => $outdir, 'indir' => $dir, 'fname' => $fname, 'box' => $box_str, 'dtype' => $dtype_full, 'cscript' => $convert_script);
             $json_params = json_encode($params);
 			//echo  $json_params;
 			
@@ -156,8 +161,8 @@ EOF;
 			
 			$cmd="sh $convert_script";
 			
-			$logfile="$dir/convert-".strtotime($current_date).".log";
-			$pidfile="$dir/convert-".strtotime($current_date).".pid";
+			$logfile="$outdir/convert-".strtotime($current_date).".log";
+			$pidfile="$outdir/convert-".strtotime($current_date).".pid";
 		
 			exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $cmd, $logfile, $pidfile));
 			$pid=file_get_contents($pidfile);

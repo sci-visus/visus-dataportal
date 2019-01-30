@@ -15,12 +15,13 @@
 		if($ctype==="single"){
                         
 			$img=$data_dir."/".strip_tags(trim($_POST['folder_path']));
-                        $dir=dirname($img);
-
-			$file_parts = pathinfo($img);
+            $dir=$out_data_dir."/".strip_tags(trim($_POST['out_dir_single']));//dirname($img);
+            $fname = strip_tags(trim($_POST['out_name_single']));
+			
+			//$file_parts = pathinfo($img);
 				
-		        $ext = $file_parts['extension'];
-			$fname = $file_parts['filename'];
+		    //$ext = $file_parts['extension'];
+			 //$file_parts['filename'];
 				
 			/*$dp = opendir ($dir);
 			while ($f = readdir($dp)){
@@ -87,10 +88,12 @@ EOF;
 		}
 		
 		else if($ctype==="stack"){
-                        $dir=$data_dir."/".strip_tags(trim($_POST['folder_path_stack']));
+            $dir=$data_dir."/".strip_tags(trim($_POST['folder_path_stack']));
+			
+            $outdir=$out_data_dir."/".strip_tags(trim($_POST['out_dir_stack']));
+            $fname = strip_tags(trim($_POST['out_name_stack']));
 			
 			$img="";
-			$fname="";
 			$dp = opendir ($dir);
 			$files = array();
 			
@@ -109,8 +112,6 @@ EOF;
 				
 			}
 			
-			$foldername=basename($dir);
-			
 			$iX=intval($X);
 			$iY=intval($Y);
 			$iZ=intval($Z);
@@ -127,7 +128,7 @@ EOF;
 			
 			$convert_script="$dir/convert-".strtotime($current_date).".sh";
 			
-			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $foldername, 'box' => $box_str, 'dtype' => $dtype_full, 'cscript' => $convert_script);
+			$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'outdir' => $outdir, 'fname' => $fname, 'box' => $box_str, 'dtype' => $dtype_full, 'cscript' => $convert_script);
             $json_params = json_encode($params);
 			//echo  $json_params;
 			
@@ -136,7 +137,7 @@ EOF;
 			fwrite($cfile, "#!/bin/bash \n");
 			fwrite($cfile, "export CONVERT=$visus_exe \n");
 			
-			$idxfile=$dir.'/'.$foldername.'.idx';
+			$idxfile=$outdir.'/'.$fname.'.idx';
 			
 			fwrite($cfile, '$CONVERT create "'.$idxfile.'" --box "'.$box_str.'" --fields "data '.$dtype_full.'" --time 0 0 time%05d/'."\n");
 			
@@ -164,28 +165,27 @@ EOF;
 			
 			$output=file_get_contents($logfile);
 			
-		    
-			   class MyDB extends SQLite3 {
-				  function __construct() {
-					 $this->open('db/conversion.db');
-				  }
-			   }
-			   
-			   $db = new MyDB();
-			   if(!$db){
-				  echo $db->lastErrorMsg();
-			   }
-			
-			   $sql =<<<EOF
-				  INSERT INTO conversion (name,type,status,params,pid,time,logfile)
-				  VALUES ('$foldername', '$ctype', 'STARTED', '$json_params', '$pid', '$current_date','$logfile'); 
+		   class MyDB extends SQLite3 {
+			  function __construct() {
+				 $this->open('db/conversion.db');
+			  }
+		   }
+		   
+		   $db = new MyDB();
+		   if(!$db){
+			  echo $db->lastErrorMsg();
+		   }
+		
+		   $sql =<<<EOF
+			  INSERT INTO conversion (name,type,status,params,pid,time,logfile)
+			  VALUES ('$fname', '$ctype', 'STARTED', '$json_params', '$pid', '$current_date','$logfile'); 
 EOF;
-			
-			   $ret = $db->exec($sql);
-			   if(!$ret) {
-				  echo $db->lastErrorMsg();
-			   } 
-			   $db->close();
+		
+		   $ret = $db->exec($sql);
+		   if(!$ret) {
+			  echo $db->lastErrorMsg();
+		   } 
+		   $db->close();
 		}
 
 		header("Location: upload/index.php");

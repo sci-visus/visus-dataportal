@@ -9,8 +9,11 @@
   // Default server config file location (on the server's filesystem)	
   $default_config_file="/home/visus/visus.config";
   
-  // Data directory
+  // Data root directory (input)
   $data_dir="/main/folder/to/upload/your/data";
+  
+  // Data root directory (output)
+  $out_data_dir="/main/folder/for/converted/data";
   
   // visus executable
   $visus_exe="/path/to/visus/executable";

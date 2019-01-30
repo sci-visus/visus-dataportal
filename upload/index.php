@@ -119,7 +119,6 @@ require('../local.php');
                     <div class="col" style="padding:20px; text-align:center">
                       <div id="elfinder_select"></div>
                     </div>
-                    <input type="hidden" id="selection_type" value=""/>
                   <div class="modal-footer">
                     <button type="button" class="close" data-dismiss="modal" onClick="javascript:selectFile()">Select</button>
                   </div>
@@ -235,42 +234,41 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path">Dataset file</label>
               <input type="text" id="folder_path" name="folder_path" class="form-control" onChange="javascript:fileChange()" />
-              <button type="button" class="btn btn-warning" id="imageUpload" onClick='javascript:browseFile("false")' > Browse </button>
+              <button type="button" class="btn btn-warning" id="imageUpload" onClick='javascript:browseFile("folder_path")' > Browse </button>
 			
           </div>
           <div class="form-row">
           <input id="convert-type" name="convert-type" type="hidden" value="single"/>
           
           <script type="text/javascript">
-		  // TODO  better handle those selection variables
 		    var elf_selected='';
-			var was_folder=false;
+			var target_selected='';
 			
-			function processFile(file, is_folder){
-				console.log("selected file "+file+" isfolder "+ is_folder);
-				if(is_folder=="true"){
-				  $("#folder_path_stack").val(file);
+			function processFile(file, target){
+				$('#fileModal').modal('hide');
+				
+				console.log("selected file "+file+" target "+ target);
+				//if(is_folder=="true"){
+				$("#"+target).val(file);
+				
+				if(target=="folder_path_stack"){
 				  convertStackChange();
 				}
-				else {
-				  $("#folder_path").val(file);
+				else if(target=="folder_path"){
 				  fileChange();
 				}
 			}
-			function browseFile(is_folder){
+			
+			function browseFile(target){
 				$('#fileModal').modal();
-				
-				if(is_folder=="true")
-				  $('#selection_type').val("folder");
-				else
-				  $('#selection_type').val("file");
+				target_selected=target;
 				
 				var elf = $('#elfinder_select').elfinder({
 					url : 'php/connector.minimal.php',  // connector URL (REQUIRED)
 					getFileCallback : function(file) {
-						processFile(file.url, is_folder);
-						$('#fileModal').modal('hide');
 						elf_selected=file.url;
+						processFile(file.url, target_selected);
+						
 					},
 					commandsOptions: {
 						getfile: {
@@ -285,7 +283,6 @@ require('../local.php');
 							
 							if (selected.length) {
 							  elf_selected=elfinderInstance.url(selected[0]);
-							  was_folder=is_folder;
 							}
 	
 						}
@@ -295,15 +292,19 @@ require('../local.php');
 			}     
 			
 			function selectFile(){
-				$('#fileModal').modal('hide');
-				processFile(elf_selected, $('#selection_type').val()=="folder" ? "true":"false");
-			}
-				
+				processFile(elf_selected, target_selected); 
+			}	
 				
           </script>
                 
           <script>
               function fileChange(){
+				  var fullPath= $("#folder_path").val();
+				  var filename = fullPath.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+				  var folderPath= fullPath.match(/(.*)[\/\\]/)[1]||'';
+				  $('#out_name_single').val(filename);
+				  $('#out_dir_single').val(folderPath);
+				  
                    $.ajax({
                       type: "POST",
                       url: "../image_info.php",
@@ -316,7 +317,6 @@ require('../local.php');
 						  $("#stack_info").html(res["err"]);
 					      $("#stack_info").show();
 					  }else{
-						  
 						  var str="Dimensions: "+res["dims"]+"<br/>";
 						  var fields=res["fields"]
 						  for(var i = 0; i < fields.length; i++) {
@@ -352,7 +352,7 @@ require('../local.php');
           </div>
           
             <div class="form-row">
-            <label>Size</label>
+              <label>Size</label>
               <div class="col">
               <input type="text" class="form-control" id="X" name="X" size="1" placeholder="Size X"/>
               </div>
@@ -389,7 +389,17 @@ require('../local.php');
               </select>
               </div>
             </div>
-          
+            
+            <div class="form-row">
+              <label for="out_dir_single">Output directory</label>
+              <input type="text" id="out_dir_single" name="out_dir_single" class="form-control"/>
+              <button type="button" class="btn btn-warning" id="folderOut" onClick='javascript:browseFile("out_dir_single")' > Browse </button>
+            </div>
+            <div class="form-row">
+              <label for="out_name_single">Output name</label>
+              <input type="text" id="out_name_single" name="out_name_single" class="form-control"/>
+            </div>
+            
           </div>
           <div class="panel-footer"><button type="submit" class="btn btn-primary">Convert</button></div>
           </form>
@@ -415,14 +425,22 @@ require('../local.php');
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />
               <label for="folder_path_stack">Dataset folder</label>
               <input type="text" id="folder_path_stack" name="folder_path_stack" class="form-control" onChange="javascript:convertStackChange()" />
-              <button type="button" class="btn btn-warning" id="folderUpload" onClick='javascript:browseFile("true")' > Browse </button>
+              <button type="button" class="btn btn-warning" id="folderUpload" onClick='javascript:browseFile("folder_path_stack")' > Browse </button>
 			
           </div>
+            
           <div class="form-row">
           <input id="convert-type" name="convert-type" type="hidden" value="stack"/>
           
           <script>
               function convertStackChange(){
+				  
+				  var fullPath= $("#folder_path_stack").val();
+				  var foldername = fullPath.split(/[\\/]/).pop();
+				  
+				  $('#out_name_stack').val(foldername);
+				  $('#out_dir_stack').val(fullPath);
+				  
                    $.ajax({
                       type: "POST",
                       url: "../image_info_stack.php",
@@ -510,7 +528,16 @@ require('../local.php');
               </select>
               </div>
             </div>
-          
+          	<div class="form-row">
+              <label for="out_dir_stack">Output directory</label>
+              <input type="text" id="out_dir_stack" name="out_dir_stack" class="form-control"/>
+              <button type="button" class="btn btn-warning" id="folderOutStack" onClick='javascript:browseFile("out_dir_stack")' > Browse </button>
+            </div>
+            <div class="form-row">
+              <label for="out_name_stack">Output name</label>
+              <input type="text" id="out_name_stack" name="out_name_stack" class="form-control"/>
+            </div>
+            
           </div>
           <div class="panel-footer"><button type="submit" class="btn btn-primary">Convert</button></div>
           </form>
@@ -555,46 +582,14 @@ require('../local.php');
     
     <script>
 	
-	$('#imageSinglePanel').on('show.bs.collapse', function (e) {
-		/*$.ajax({
-				  type: "POST",
-				  url: "../list_folders.php",
-				success: function (data, text) {
-					//console.log(data);
-				    $("#folder_path").html(data);
-					fileChange();
-				  
-				},
-				error: function (request, status, error) {
-					console.log( "Server error: " + error );
-				}
-			  }); */
-			  
+	$('#imageSinglePanel').on('show.bs.collapse', function (e) {	  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
-		//$('#convertPanel').addClass("collapse");
-		$('#imageStackPanel').collapse("hide");
-		
+		$('#imageStackPanel').collapse("hide");	
 	});
 	
 	$('#imageStackPanel').on('show.bs.collapse', function (e) {
-		/*$.ajax({
-				  type: "POST",
-				  url: "../list_folders.php",
-				success: function (data, text) {
-					//console.log(data);
-				    $("#folder_path_stack").html(data);
-					convertStackChange();
-				  
-				},
-				error: function (request, status, error) {
-					console.log( "Server error: " + error );
-				}
-			  }); */
-			  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
-		//$('#convertPanel').addClass("collapse");
 		$('#imageSinglePanel').collapse("hide");
-		
 	});
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
@@ -605,12 +600,10 @@ require('../local.php');
 	function selectConvert(n){
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
-			//$("#convertPanel").collapse("hide");
 			$('#filemanagerPanel').collapse("hide");
 		}
 		else if (n ==2){
 			$("#imageStackPanel").collapse("show");
-			//$("#convertPanel").collapse("hide");
 			$('#filemanagerPanel').collapse("hide");
 		}
 	}

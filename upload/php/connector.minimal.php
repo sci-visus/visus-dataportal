@@ -132,6 +132,19 @@ $opts = array(
 			'alias'         => 'data',
 			'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
 		),
+                array(
+			'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
+			'path'          => $out_data_dir,                 // path to files (REQUIRED)
+			'URL'           => '/', //dirname($_SERVER['PHP_SELF']) . '/../files/', // URL to files (REQUIRED)
+			'trashHash'     => 'ot1_Lw',                     // elFinder's hash of trash folder
+			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
+			'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
+			'uploadAllow'   => array('image', 'text/plain', 'application/octet-stream',), // Mimetype `image` and `text/plain` allowed to upload
+			'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
+			'alias'         => 'converted',
+			'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
+		),
+		
 		// Trash volume
 		array(
 			'id'            => '1',

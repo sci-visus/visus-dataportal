@@ -7,7 +7,7 @@
   $admin_password="password";
 	
   // Default server config file location (on the server's filesystem)	
-  $default_config_file="/home/visus/visus.config";
+  $default_config_file="/home/OpenVisus/visus.config";
   
   // Data root directory (input)
   $data_dir="/main/folder/to/upload/your/data";

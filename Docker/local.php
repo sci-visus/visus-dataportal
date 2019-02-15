@@ -6,7 +6,7 @@
   $admin_password="password";
 	
   // Default server config file location (on the server's filesystem)	
-  $default_config_file="/home/visus/visus.config";
+  $default_config_file="/home/OpenVisus/visus.config";
   
   // Data directory
   $data_dir="/data";

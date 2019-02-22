@@ -36,14 +36,14 @@ $dom->load($config_file);
 
 $root=$dom->documentElement;
 
-$datasets=$root->getElementsByTagName('dataset');
+$datasets=$root->getElementsByTagName('datasets');
 
 if ($input['old_name'] === 'NaN') {
 	   $newel=$dom->createElement("dataset");
 	   $newel->setAttribute("name",$input["name"]);
 	   $newel->setAttribute("url", $input["url"]);
            $newel->setAttribute("permissions", "public");
-	   $root->appendChild($newel);
+	   $datasets->appendChild($newel);
   }else{  
 	foreach ($datasets as $dataset) {
 		$name=$dataset->getAttribute('name');

@@ -36,14 +36,20 @@ $dom->load($config_file);
 
 $root=$dom->documentElement;
 
-$datasets=$root->getElementsByTagName('datasets');
+$datasets=$root->getElementsByTagName('dataset');
 
 if ($input['old_name'] === 'NaN') {
 	   $newel=$dom->createElement("dataset");
 	   $newel->setAttribute("name",$input["name"]);
 	   $newel->setAttribute("url", $input["url"]);
            $newel->setAttribute("permissions", "public");
-	   $datasets->appendChild($newel);
+	   // some visus.config files might have the datasets inside a group "datasets"
+	   $datasets_group=$root->getElementsByTagName('datasets');
+
+           if($datasets_group->length)
+             $datasets_group->item(0)->appendChild($newel);
+           else
+             $root->appendChild($newel);
   }else{  
 	foreach ($datasets as $dataset) {
 		$name=$dataset->getAttribute('name');

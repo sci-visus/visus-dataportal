@@ -11,11 +11,14 @@ ADD .htpasswd       ${VISUS_HOME}/.htpasswd
 ADD .htaccess       ${VISUS_HOME}/dataportal/.htaccess
 ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
+
 # visus.config needs write permissions
 RUN chgrp www-data ${VISUS_HOME}/visus.config
 RUN chmod g+w       ${VISUS_HOME}/visus.config
+
 # db needs write permissions
 RUN chmod -R g+w       ${VISUS_HOME}/dataportal/db
+
 # data folder needs write permissions
 RUN mkdir /data
 RUN chgrp -R www-data /data
@@ -23,6 +26,9 @@ RUN chmod -R g+w      /data
 RUN mkdir /data/.trash/
 RUN chgrp www-data /data/.trash/
 RUN chmod g+w /data/.trash
+RUN mkdir /converted
+RUN chgrp -R www-data /converted
+RUN chmod -R g+w      /converted
 # webviewer config
 ADD config.js       ${VISUS_HOME}/dataportal/viewer/config.js
 RUN  rm             /etc/apache2/sites-enabled/000-default.conf  

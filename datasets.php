@@ -22,6 +22,8 @@ if(!isset($_SESSION["config_file"]) or $_SESSION["config_file"]==="")
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<script data-main="/ext/elfinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script> 
+        
     <link rel="stylesheet" href="ext/bootstrap/css/bootstrap.min.css">
     <script src="ext/bootstrap/jquery/jquery.min.js"></script>
     <script src="ext/bootstrap/js/bootstrap.min.js"></script>
@@ -52,6 +54,24 @@ function updateServer(){
 
 </script>
  
+ <div id="fileModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Local File selection</h4>
+                  </div>
+                  
+                    <div class="col" style="padding:20px; text-align:center">
+                      <div id="elfinder_select"></div>
+                    </div>
+                  <div class="modal-footer">
+                    <!--<button type="button" class="close" data-dismiss="modal" onClick="javascript:selectFile()">Select</button> -->
+                  </div>
+                </div>
+          </div>
+      </div>
+      
  <div id="updateConfigModal" class="modal fade modal-fullscreen" role="dialog">
           <div class="modal-dialog">
             <!-- Share Modal content-->
@@ -85,7 +105,10 @@ function updateServer(){
   <div class="container-fluid">
       <ul class="nav navbar-nav">
         <li>
-          <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
+          <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Remote Dataset</button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-default navbar-btn" id='add_local' for-table='#datasets'>Add Local Dataset</button>
         </li>
         <li>
           <button type="button" class="btn btn-warning navbar-btn" onClick="javascript:updateServer()">Update Server</button>
@@ -151,6 +174,7 @@ $('#datasets').Tabledit({
       console.log(data);
       console.log(textStatus);
       console.log(jqXHR);
+	  updateServer();
   },
   
   onFail: function(jqXHR, textStatus, errorThrown) {
@@ -183,6 +207,39 @@ $("#add").click(function(e){
 	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
 	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
 	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");
+});
+
+$("#add_local").click(function(e){
+	
+	$('#fileModal').modal();
+	
+	var elf = $('#elfinder_select').elfinder({
+		url : 'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
+		getFileCallback : function(file) {
+			addNewFromPost("NewDatasetName", file.url);
+			$('#fileModal').modal('hide');
+		},
+		commandsOptions: {
+			getfile: {
+				validName: /([a-zA-Z0-9\s_\\.\-\(\):])+(.midx|.idx)$/,
+				folders  : false //is_folder
+			}
+
+		},
+		handlers : {
+			select : function(event, elfinderInstance) {
+				var selected = event.data.selected;
+				
+				if (selected.length) {
+				  elf_selected=elfinderInstance.url(selected[0]);
+				}
+
+			}
+		},
+		resizable: true
+	}).elfinder('instance');
+ 
+    
 });
 </script>
 

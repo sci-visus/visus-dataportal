@@ -1,5 +1,5 @@
 <?php
-require("../../local.php");
+require("../../../local.php");
 error_reporting(0); // Set E_ALL for debuging
 
 // // To Enable(true) handling of PostScript files by ImageMagick

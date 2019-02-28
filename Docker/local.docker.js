@@ -1,0 +1,3 @@
+// JS Settings
+
+DATAPORTAL_ROOT_FOLDER='/';

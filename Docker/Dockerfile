@@ -6,9 +6,10 @@ RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/datapo
 WORKDIR ${VISUS_HOME}/dataportal
 RUN git submodule update --init -- ext
 ADD dataportal.conf  /etc/apache2/sites-enabled/dataportal.conf
-ADD local.php	      ${VISUS_HOME}/dataportal/local.php
-ADD .htpasswd       ${VISUS_HOME}/.htpasswd
-ADD .htaccess       ${VISUS_HOME}/dataportal/.htaccess
+ADD local.docker.php  ${VISUS_HOME}/dataportal/local.php
+ADD local.docker.js   ${VISUS_HOME}/dataportal/local.js
+ADD .htpasswd         ${VISUS_HOME}/.htpasswd
+ADD .htaccess         ${VISUS_HOME}/dataportal/.htaccess
 ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
 

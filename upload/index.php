@@ -10,7 +10,8 @@ require('../local.php');
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 		<title>File manager</title>
         
-		<script data-main="/ext/elfinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script> 
+        <script src="../local.js"></script>
+		<script data-main="../ext/elfinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script> 
         
         <script src="../ext/bootstrap/jquery/jquery.min.js"></script>
         
@@ -207,7 +208,7 @@ require('../local.php');
 				target_selected=target;
 				
 				var elf = $('#elfinder_select').elfinder({
-					url : '/ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
+					url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
 					getFileCallback : function(file) {
 						elf_selected=file.url;
 						processFile(file.url, target_selected);

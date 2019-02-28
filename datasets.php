@@ -217,7 +217,8 @@ $("#add_local").click(function(e){
 	var elf = $('#elfinder_select').elfinder({
 		url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
 		getFileCallback : function(file) {
-			addNewFromPost("NewDatasetName", $out_data_dir+"/"+file.url);
+			var out_data_dir = "<?php Print($out_data_dir); ?>";
+			addNewFromPost("NewDatasetName", out_data_dir+"/"+file.url);
 			$('#fileModal').modal('hide');
 		},
 		commandsOptions: {

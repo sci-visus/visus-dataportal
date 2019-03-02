@@ -106,10 +106,7 @@ function updateServer(){
   <div class="container-fluid">
       <ul class="nav navbar-nav">
         <li>
-          <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Remote Dataset</button>
-        </li>
-        <li>
-          <button type="button" class="btn btn-default navbar-btn" id='add_local' for-table='#datasets'>Add Local Dataset</button>
+          <button type="button" class="btn btn-default navbar-btn" id='add' for-table='#datasets'>Add Dataset</button>
         </li>
         <li>
           <button type="button" class="btn btn-warning navbar-btn" onClick="javascript:updateServer()">Update Server</button>
@@ -165,10 +162,17 @@ $('#datasets').Tabledit({
   restoreButton: false,
 	
   onAjax: function(action, serialize) { 
+	console.log("on Ajax"); 
+	console.log("action : ", action); 
+	console.log("data : ", serialize); 
 	
-		console.log("on Ajax"); 
-		console.log("action : ", action); 
-		console.log("data : ", serialize); 
+	var $tr = $("#datasets>tbody>tr:last-child")
+	var $td = $tr.children("td:eq(2)")
+	$td.children("div").children("span:eq(1)").remove()
+	var temp=$td.children("div").html()
+	
+	$td.children("div").children("span").appendTo($td);
+	$td.children("div").children("input").appendTo($td);
   },
 	
   onSuccess: function(data, textStatus, jqXHR) {
@@ -192,34 +196,15 @@ $('#datasets').Tabledit({
 //  debug: true,
 });
 
-$("#add").click(function(e){
-    var table = $(this).attr('for-table');  //get the target table selector
-    var $tr = $(table + ">tbody>tr:last-child").clone(true, true);  //clone the last row
-	$tr.prop("hidden",false);
-	
-    var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
-    $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
-    $tr.find("span.tabledit-identifier").text(nextID);  //set the row identifier
-    $(table + ">tbody").append($tr);    //add the row to the table
-    $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
-    $tr.find("input, select").val("");   //wipe out the inputs.
-    $tr.children("td:eq(0)").children("input").val("NaN");
-
-	//$tr.find("input:not([type=hidden]), select").val("");   //was no hidden
-	//$tr.find(".tabledit-edit-button").attr("disabled", "disabled");
-	//$tr.find(".tabledit-delete-button").attr("disabled", "disabled");
-});
-
-$("#add_local").click(function(e){
-	
+function browseFile(){
 	$('#fileModal').modal();
 	
 	var elf = $('#elfinder_select').elfinder({
 		url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
 		getFileCallback : function(file) {
 			var out_data_dir = "<?php Print($out_data_dir); ?>";
-			addNewFromPost("NewDatasetName", out_data_dir+"/"+file.url);
-			$('#fileModal').modal('hide');
+			updateEntry("NewDatasetName", out_data_dir+"/"+file.url);
+			$('#fileModal').modal('hide');		
 		},
 		commandsOptions: {
 			getfile: {
@@ -240,12 +225,37 @@ $("#add_local").click(function(e){
 		},
 		resizable: true
 	}).elfinder('instance');
- 
-    
+}
+
+$("#add").click(function(e){
+    var table = $(this).attr('for-table');  //get the target table selector
+    var $tr = $(table + ">tbody>tr:last-child").clone(true, true);  //clone the last row
+	$tr.prop("hidden",false);
+	
+    var nextID = parseInt($tr.find("input.tabledit-identifier").val()) + 1; //get the ID and add one.
+    $tr.find("input.tabledit-identifier").val(nextID);  //set the row identifier
+    $tr.find("span.tabledit-identifier").text(nextID);  //set the row identifier
+    $(table + ">tbody").append($tr);    //add the row to the table
+    $tr.find(".tabledit-edit-button").click();  //pretend to click the edit button
+    $tr.find("input, select").val("");   //wipe out the inputs.
+    $tr.children("td:eq(0)").children("input").val("NaN");
+
+	var browse= $('<div class="input-group">'+$tr.children("td:eq(2)").html()+'<span class="input-group-btn"><button type="button" class="btn btn-warning btn-sm" onClick="javascript:browseFile()">Browse</button></span></div>');
+	$tr.children("td:eq(2)").empty();
+	$tr.children("td:eq(2)").append(browse);
+	
 });
+
 </script>
 
 <script>
+   function updateEntry(name, url){
+	   var $tr = $("#datasets>tbody>tr:last-child")
+	   $tr.children("td:eq(0)").children("input").val("NaN");
+	   $tr.children("td:eq(1)").children("input").val(name);
+	   $tr.children("td:eq(2)").children("div").children("input").val("file://"+url);
+   }
+   
    function addNewFromPost(name, url){
 	//console.log(name);
 	//console.log(url);

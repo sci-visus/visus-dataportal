@@ -295,17 +295,15 @@ require('../local.php');
            <blockquote id="img_info" hidden="hidden"></blockquote>
           </div>
           
-            <div class="form-row">
+            <div class="input-group">
               <label>Size</label>
               <div class="col">
-              <input type="text" class="form-control" id="X" name="X" size="1" placeholder="Size X"/>
-              </div>
-              <div class="col">
-              <input type="text" class="form-control" id="Y" name="Y" size="1" placeholder="Size Y"/>
-               </div>
-              <div class="col">
-              <input type="text" class="form-control" id="Z" name="Z" size="1" placeholder="Size Z"/>
-              </div>
+              <span class="input-group-btn"><input type="text" class="form-control" id="X" name="X" size="15" placeholder="Size X"/></span>
+              
+              <span class="input-group-btn"><input type="text" class="form-control" id="Y" name="Y" size="15" placeholder="Size Y"/></span>
+               
+              <span class="input-group-btn"><input type="text" class="form-control" id="Z" name="Z" size="15" placeholder="Size Z"/></span>
+ 			</div>
             </div>
             <div class="form-row">
               <div class="col">
@@ -434,17 +432,15 @@ require('../local.php');
            <blockquote id="stack_info" hidden="hidden"></blockquote>
           </div>
           
-            <div class="form-row">
-            <label>Size</label>
+            <div class="input-group">
+              <label>Size</label>
               <div class="col">
-              <input type="text" class="form-control" id="X" name="X" size="1" placeholder="Size X"/>
-              </div>
-              <div class="col">
-              <input type="text" class="form-control" id="Y" name="Y" size="1" placeholder="Size Y"/>
-               </div>
-              <div class="col">
-              <input type="text" class="form-control" id="Z" name="Z" size="1" placeholder="Size Z"/>
-              </div>
+              <span class="input-group-btn"><input type="text" class="form-control" id="X" name="X" size="15" placeholder="Size X"/></span>
+              
+              <span class="input-group-btn"><input type="text" class="form-control" id="Y" name="Y" size="15" placeholder="Size Y"/></span>
+               
+              <span class="input-group-btn"><input type="text" class="form-control" id="Z" name="Z" size="15" placeholder="Size Z"/></span>
+ 			</div>
             </div>
             <div class="form-row">
               <div class="col">

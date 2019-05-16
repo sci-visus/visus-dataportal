@@ -1,7 +1,9 @@
 FROM visus/mod_visus-ubuntu
 
 # install dataportal
+RUN apt-get update
 RUN apt-get install -y git php php-xml php-curl php-json php-sqlite3 libapache2-mod-php
+# clone dataportal
 RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/dataportal
 WORKDIR ${VISUS_HOME}/dataportal
 RUN git submodule update --init -- ext
@@ -11,6 +13,7 @@ ADD local.docker.js   ${VISUS_HOME}/dataportal/local.js
 ADD .htpasswd         ${VISUS_HOME}/.htpasswd
 ADD .htaccess         ${VISUS_HOME}/dataportal/.htaccess
 ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
+# RUN chmod 777 /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
 
 # visus.config needs write permissions

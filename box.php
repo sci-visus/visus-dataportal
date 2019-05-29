@@ -47,8 +47,9 @@
   $box->get_user();
   
   // Get folder details
-  //print_r($box->get_folder_details($folder_id));
-  
+  $fdetails=$box->get_folder_details($folder_id);
+  $folder_name=$fdetails['name'];
+
   //echo "<br/><br/>";
 
   // Get folder items list
@@ -86,7 +87,7 @@
          '</script>';
   }
 
-  echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'"; </script>';
+  echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'&name='.$folder_name.'"; </script>';
   //header("Location: /upload/index.php?box=".$res_id);
 
   /*

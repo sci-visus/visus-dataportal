@@ -536,30 +536,42 @@ require('../local.php');
 	$('#imageSinglePanel').on('show.bs.collapse', function (e) {	  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#imageStackPanel').collapse("hide");	
+    $('#boxPanel').collapse("hide");
 	});
 	
 	$('#imageStackPanel').on('show.bs.collapse', function (e) {
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#imageSinglePanel').collapse("hide");
+    $('#boxPanel').collapse("hide");
 	});
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
 		$('#imageSinglePanel').collapse("hide");
 		$('#imageStackPanel').collapse("hide");
+    $('#boxPanel').collapse("hide");
 	});
+
+  $('#boxPanel').on('show.bs.collapse', function (e) {
+    $('#imageSinglePanel').collapse("hide");
+    $('#imageStackPanel').collapse("hide");
+    $('#filemanagerPanel').removeClass("in");
+  });
 	
 	function selectConvert(n){
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
 			$('#filemanagerPanel').collapse("hide");
+      $("#boxPanel").collapse("hide");
 		}
 		else if (n ==2){
 			$("#imageStackPanel").collapse("show");
 			$('#filemanagerPanel').collapse("hide");
+      $("#boxPanel").collapse("hide");
 		}
     else if (n ==3){
       $("#boxPanel").collapse("show");
       $('#filemanagerPanel').collapse("hide");
+      $("#imageStackPanel").collapse("hide");
     }
 	}
 	</script>
@@ -650,11 +662,14 @@ require('../local.php');
 
   <?php
     $box_id=strip_tags(trim($_GET['box']));
+    $box_fname=strip_tags(trim($_GET['name']));
+
     if($box_id){
       echo '<script type="text/javascript">',
             'selectConvert(2);',
             '$("#folder_path_stack").val("'.$box_id.'");',
-            '$("#folder_path_stack").change()',
+            '$("#folder_path_stack").change();',
+            '$("#out_name_stack").val("'.$box_fname.'");',
             '</script>'
       ;
     }

@@ -13,7 +13,8 @@ require('../local.php');
         
         <script src="../local.js"></script>
 		<script data-main="../ext/elfinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script> 
-        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
         <script src="../ext/bootstrap/jquery/jquery.min.js"></script>
         
         <script src="../ext/bootstrap/js/bootstrap.min.js"></script>
@@ -21,6 +22,9 @@ require('../local.php');
         <link rel="stylesheet" href="../ext/bootstrap/css/bootstrap.min.css">
         
         <style>
+    .card-body {
+      text-align: center;
+    }
 		.modal-dialog {
 		  width: 100%;
 		  height: 100%;
@@ -133,31 +137,31 @@ require('../local.php');
         
     <div class="panel-body">
         <div class="row">
-          <div class="col-sm-3 mb-md-0">
+          <div class="col-sm-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Single file</h5>
-                <p class="card-text">Convert one single file.</p>
+                <h5 class="card-title"><i class="far fa-image fa-4x" ></i></h5>
+                <p class="card-text">Convert one single file</p>
                 <a href='javascript:selectConvert(1)' class="btn btn-primary">Convert</a>
               </div>
             </div>
           </div>
         
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Stack of images/files</h5>
-                <p class="card-text">Convert a set of images/files into one dataset.</p>
+                <h5 class="card-title"><i class="fa fa-layer-group fa-4x" ></i></h5>
+                <p class="card-text">Convert a set of images/files into one dataset</p>
                 <a href="javascript:selectConvert(2)" class="btn btn-primary">Convert</a>
               </div>
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Box</h5>
-                  <p class="card-text">Import files from Box.</p>
+                  <h5 class="card-title"><img src="box_logo.jpg" width="80px"/></h5>
+                  <p class="card-text">Import files from Box</p>
                   <a href="javascript:selectConvert(3)" class="btn btn-primary">Import</a>
                 </div>
               </div>

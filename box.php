@@ -1,20 +1,58 @@
- 
+ <?php
+  require('req_login.php');
+  ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <title>ViSUS Data Portal - Import from Box</title>
+  <style>
+    body{margin:0;}
+progress{display:inline-block;vertical-align:baseline;}
+@media print{
+*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important;}
+}
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;background-color:#fff;}
+h4{font-family:inherit;font-weight:500;line-height:1.1;color:inherit;}
+h4{margin-top:10px;margin-bottom:10px;}
+h4{font-size:18px;}
+.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;}
+.modal-dialog{position:relative;width:auto;margin:10px;}
+.modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5);}
+.modal-header{padding:15px;border-bottom:1px solid #e5e5e5;}
+.modal-title{margin:0;line-height:1.42857143;}
+@media (min-width:768px){
+.modal-dialog{width:600px;margin:30px auto;}
+.modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5);}
+}
+.modal-header:after,.modal-header:before{display:table;content:" ";}
+.modal-header:after{clear:both;}
+.show{display:block!important;}
+</style>
 </head>
+
 <body>
-    <progress id='progressor' value="0" max='100' style=""></progress>  
-    <span id="percentage">0</span> <br/>
-    <span id="fname">Downloading...</span>
-    <br/>
+  <div id="downloadModal" class="modal show" role="dialog">
+          <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Downloading from Box...</h4>
+                  </div>
+                    <div class="col" style="padding:20px; text-align:center">
+                      <progress id="progressor" value="0" max="100" style=""></progress>  
+                      <span id="percentage">0</span> <br/>
+                      <span id="fname">Downloading...</span>
+                    </div>
+                </div>
+          </div>
+      </div>
 </body>
 </html>
 
+
 <?php
-  require('req_login.php');
-  require('local.php');
 
   $box_url=strip_tags(trim($_POST["url"]));
   $url_parts=parse_url($box_url);
@@ -82,6 +120,7 @@
 
   foreach($files as $i=>$f) {
     $box->download_file($f['id'], $dir_path."/".$f['name']);
+    //usleep(20000);
     //printf("File %s downloaded... %.0f\%\n", $f['name'], ($i*100)/$count);
     //echo "File ".$f['name']." downloaded ".($i*100)/$count."%</br>";
 
@@ -99,7 +138,7 @@
     flush();
   }
 
-  echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'&name='.$folder_name.'"; </script>';
+  //echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'&name='.$folder_name.'"; </script>';
   //header('Location: /upload/index.php?box='.$res_id.'&name='.$folder_name);
 
   /*

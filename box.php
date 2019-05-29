@@ -1,5 +1,15 @@
 <?php
 
+  require('local.php');
+
+  $box_url=strip_tags(trim($_POST["url"]));
+  $url_parts=parse_url($box_url);
+  //print_r($url_parts);
+  $res_id = explode('/', $url_parts['path'])[2];
+  //print_r(explode('/', $url_parts['path'])[2]);
+  // #https://uofu.box.com/folder/77869106217?utm_source=trans&utm_medium=email&utm_campaign=collab%2Bauto%20accept%20user
+  $folder_id=$res_id;
+  
   include('ext/BoxPHPAPI/BoxAPI.class.php');
  
   $client_id  = 'xd4r7ohya087jittg5cilu0v68g1yamk';
@@ -19,8 +29,6 @@
     }
   }
   
-  $folder_id='77869106217';
-  
   // User details
   $box->get_user();
   
@@ -36,11 +44,18 @@
   // All Files in a particular folder
   $files = $box->get_files($folder_id);
   
-  print_r($files);
+  //print_r($files);
+  $dir_path=$data_dir."/".$res_id;
+  if (!file_exists($dir_path)) {
+    mkdir($dir_path, 0777, true);
+  }
 
-  $box->download_file($files[0]['id'], $files[0]['name']);
+  foreach($files as $f){
+    $box->download_file($f['id'], $dir_path."/".$f['name']);
+    //echo "File ".$f['name']." downloaded</br>";
+  }
 
-  print("\nfile ".$files[0]['name']." downloaded")
+  header("Location: /upload/index.php?box=".$res_id);
 
   /*
   // All Web links in a particular folder

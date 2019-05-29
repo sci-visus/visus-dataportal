@@ -2,6 +2,7 @@
 require('../req_login.php');
 require('../local.php');
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -132,7 +133,7 @@ require('../local.php');
         
     <div class="panel-body">
         <div class="row">
-          <div class="col-sm-6 mb-3 mb-md-0">
+          <div class="col-sm-3 mb-md-0">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Single file</h5>
@@ -142,7 +143,7 @@ require('../local.php');
             </div>
           </div>
         
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Stack of images/files</h5>
@@ -151,6 +152,16 @@ require('../local.php');
               </div>
             </div>
           </div>
+
+          <div class="col-sm-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Box</h5>
+                  <p class="card-text">Import files from Box.</p>
+                  <a href="javascript:selectConvert(3)" class="btn btn-primary">Import</a>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
    
@@ -185,59 +196,59 @@ require('../local.php');
           <input id="convert-type" name="convert-type" type="hidden" value="single"/>
           
           <script type="text/javascript">
-		    var elf_selected='';
-			var target_selected='';
-			
-			function processFile(file, target){
-				$('#fileModal').modal('hide');
-				
-				console.log("selected file "+file+" target "+ target);
-				//if(is_folder=="true"){
-				$("#"+target).val(file);
-				
-				if(target=="folder_path_stack"){
-				  convertStackChange();
-				}
-				else if(target=="folder_path"){
-				  fileChange();
-				}
-			}
-			
-			function browseFile(target){
-				$('#fileModal').modal();
-				target_selected=target;
-				
-				var elf = $('#elfinder_select').elfinder({
-					url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
-					getFileCallback : function(file) {
-						elf_selected=file.url;
-						processFile(file.url, target_selected);
-						
-					},
-					commandsOptions: {
-						getfile: {
-							//oncomplete: 'destroy',
-							folders  : false //is_folder
-						}
+		        var elf_selected='';
+      			var target_selected='';
+      			
+      			function processFile(file, target){
+      				$('#fileModal').modal('hide');
+      				
+      				console.log("selected file "+file+" target "+ target);
+      				//if(is_folder=="true"){
+      				$("#"+target).val(file);
+      				
+      				if(target=="folder_path_stack"){
+      				  convertStackChange();
+      				}
+      				else if(target=="folder_path"){
+      				  fileChange();
+      				}
+      			}
+      			
+      			function browseFile(target){
+      				$('#fileModal').modal();
+      				target_selected=target;
+      				
+      				var elf = $('#elfinder_select').elfinder({
+      					url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
+      					getFileCallback : function(file) {
+      						elf_selected=file.url;
+      						processFile(file.url, target_selected);
+      						
+      					},
+      					commandsOptions: {
+      						getfile: {
+      							//oncomplete: 'destroy',
+      							folders  : false //is_folder
+      						}
 
-					},
-					handlers : {
-						select : function(event, elfinderInstance) {
-							var selected = event.data.selected;
-							
-							if (selected.length) {
-							  elf_selected=elfinderInstance.url(selected[0]);
-							}
-	
-						}
-					},
-					resizable: true
-				}).elfinder('instance');
-			}     
-			
-			function selectFile(){
-				processFile(elf_selected, target_selected); 
-			}	
+      					},
+      					handlers : {
+      						select : function(event, elfinderInstance) {
+      							var selected = event.data.selected;
+      							
+      							if (selected.length) {
+      							  elf_selected=elfinderInstance.url(selected[0]);
+      							}
+      	
+      						}
+      					},
+      					resizable: true
+      				}).elfinder('instance');
+      			}     
+      			
+      			function selectFile(){
+      				processFile(elf_selected, target_selected); 
+      			}	
 				
           </script>
                 
@@ -546,6 +557,10 @@ require('../local.php');
 			$("#imageStackPanel").collapse("show");
 			$('#filemanagerPanel').collapse("hide");
 		}
+    else if (n ==3){
+      $("#boxPanel").collapse("show");
+      $('#filemanagerPanel').collapse("hide");
+    }
 	}
 	</script>
    
@@ -569,6 +584,34 @@ require('../local.php');
       
      
    
+    <div class="panel-collapse collapse" id="boxPanel">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            Single Image/RAW Data Conversion
+            <a class="collapsed" id="imagePanelCollapseLink" data-parent="#imageSinglePanel" data-toggle="collapse" href="#imageSinglePanel" role="button"><span class="close">&times;</span></a>
+          </h4>
+        </div>
+        
+        <div class="panel-collapse">
+          <form class="form-horizontal" action="../box.php" method="post" enctype="multipart/form-data">
+          <div class="panel-body">
+          <div class="form-row">
+              <label for="url">Box folder URL</label>
+              <input type="text" id="url" name="url" class="form-control"/>
+              <button type="submit" class="btn btn-warning">Import</button>
+      
+            </div>
+          </div>
+         </form>
+        </div>
+
+        <div class="panel-footer">
+        </div>
+        
+      </div>
+    </div>
+
     <div class="panel-group" id="conversionsPanel">
       <div class="panel panel-default" role="tab">
         <div class="panel-heading">
@@ -604,7 +647,21 @@ require('../local.php');
     <script>
 	    updateConversions(); 
 	</script>
-    
+
+  <?php
+    $box_id=strip_tags(trim($_GET['box']));
+    if($box_id){
+      echo '<script type="text/javascript">',
+            'selectConvert(2);',
+            '$("#folder_path_stack").val("'.$box_id.'");',
+            '$("#folder_path_stack").change()',
+            '</script>'
+      ;
+    }
+  ?>
+
 	</body>
+
+
    
 </html>

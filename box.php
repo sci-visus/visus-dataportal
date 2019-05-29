@@ -13,7 +13,7 @@
 </html>
 
 <?php
-
+  require('req_login.php');
   require('local.php');
 
   $box_url=strip_tags(trim($_POST["url"]));
@@ -23,7 +23,7 @@
 
   $res_id = explode('/', $url_parts['path'])[2];
   //print_r(explode('/', $url_parts['path'])[2]);
-  // #https://uofu.box.com/folder/77869106217?utm_source=trans&utm_medium=email&utm_campaign=collab%2Bauto%20accept%20user
+
   $folder_id=$res_id;
   
   include('ext/BoxPHPAPI/BoxAPI.class.php');

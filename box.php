@@ -19,6 +19,8 @@
   $box_url=strip_tags(trim($_POST["url"]));
   $url_parts=parse_url($box_url);
   //print_r($url_parts);
+  $port=parse_url($mod_visus_url)["port"];
+
   $res_id = explode('/', $url_parts['path'])[2];
   //print_r(explode('/', $url_parts['path'])[2]);
   // #https://uofu.box.com/folder/77869106217?utm_source=trans&utm_medium=email&utm_campaign=collab%2Bauto%20accept%20user
@@ -28,7 +30,10 @@
  
   $client_id  = 'xd4r7ohya087jittg5cilu0v68g1yamk';
   $client_secret  = 'uNcNHCUk0oAzz1yC14r5hRzBtYxRIj8t';
-  $redirect_uri   = 'http://127.0.0.1:8000/box.php';
+  $redirect_uri   = 'http://127.0.0.1';
+  if($port)
+    $redirect_uri.=':'.$port;
+  $redirect_uri.='/box.php';
   
   $box = new Box_API($client_id, $client_secret, $redirect_uri);
   
@@ -44,7 +49,7 @@
   }
   
   // User details
-  $box->get_user();
+  //$box->get_user();
   
   // Get folder details
   $fdetails=$box->get_folder_details($folder_id);

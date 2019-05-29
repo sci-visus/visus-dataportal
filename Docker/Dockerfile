@@ -7,7 +7,7 @@ RUN apt-get install -y git php php-xml php-curl php-json php-sqlite3 libapache2-
 # install dataportal
 RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/dataportal
 WORKDIR ${VISUS_HOME}/dataportal
-RUN git pull
+# TODO remove this checkout before merge to master
 RUN git checkout box
 RUN git submodule update --init -- ext
 ADD dataportal.conf  /etc/apache2/sites-enabled/dataportal.conf
@@ -20,7 +20,7 @@ ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
 # create token file for Box (with write permissions)
 RUN touch ${VISUS_HOME}/dataportal/token.box
-RUN chmod g+w ${VISUS_HOME}/dataportal/token.box
+RUN chmod 770 ${VISUS_HOME}/dataportal/token.box
 
 # visus.config needs write permissions
 RUN chgrp www-data ${VISUS_HOME}/visus.config

@@ -72,28 +72,35 @@
 
   $dir_path=$data_dir."/".$res_id;
   if (!file_exists($dir_path)) {
-    mkdir($dir_path, 0777, true);
+    mkdir($dir_path, 0770, true);
   }
 
   $count=count($files);
+
+  ob_flush();
+  flush();
 
   foreach($files as $i=>$f) {
     $box->download_file($f['id'], $dir_path."/".$f['name']);
     //printf("File %s downloaded... %.0f\%\n", $f['name'], ($i*100)/$count);
     //echo "File ".$f['name']." downloaded ".($i*100)/$count."%</br>";
 
+    $curr_perc=ceil((($i+1)*100)/$count);
     echo '<script language="javascript">',
          'var pBar = document.getElementById("progressor");',
-         'pBar.value='.($i*100)/$count.';',
+         'pBar.value='.$curr_perc.';',
          'var perc = document.getElementById("percentage");',
-         'perc.innerHTML = '.($i*100)/$count.'+"%";',
+         'perc.innerHTML = '.$curr_perc.'+"%";',
          'var fname = document.getElementById("fname");',
          'fname.innerHTML = "Downloading: '.$f['name'].'";',
          '</script>';
+
+    ob_flush();
+    flush();
   }
 
   echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'&name='.$folder_name.'"; </script>';
-  //header("Location: /upload/index.php?box=".$res_id);
+  //header('Location: /upload/index.php?box='.$res_id.'&name='.$folder_name);
 
   /*
   // All Web links in a particular folder

@@ -1,3 +1,17 @@
+ 
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+    <progress id='progressor' value="0" max='100' style=""></progress>  
+    <span id="percentage">0</span> <br/>
+    <span id="fname">Downloading...</span>
+    <br/>
+</body>
+</html>
+
 <?php
 
   require('local.php');
@@ -33,11 +47,14 @@
   $box->get_user();
   
   // Get folder details
-  //$box->get_folder_details($folder_id);
+  //print_r($box->get_folder_details($folder_id));
   
+  //echo "<br/><br/>";
+
   // Get folder items list
-  //print($box->get_folder_items($folder_id));
+  //print_r($box->get_folder_items($folder_id));
   
+  //echo "<br/><br/>";
   // All folders in particular folder
   //$box->get_folders($folder_id);
   
@@ -45,17 +62,32 @@
   $files = $box->get_files($folder_id);
   
   //print_r($files);
+  //print(count($files));
+
   $dir_path=$data_dir."/".$res_id;
   if (!file_exists($dir_path)) {
     mkdir($dir_path, 0777, true);
   }
 
-  foreach($files as $f){
+  $count=count($files);
+
+  foreach($files as $i=>$f) {
     $box->download_file($f['id'], $dir_path."/".$f['name']);
-    //echo "File ".$f['name']." downloaded</br>";
+    //printf("File %s downloaded... %.0f\%\n", $f['name'], ($i*100)/$count);
+    //echo "File ".$f['name']." downloaded ".($i*100)/$count."%</br>";
+
+    echo '<script language="javascript">',
+         'var pBar = document.getElementById("progressor");',
+         'pBar.value='.($i*100)/$count.';',
+         'var perc = document.getElementById("percentage");',
+         'perc.innerHTML = '.($i*100)/$count.'+"%";',
+         'var fname = document.getElementById("fname");',
+         'fname.innerHTML = "Downloading: '.$f['name'].'";',
+         '</script>';
   }
 
-  header("Location: /upload/index.php?box=".$res_id);
+  echo '<script language="javascript"> window.location = "/upload/index.php?box='.$res_id.'"; </script>';
+  //header("Location: /upload/index.php?box=".$res_id);
 
   /*
   // All Web links in a particular folder

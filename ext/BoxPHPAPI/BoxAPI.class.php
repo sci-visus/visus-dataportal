@@ -182,7 +182,8 @@
 		
 		/* Get the list of items in the mentioned folder */
 		public function get_folder_items($folder, $json = false) {
-			$url = $this->build_url("/folders/$folder/items");
+			$params = array('limit' => "1000");
+			$url = $this->build_url("/folders/$folder/items", $params);
 			if($json){	
 				return $this->get($url);
 			} else {

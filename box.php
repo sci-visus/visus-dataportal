@@ -59,7 +59,10 @@ h4{font-size:18px;}
   //print_r($url_parts);
   $port=parse_url($mod_visus_url)["port"];
 
-  $res_id = explode('/', $url_parts['path'])[2];
+  if(isset($_GET['res_id']))
+    $res_id=$_GET['res_id'];
+  else
+    $res_id = explode('/', $url_parts['path'])[2];
   //print_r(explode('/', $url_parts['path'])[2]);
 
   $folder_id=$res_id;
@@ -71,7 +74,7 @@ h4{font-size:18px;}
   $redirect_uri   = 'http://127.0.0.1';
   if($port)
     $redirect_uri.=':'.$port;
-  $redirect_uri.='/box.php';
+  $redirect_uri.='/box.php?res_id='.$res_id;
   
   $box = new Box_API($client_id, $client_secret, $redirect_uri);
   
@@ -86,6 +89,10 @@ h4{font-size:18px;}
     }
   }
   
+  // refresh page if token just acquired
+  if(isset($_GET['res_id']) && !isset($_GET['refresh'])){
+    echo '<script language="javascript"> window.location = "/box.php?code='.$_GET['code'].'&res_id='.$_GET['res_id'].'&refresh=1"; </script>';
+  }
   // User details
   //$box->get_user();
   

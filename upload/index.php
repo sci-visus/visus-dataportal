@@ -697,13 +697,14 @@ require('../local.php');
     $box_id=strip_tags(trim($_GET['box']));
     $box_fname=strip_tags(trim($_GET['name']));
 
+    // if Box import do automatic conversion
     if($box_id){
       echo '<script type="text/javascript">',
             'selectConvert(2);',
             '$("#folder_path_stack").val("'.$box_id.'");',
             '$("#folder_path_stack").change();',
             '$("#out_name_stack").val("'.$box_fname.'");',
-            '$("#convert_stack_btn").click();',
+            'setTimeout(function(){$("#convert_stack_btn").click();},2000);',
             '</script>';
     } 
   ?>

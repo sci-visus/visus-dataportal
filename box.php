@@ -66,8 +66,8 @@ h4{font-size:18px;}
   
   include('ext/BoxPHPAPI/BoxAPI.class.php');
  
-  $client_id  = 'xd4r7ohya087jittg5cilu0v68g1yamk';
-  $client_secret  = 'uNcNHCUk0oAzz1yC14r5hRzBtYxRIj8t';
+  $client_id  = $box_client_id;
+  $client_secret  = $box_client_secret;
   $redirect_uri   = 'http://127.0.0.1';
   if($port)
     $redirect_uri.=':'.$port;

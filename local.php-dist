@@ -20,4 +20,10 @@
   
   // mod_visus_url
   $mod_visus_url="http://localhost/mod_visus?";
+
+  // box client id (required to use Box integration)
+  $box_client_id='';
+
+  // box client secret (required to use box integration)
+  $box_client_secret='';
 ?>

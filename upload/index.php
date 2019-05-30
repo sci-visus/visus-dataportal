@@ -498,7 +498,7 @@ require('../local.php');
             </div>
             
           </div>
-          <div class="panel-footer"><button type="submit" class="btn btn-primary">Convert</button></div>
+          <div class="panel-footer"><button id="convert_stack_btn" type="submit" class="btn btn-primary">Convert</button></div>
           </form>
         </div>
         
@@ -668,6 +668,31 @@ require('../local.php');
 	    updateConversions(); 
 	</script>
 
+  <script>
+    function post(path, params, method='post') {
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+          const hiddenField = document.createElement('input');
+          hiddenField.type = 'hidden';
+          hiddenField.name = key;
+          hiddenField.value = params[key];
+
+          form.appendChild(hiddenField);
+        }
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+ </script>
+
   <?php
     $box_id=strip_tags(trim($_GET['box']));
     $box_fname=strip_tags(trim($_GET['name']));
@@ -678,9 +703,12 @@ require('../local.php');
             '$("#folder_path_stack").val("'.$box_id.'");',
             '$("#folder_path_stack").change();',
             '$("#out_name_stack").val("'.$box_fname.'");',
-            '</script>'
-      ;
-    }
+            'var furl = $("#out_dir_stack").val()+"/"+$("#out_name_stack").val()+".idx";',
+            'var fname = $("#out_name_stack").val();',
+            '$("#convert_stack_btn").click();',
+            'post("../datasets.php", {furl: furl, fname: fname});',
+            '</script>';
+    } 
   ?>
 
 	</body>

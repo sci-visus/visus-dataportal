@@ -24,6 +24,6 @@
   // box client id (required to use Box integration)
   $box_client_id='';
 
-  // box client secret (required to use box integration)
+  // box client secret (required to use Box integration)
   $box_client_secret='';
 ?>

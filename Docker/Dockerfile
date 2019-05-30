@@ -7,8 +7,6 @@ RUN apt-get install -y git php php-xml php-curl php-json php-sqlite3 libapache2-
 # install dataportal
 RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/dataportal
 WORKDIR ${VISUS_HOME}/dataportal
-# TODO remove this checkout before merge to master
-RUN git checkout box
 RUN git submodule update --init -- ext
 ADD dataportal.conf  /etc/apache2/sites-enabled/dataportal.conf
 ADD local.docker.php  ${VISUS_HOME}/dataportal/local.php
@@ -41,7 +39,7 @@ RUN chgrp -R www-data /converted
 RUN chmod -R g+w      /converted
 # webviewer config
 ADD config.js       ${VISUS_HOME}/dataportal/ext/visus/config.js
-RUN  rm             /etc/apache2/sites-enabled/000-default.conf  
+RUN rm              /etc/apache2/sites-enabled/000-default.conf  
 
 WORKDIR ${VISUS_HOME}
 

@@ -24,4 +24,9 @@
   // visus executable
   $visus_exe="/usr/local/lib/python3.5/dist-packages/OpenVisus/bin/visus";
   
+  // box client id (required to use Box integration)
+  $box_client_id='';
+
+  // box client secret (required to use Box integration)
+  $box_client_secret='';  
  ?>

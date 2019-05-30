@@ -2,6 +2,7 @@
 require('../req_login.php');
 require('../local.php');
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -12,7 +13,8 @@ require('../local.php');
         
         <script src="../local.js"></script>
 		<script data-main="../ext/elfinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script> 
-        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
         <script src="../ext/bootstrap/jquery/jquery.min.js"></script>
         
         <script src="../ext/bootstrap/js/bootstrap.min.js"></script>
@@ -20,6 +22,9 @@ require('../local.php');
         <link rel="stylesheet" href="../ext/bootstrap/css/bootstrap.min.css">
         
         <style>
+    .card-body {
+      text-align: center;
+    }
 		.modal-dialog {
 		  width: 100%;
 		  height: 100%;
@@ -132,25 +137,39 @@ require('../local.php');
         
     <div class="panel-body">
         <div class="row">
-          <div class="col-sm-6 mb-3 mb-md-0">
+          <div class="col-sm-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Single file</h5>
-                <p class="card-text">Convert one single file.</p>
+                <h5 class="card-title"><i class="far fa-image fa-4x" ></i></h5>
+                <p class="card-text">Convert one single file</p>
                 <a href='javascript:selectConvert(1)' class="btn btn-primary">Convert</a>
               </div>
             </div>
           </div>
         
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Stack of images/files</h5>
-                <p class="card-text">Convert a set of images/files into one dataset.</p>
+                <h5 class="card-title"><i class="fa fa-layer-group fa-4x" ></i></h5>
+                <p class="card-text">Convert a set of images/files into one dataset</p>
                 <a href="javascript:selectConvert(2)" class="btn btn-primary">Convert</a>
               </div>
             </div>
           </div>
+
+          <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><img src="box_logo.jpg" width="80px"/></h5>
+                  <p class="card-text">Import files from Box</p>
+                  <?php if($box_client_id !== '' && $box_client_secret !== '') : ?>
+                  <a href="javascript:selectConvert(3)" class="btn btn-primary">Import</a>
+                  <?php else : ?>
+                  <p class="card-text" style="color:red">Box client info are not defined properly in local.php</p>
+                  <?php endif; ?>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
    
@@ -185,59 +204,59 @@ require('../local.php');
           <input id="convert-type" name="convert-type" type="hidden" value="single"/>
           
           <script type="text/javascript">
-		    var elf_selected='';
-			var target_selected='';
-			
-			function processFile(file, target){
-				$('#fileModal').modal('hide');
-				
-				console.log("selected file "+file+" target "+ target);
-				//if(is_folder=="true"){
-				$("#"+target).val(file);
-				
-				if(target=="folder_path_stack"){
-				  convertStackChange();
-				}
-				else if(target=="folder_path"){
-				  fileChange();
-				}
-			}
-			
-			function browseFile(target){
-				$('#fileModal').modal();
-				target_selected=target;
-				
-				var elf = $('#elfinder_select').elfinder({
-					url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
-					getFileCallback : function(file) {
-						elf_selected=file.url;
-						processFile(file.url, target_selected);
-						
-					},
-					commandsOptions: {
-						getfile: {
-							//oncomplete: 'destroy',
-							folders  : false //is_folder
-						}
+		        var elf_selected='';
+      			var target_selected='';
+      			
+      			function processFile(file, target){
+      				$('#fileModal').modal('hide');
+      				
+      				console.log("selected file "+file+" target "+ target);
+      				//if(is_folder=="true"){
+      				$("#"+target).val(file);
+      				
+      				if(target=="folder_path_stack"){
+      				  convertStackChange();
+      				}
+      				else if(target=="folder_path"){
+      				  fileChange();
+      				}
+      			}
+      			
+      			function browseFile(target){
+      				$('#fileModal').modal();
+      				target_selected=target;
+      				
+      				var elf = $('#elfinder_select').elfinder({
+      					url : DATAPORTAL_ROOT_FOLDER+'ext/elfinder/php/connector.minimal.php',  // connector URL (REQUIRED)
+      					getFileCallback : function(file) {
+      						elf_selected=file.url;
+      						processFile(file.url, target_selected);
+      						
+      					},
+      					commandsOptions: {
+      						getfile: {
+      							//oncomplete: 'destroy',
+      							folders  : false //is_folder
+      						}
 
-					},
-					handlers : {
-						select : function(event, elfinderInstance) {
-							var selected = event.data.selected;
-							
-							if (selected.length) {
-							  elf_selected=elfinderInstance.url(selected[0]);
-							}
-	
-						}
-					},
-					resizable: true
-				}).elfinder('instance');
-			}     
-			
-			function selectFile(){
-				processFile(elf_selected, target_selected); 
-			}	
+      					},
+      					handlers : {
+      						select : function(event, elfinderInstance) {
+      							var selected = event.data.selected;
+      							
+      							if (selected.length) {
+      							  elf_selected=elfinderInstance.url(selected[0]);
+      							}
+      	
+      						}
+      					},
+      					resizable: true
+      				}).elfinder('instance');
+      			}     
+      			
+      			function selectFile(){
+      				processFile(elf_selected, target_selected); 
+      			}	
 				
           </script>
                 
@@ -525,27 +544,43 @@ require('../local.php');
 	$('#imageSinglePanel').on('show.bs.collapse', function (e) {	  
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#imageStackPanel').collapse("hide");	
+    $('#boxPanel').collapse("hide");
 	});
 	
 	$('#imageStackPanel').on('show.bs.collapse', function (e) {
 		$('#filemanagerPanel').removeClass("in"); // workaround to collapse the panel
 		$('#imageSinglePanel').collapse("hide");
+    $('#boxPanel').collapse("hide");
 	});
 	
 	$('#filemanagerPanel').on('show.bs.collapse', function (e) {
 		$('#imageSinglePanel').collapse("hide");
 		$('#imageStackPanel').collapse("hide");
+    $('#boxPanel').collapse("hide");
 	});
+
+  $('#boxPanel').on('show.bs.collapse', function (e) {
+    $('#imageSinglePanel').collapse("hide");
+    $('#imageStackPanel').collapse("hide");
+    $('#filemanagerPanel').removeClass("in");
+  });
 	
 	function selectConvert(n){
 		if (n ==1){
 			$("#imageSinglePanel").collapse("show");
 			$('#filemanagerPanel').collapse("hide");
+      $("#boxPanel").collapse("hide");
 		}
 		else if (n ==2){
 			$("#imageStackPanel").collapse("show");
 			$('#filemanagerPanel').collapse("hide");
+      $("#boxPanel").collapse("hide");
 		}
+    else if (n ==3){
+      $("#boxPanel").collapse("show");
+      $('#filemanagerPanel').collapse("hide");
+      $("#imageStackPanel").collapse("hide");
+    }
 	}
 	</script>
    
@@ -569,6 +604,34 @@ require('../local.php');
       
      
    
+    <div class="panel-collapse collapse" id="boxPanel">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            Single Image/RAW Data Conversion
+            <a class="collapsed" id="imagePanelCollapseLink" data-parent="#imageSinglePanel" data-toggle="collapse" href="#imageSinglePanel" role="button"><span class="close">&times;</span></a>
+          </h4>
+        </div>
+        
+        <div class="panel-collapse">
+          <form class="form-horizontal" action="../box.php" method="post" enctype="multipart/form-data">
+          <div class="panel-body">
+          <div class="form-row">
+              <label for="url">Box folder URL</label>
+              <input type="text" id="url" name="url" class="form-control"/>
+              <button type="submit" class="btn btn-warning">Import</button>
+      
+            </div>
+          </div>
+         </form>
+        </div>
+
+        <div class="panel-footer">
+        </div>
+        
+      </div>
+    </div>
+
     <div class="panel-group" id="conversionsPanel">
       <div class="panel panel-default" role="tab">
         <div class="panel-heading">
@@ -604,7 +667,24 @@ require('../local.php');
     <script>
 	    updateConversions(); 
 	</script>
-    
+
+  <?php
+    $box_id=strip_tags(trim($_GET['box']));
+    $box_fname=strip_tags(trim($_GET['name']));
+
+    if($box_id){
+      echo '<script type="text/javascript">',
+            'selectConvert(2);',
+            '$("#folder_path_stack").val("'.$box_id.'");',
+            '$("#folder_path_stack").change();',
+            '$("#out_name_stack").val("'.$box_fname.'");',
+            '</script>'
+      ;
+    }
+  ?>
+
 	</body>
+
+
    
 </html>

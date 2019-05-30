@@ -193,10 +193,19 @@ EOF;
 		   $db->close();
 		}
 
-		header("Location: upload/index.php");
-		die("Redirecting to: upload"); 
-		
+//		header("Location: upload/index.php");
+//		die("Redirecting to: upload"); 
+
+		// perform add to server automatically after conversion
+		echo '<form action="datasets.php" id="myForm" method="post" enctype="multipart/form-data">',
+        '<input type="hidden" name="furl" id="furl" value="'.$idxfile.'" />',
+        '<input type="hidden" name="fname" id="fname" value="'.$fname.'" />',
+        '</form>';
+
+     echo '<script type="text/javascript">',
+             'document.getElementById("myForm").submit();',
+           '</script>';
+
     } 
-	
-	
 ?>
+

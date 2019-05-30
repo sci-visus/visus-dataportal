@@ -703,10 +703,7 @@ require('../local.php');
             '$("#folder_path_stack").val("'.$box_id.'");',
             '$("#folder_path_stack").change();',
             '$("#out_name_stack").val("'.$box_fname.'");',
-            'var furl = $("#out_dir_stack").val()+"/"+$("#out_name_stack").val()+".idx";',
-            'var fname = $("#out_name_stack").val();',
             '$("#convert_stack_btn").click();',
-            'post("../datasets.php", {furl: furl, fname: fname});',
             '</script>';
     } 
   ?>

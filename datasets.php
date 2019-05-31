@@ -31,6 +31,10 @@ if(!isset($_SESSION["config_file"]) or $_SESSION["config_file"]==="")
     
     <script src="ext/bootstrap/jquery/jquery.tabledit.min.js"></script>
       
+
+  <style>
+    .greenlink { color: green; } /* CSS link color */
+  </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
@@ -275,7 +279,11 @@ $("#add").click(function(e){
 	$tr.children("td:eq(2)").children("input").val("file://"+url);
   }
   
-  
+function view(name){
+ var url="viewer/?server="+encodeURI(DEFAULT_SERVER)+"&dataset="+encodeURI(name);
+  window.location=url;
+}
+
 function checkListDatasets(){
 	$.ajax({
 	  type: "POST",
@@ -286,7 +294,9 @@ function checkListDatasets(){
 		$('#datasets > tbody > tr').each( function() {
 		   var name=$(this).children("td:eq(1)").children("input").val();
 		   if(names.indexOf(name) != -1){
-			 $(this).children("td:eq(1)").attr("style", "color:green");
+         var name=$(this).children("td:eq(1)").children("span").text();
+         $(this).children("td:eq(1)").children("span").html('<a class="greenlink" href=\'javascript:view(\"'+name+'\")\'>View</a>');
+			   $(this).children("td:eq(1)").attr("style", "color:green");
 		   }
 		   else
 		     $(this).children("td:eq(1)").attr("style", "color:red");

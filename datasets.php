@@ -38,6 +38,7 @@ if(!isset($_SESSION["config_file"]) or $_SESSION["config_file"]==="")
 </head>
 <body>
 <div id="nav-placeholder"></div>
+<script src="viewer/config.js"></script>
 
 <script>
 $(function(){
@@ -295,7 +296,7 @@ function checkListDatasets(){
 		   var name=$(this).children("td:eq(1)").children("input").val();
 		   if(names.indexOf(name) != -1){
          var name=$(this).children("td:eq(1)").children("span").text();
-         $(this).children("td:eq(1)").children("span").html('<a class="greenlink" href=\'javascript:view(\"'+name+'\")\'>View</a>');
+         $(this).children("td:eq(1)").children("span").html('<a class="greenlink" href=\'javascript:view(\"'+name+'\")\'>'+name+'</a>');
 			   $(this).children("td:eq(1)").attr("style", "color:green");
 		   }
 		   else

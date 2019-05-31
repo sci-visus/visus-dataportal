@@ -38,7 +38,7 @@ RUN mkdir /converted
 RUN chgrp -R www-data /converted
 RUN chmod -R g+w      /converted
 # webviewer config
-ADD config.js       ${VISUS_HOME}/dataportal/ext/visus/config.js
+ADD config.js       ${VISUS_HOME}/dataportal/viewer/config.js
 RUN rm              /etc/apache2/sites-enabled/000-default.conf  
 
 WORKDIR ${VISUS_HOME}

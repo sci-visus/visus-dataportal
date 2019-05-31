@@ -134,7 +134,7 @@ $(function(){
     <script src="viewer/config.js"></script>
     <script>
 	   function view(name){
-		   var url="viewer/?server="+encodeURI(DEFAULT_SERVER)+"&dataset="+encodeURI(name);
+		   var url="ext/visus/viewer.html?server="+encodeURI(DEFAULT_SERVER)+"&dataset="+encodeURI(name);
 		   window.location=url;
 	   }
 	   

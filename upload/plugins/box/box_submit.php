@@ -1,6 +1,6 @@
  <?php
   require('req_login.php');
-  ?>
+?>
 
 <!DOCTYPE html>
 <html>

@@ -1,7 +1,7 @@
-<?php 
-	require("req_login.php");
-	 
-  if(!empty($_POST)){ 
+<?php
+  require("../../../req_login.php");
+  	 
+  if(!empty($_POST)){
     $ctype=strip_tags(trim($_POST['convert-type']));
 
     $X=strip_tags(trim($_POST['X']));
@@ -57,7 +57,7 @@
 		//echo  $json_params;
 		
 		// visus_exe data_dir filename input_file dim dtype 
-		$cmd="scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
+		$cmd="../../../scripts/convert_single.sh $visus_exe $dir $fname $img \"$dim\" \"$dtype_full\"";
 		
 		$logfile="$dir/convert-".strtotime($current_date).".log";
 		$pidfile="$dir/convert-".strtotime($current_date).".pid";
@@ -65,10 +65,10 @@
 		$pid=file_get_contents($pidfile);
 		
 		$output=file_get_contents($logfile);
-	    
+	        
 		   class MyDB extends SQLite3 {
 			  function __construct() {
-				 $this->open('db/conversion.db');
+				 $this->open('../../../db/conversion.db');
 			  }
 		   }
 		   
@@ -92,7 +92,7 @@ EOF;
 		echo "Conversion type not supported", $ctype;
 
 	// perform add to server automatically after conversion
-	echo '<form action="datasets.php" id="myForm" method="post" enctype="multipart/form-data">',
+	echo '<form action="../../../datasets.php" id="myForm" method="post" enctype="multipart/form-data">',
       '<input type="hidden" name="furl" id="furl" value="'.$idxfile.'" />',
       '<input type="hidden" name="fname" id="fname" value="'.$fname.'" />',
       '</form>';

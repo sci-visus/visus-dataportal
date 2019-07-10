@@ -1,4 +1,7 @@
-<?php $module_id = basename(__FILE__, '.php'); ?>
+<?php
+  require("../../../req_login.php");
+   
+  $module_id = basename(__FILE__, '.php'); ?>
 
    <div class="panel-collapse" id="<?php print $module_id; ?>_panel">
       <div class="panel panel-default">
@@ -10,7 +13,7 @@
         </div>
         
         <div class="panel-collapse">
-          <form class="form-horizontal" id="<?php print $module_id; ?>Form" action="<?php print $module_id; ?>_submit.php" method="post" enctype="multipart/form-data">
+          <form class="form-horizontal" id="single_form" action="<?php print "plugins/".$module_id."/".$module_id."_submit.php"; ?>" method="post" enctype="multipart/form-data">
           <div class="panel-body">
           <div class="form-row">
               <input type="hidden" name="data_dir" id="data_dir" value="<?php echo $data_dir;?>" />

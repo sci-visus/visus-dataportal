@@ -1,5 +1,5 @@
 <?php 
-require("req_login.php");
+require("../../../req_login.php");
 
 if(!empty($_POST)){ 
     $ctype=strip_tags(trim($_POST['convert-type']));
@@ -95,7 +95,7 @@ if(!empty($_POST)){
 			
 		   class MyDB extends SQLite3 {
 			  function __construct() {
-				 $this->open('db/conversion.db');
+				 $this->open('../../../db/conversion.db');
 			  }
 		   }
 		   
@@ -122,7 +122,7 @@ EOF;
 //		die("Redirecting to: upload"); 
 
 		// perform add to server automatically after conversion
-		echo '<form action="datasets.php" id="myForm" method="post" enctype="multipart/form-data">',
+		echo '<form action="../../../datasets.php" id="myForm" method="post" enctype="multipart/form-data">',
         '<input type="hidden" name="furl" id="furl" value="'.$idxfile.'" />',
         '<input type="hidden" name="fname" id="fname" value="'.$fname.'" />',
         '</form>';

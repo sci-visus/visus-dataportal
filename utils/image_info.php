@@ -23,8 +23,8 @@
 		  
 		
 		if($img!=""){
-			$output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
-		   echo $output;
+                   $output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
+		   //echo $output;
 		   
 		   $dpos=strpos($output,"< dims=");
 		   $formatpos=strpos($output,"format=");

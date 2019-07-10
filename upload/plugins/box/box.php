@@ -10,7 +10,7 @@
     </div>
     
     <div class="panel-collapse">
-      <form class="form-horizontal" action="box_submit.php" method="post" enctype="multipart/form-data">
+      <form class="form-horizontal" action="<?php print "plugins/".$module_id."/".$module_id."_submit.php"; ?>" method="post" enctype="multipart/form-data">
       <div class="panel-body">
       <div class="form-row">
           <label for="url">Box folder URL</label>

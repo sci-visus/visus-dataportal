@@ -40,7 +40,10 @@
 			} else {
 				// echo $url = $this->authorize_url . '?' . http_build_query(array('response_type' => 'code', 'client_id' => $this->client_id, 'redirect_uri' => $this->redirect_uri));
 				$url = $this->authorize_url . '?' . http_build_query(array('response_type' => 'code', 'client_id' => $this->client_id, 'redirect_uri' => $this->redirect_uri));
-				header('location: ' . $url);
+
+				//header('location: ' . $url);
+				echo '<script language="javascript"> window.location = "'.$url.'"; </script>';
+				//echo "after header";
 				exit();
 			}
 		}
@@ -318,6 +321,7 @@
 		
 		/* Saves the token */
 		public function write_token($token, $type = 'file') {
+			echo "write token";
 			$array = json_decode($token, true);
 			if(isset($array['error'])){
 				$this->error = $array['error_description'];
@@ -328,6 +332,7 @@
 					$fp = fopen('token.box', 'w');
 					fwrite($fp, json_encode($array));
 					fclose($fp);
+					echo "token written";
 				}
 				return true;
 			}
@@ -352,6 +357,7 @@
 		/* Loads the token */
 		public function load_token() {
 			$array = $this->read_token('file');
+			
 			if(!$array){
 				return false;
 			} else {

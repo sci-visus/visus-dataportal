@@ -1,5 +1,5 @@
  <?php
-  require('req_login.php');
+  require('../../../req_login.php');
 ?>
 
 <!DOCTYPE html>
@@ -67,14 +67,14 @@ h4{font-size:18px;}
 
   $folder_id=$res_id;
   
-  include('ext/BoxPHPAPI/BoxAPI.class.php');
+  include('../../../ext/BoxPHPAPI/BoxAPI.class.php');
  
   $client_id  = $box_client_id;
   $client_secret  = $box_client_secret;
   $redirect_uri   = 'http://127.0.0.1';
   if($port)
     $redirect_uri.=':'.$port;
-  $redirect_uri.='/box.php?res_id='.$res_id;
+  $redirect_uri.='/upload/plugins/box/box_submit.php?res_id='.$res_id;
   
   $box = new Box_API($client_id, $client_secret, $redirect_uri);
   
@@ -91,7 +91,7 @@ h4{font-size:18px;}
   
   // refresh page if token just acquired
   if(isset($_GET['res_id']) && !isset($_GET['refresh'])){
-    echo '<script language="javascript"> window.location = "/box.php?code='.$_GET['code'].'&res_id='.$_GET['res_id'].'&refresh=1"; </script>';
+    echo '<script language="javascript"> window.location = "/upload/plugins/box/box_submit.php?code='.$_GET['code'].'&res_id='.$_GET['res_id'].'&refresh=1"; </script>';
   }
   // User details
   //$box->get_user();

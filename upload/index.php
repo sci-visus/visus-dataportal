@@ -274,7 +274,7 @@ if (count($plugins) == 0 && $handle = opendir('plugins')) {
     // if Box import do automatic conversion
     if($box_id){
       echo '<script type="text/javascript">',
-            'selectPlugin(2);',
+            'selectPlugin("stack");',
             '$("#folder_path_stack").val("'.$box_id.'");',
             '$("#folder_path_stack").change();',
             '$("#out_name_stack").val("'.$box_fname.'");',

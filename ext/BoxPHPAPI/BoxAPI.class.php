@@ -321,7 +321,6 @@
 		
 		/* Saves the token */
 		public function write_token($token, $type = 'file') {
-			echo "write token";
 			$array = json_decode($token, true);
 			if(isset($array['error'])){
 				$this->error = $array['error_description'];
@@ -332,7 +331,6 @@
 					$fp = fopen('token.box', 'w');
 					fwrite($fp, json_encode($array));
 					fclose($fp);
-					echo "token written";
 				}
 				return true;
 			}

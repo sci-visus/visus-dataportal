@@ -145,7 +145,7 @@ h4{font-size:18px;}
     flush();
   }
 
-  echo '<script language="javascript"> window.location = "/upload/index.php?plugin=box&box='.$res_id.'&name='.$folder_name.'"; </script>';
+  echo '<script language="javascript"> window.location = "/upload/index.php?plugin=stack&box='.$res_id.'&name='.$folder_name.'"; </script>';
   //header('Location: /upload/index.php?box='.$res_id.'&name='.$folder_name);
 
   /*

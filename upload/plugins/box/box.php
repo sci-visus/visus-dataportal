@@ -1,4 +1,4 @@
-<!-- This plugin depends on the plugin "stack" see bottom php stuff -->
+<!-- This plugin depends on the plugin "stack" see bottom of stack.php -->
 <?php $module_id = basename(__FILE__, '.php'); ?>
 
 <div class="panel-collapse" id="<?php print $module_id; ?>_panel">
@@ -28,20 +28,3 @@
     
   </div>
 </div>
-
-
-<?php
-    $box_id=strip_tags(trim($_GET['box']));
-    $box_fname=strip_tags(trim($_GET['name']));
-
-    // if Box import do automatic conversion
-    if($box_id){
-      echo '<script type="text/javascript">',
-            'selectPlugin("stack");',
-            '$("#folder_path_stack").val("'.$box_id.'");',
-            '$("#folder_path_stack").change();',
-            '$("#out_name_stack").val("'.$box_fname.'");',
-            'setTimeout(function(){$("#convert_stack_btn").click();},2000);',
-            '</script>';
-    } 
-?>

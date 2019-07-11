@@ -186,7 +186,10 @@ $plugin_id=in_array($plugin_id, $plugins) ? $plugin_id : 0;
     
   <script>
     function selectPlugin(value){
-      $("#dynamic_panel").load("plugins/"+value+"/"+value+".php");
+      // pass query string to plugin
+      var qstr= window.location.search;
+      qstr = qstr.substr(qstr.indexOf('?'));
+      $("#dynamic_panel").load("plugins/"+value+"/"+value+".php"+qstr);
     }
 
     if("<?php print $plugin_id; ?>" != "0")

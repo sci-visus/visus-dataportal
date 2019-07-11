@@ -17,6 +17,9 @@ if (count($plugins) == 0 && $handle = opendir('plugins')) {
     closedir($handle);
 }
 
+$plugin_id=strip_tags(trim($_GET['plugin']));
+$plugin_id=in_array($plugin_id, $plugins) ? $plugin_id : 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -185,6 +188,10 @@ if (count($plugins) == 0 && $handle = opendir('plugins')) {
     function selectPlugin(value){
       $("#dynamic_panel").load("plugins/"+value+"/"+value+".php");
     }
+
+    if("<?php print $plugin_id; ?>" != "0")
+      selectPlugin("<?php print $plugin_id; ?>");
+      
 	</script>
    
    <script>
@@ -265,23 +272,6 @@ if (count($plugins) == 0 && $handle = opendir('plugins')) {
       form.submit();
     }
  </script>
-
-  <?php
-    // TODO move this in the box plugin
-    $box_id=strip_tags(trim($_GET['box']));
-    $box_fname=strip_tags(trim($_GET['name']));
-
-    // if Box import do automatic conversion
-    if($box_id){
-      echo '<script type="text/javascript">',
-            'selectPlugin("stack");',
-            '$("#folder_path_stack").val("'.$box_id.'");',
-            '$("#folder_path_stack").change();',
-            '$("#out_name_stack").val("'.$box_fname.'");',
-            'setTimeout(function(){$("#convert_stack_btn").click();},2000);',
-            '</script>';
-    } 
-  ?>
 
 	</body>
 

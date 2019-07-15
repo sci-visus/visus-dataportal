@@ -6,27 +6,37 @@
 		$img="";
         $dp = opendir ($dir);
 		$img_found=false;
+		$is_dicom=false;
 		$img_count=0;
         while ($f = readdir($dp)){
 			//echo $dir."/".$f."\n";
             $file_parts = pathinfo($dir."/".$f);
 			
 			$ext = $file_parts['extension'];
-			if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
-                if(!$img_found){
+			if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="dcm") {
+        if(!$img_found){
 				  $img=$dir."/".$f;
 				  $img_found=true;
 				}
 				
+				if($ext==="dcm")
+						$is_dicom=true;
+
 				$img_count=$img_count+1;
 			}
             
 		}
 		
 		if($img!=""){
-		   $output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
-		   //echo $output;
-		   
+			$output="";
+			if($is_dicom){
+				$output=shell_exec("python ../scripts/image_info.py -f \"$img\"");
+			}
+			else{
+			   $output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
+			   //echo $output;
+			}
+
 		   $dpos=strpos($output,"< dims=");
 		   $formatpos=strpos($output,"format=");
 		   $edpos=strpos($output,"</>");

@@ -17,8 +17,8 @@ ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
 # RUN chmod 777 /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
 # create token file for Box (with write permissions)
-RUN touch ${VISUS_HOME}/dataportal/token.box
-RUN chmod 770 ${VISUS_HOME}/dataportal/token.box
+RUN touch ${VISUS_HOME}/dataportal/upload/plugins/box/token.box
+RUN chmod 770 ${VISUS_HOME}/dataportal/upload/plugins/box/token.box
 
 # visus.config needs write permissions
 RUN chgrp www-data ${VISUS_HOME}/visus.config
@@ -38,7 +38,7 @@ RUN mkdir /converted
 RUN chgrp -R www-data /converted
 RUN chmod -R g+w      /converted
 # webviewer config
-ADD config.js       ${VISUS_HOME}/dataportal/viewer/config.js
+ADD config.js       ${VISUS_HOME}/dataportal/ext/visus/config.js
 RUN rm              /etc/apache2/sites-enabled/000-default.conf  
 
 WORKDIR ${VISUS_HOME}

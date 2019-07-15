@@ -1,5 +1,5 @@
 <?php 
-   require("req_login.php");
+   require("../req_login.php");
    
     if(!empty($_POST)){ 
 	    $dir=$_POST['dir'];
@@ -23,7 +23,7 @@
 		  
 		
 		if($img!=""){
-			$output=shell_exec("scripts/image_info.sh \"$visus_exe\" \"$img\"");
+                   $output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
 		   //echo $output;
 		   
 		   $dpos=strpos($output,"< dims=");

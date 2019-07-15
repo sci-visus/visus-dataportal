@@ -40,7 +40,10 @@
 			} else {
 				// echo $url = $this->authorize_url . '?' . http_build_query(array('response_type' => 'code', 'client_id' => $this->client_id, 'redirect_uri' => $this->redirect_uri));
 				$url = $this->authorize_url . '?' . http_build_query(array('response_type' => 'code', 'client_id' => $this->client_id, 'redirect_uri' => $this->redirect_uri));
-				header('location: ' . $url);
+
+				//header('location: ' . $url);
+				echo '<script language="javascript"> window.location = "'.$url.'"; </script>';
+				//echo "after header";
 				exit();
 			}
 		}
@@ -352,6 +355,7 @@
 		/* Loads the token */
 		public function load_token() {
 			$array = $this->read_token('file');
+			
 			if(!$array){
 				return false;
 			} else {

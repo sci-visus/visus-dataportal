@@ -1,12 +1,15 @@
-FROM visus/mod_visus-ubuntu
+FROM visus/anaconda
 
 # install required libraries
 RUN apt-get update
-RUN apt-get install -y git php php-xml php-curl php-json php-sqlite3 libapache2-mod-php
+RUN apt-get install -y git php php-xml php-curl php-json php-sqlite3 libapache2-mod-php 
+
+RUN conda install -c conda-forge pydicom gdcm
 
 # install dataportal
 RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/dataportal
 WORKDIR ${VISUS_HOME}/dataportal
+RUN git checkout dicom
 RUN git submodule update --init -- ext
 ADD dataportal.conf  /etc/apache2/sites-enabled/dataportal.conf
 ADD local.docker.php  ${VISUS_HOME}/dataportal/local.php

@@ -51,6 +51,8 @@
 		
 		date_default_timezone_set('America/Denver');
 		$current_date = date('Y-m-d H:i:s');
+
+		$idxfile=$dir.'/'.$fname.'.idx';
 		
 		$params = array('visus_exe' => $visus_exe, 'dir' => $dir, 'fname' => $fname, 'img' => $img, 'dim' => $dim, 'dtype' => $dtype_full);
           $json_params = json_encode($params);

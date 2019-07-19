@@ -38,10 +38,10 @@ def convert(folder_path, idx_path, extname="dcm"):
     # Set logical bounds
     idxfile = IdxFile()
 
-    # new OpenVisus (limortaccidegiorgio)
+    # new OpenVisus 
     #idxfile.box = BoxNi(PointNi(0, 0, 0), PointNi(dims[0], dims[1], dims[2]))
     # old OpenVisus
-    idxfile.box = NdBox(NdPoint(0, 0, 0), NdPoint(dims[0], dims[1], dims[2]))
+    idxfile.box = NdBox(NdPoint(0, 0, 0), NdPoint.one(dims[0], dims[1], dims[2]))
 
     # Note: assuming one single field 
     f=Field("data",DType.fromString(str(first_img.pixel_array.dtype)))
@@ -55,7 +55,7 @@ def convert(folder_path, idx_path, extname="dcm"):
 
     saved = idxfile.save(idx_path)
 
-    assert saved
+    #assert saved
 
     print("Idx file created", saved)
 

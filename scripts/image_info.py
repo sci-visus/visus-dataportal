@@ -23,7 +23,7 @@ from OpenVisus import *
 def info(imgpath):
     first_img=pydicom.dcmread(imgpath)
 
-    print('<dims="'+str(first_img.pixel_array.shape[0])+' '+str(first_img.pixel_array.shape[1])+'" format="dicom" url="'+imgpath+'">')
+    print('<dims=" '+str(first_img.pixel_array.shape[0])+' '+str(first_img.pixel_array.shape[1])+'" format="dicom" url="'+imgpath+'">')
     print('<fields> <field dtype="'+DType.fromString(str(first_img.pixel_array.dtype)).toString()+'" /> </fields>')
 
 

@@ -22,11 +22,12 @@
   $out_data_dir="/converted";
     
   // visus executable
-  $visus_exe="/usr/local/lib/python3.5/dist-packages/OpenVisus/bin/visus";
-  
-  // box client id (required to use Box integration)
+  $visus_exe="/opt/conda/lib/python3.7/site-packages/OpenVisus/bin/visus";
+
+  // box client id
   $box_client_id='';
 
-  // box client secret (required to use Box integration)
-  $box_client_secret='';  
+  // box client secret
+  $box_client_secret='';
+
  ?>

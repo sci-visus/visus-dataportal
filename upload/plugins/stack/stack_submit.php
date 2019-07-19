@@ -25,21 +25,28 @@ if(!empty($_POST)){
 			$dp = opendir ($dir);
 			$files = array();
 			
+			$is_dicom=false;
+
 			$img_count=0;
 			while ($f = readdir($dp)){
 				//echo $dir."/".$f."\n";
 				$file_parts = pathinfo($dir."/".$f);
 				
 				$ext = $file_parts['extension'];
-				if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" ) {
+				if($ext==="jpg" or $ext==="jpeg" or $ext==="tiff" or $ext==="tif" or $ext==="png" or $ext==="dcm") {
 					$img=$dir."/".$f;
 					$files[$img_count]=$img;
 					
+					if($ext==="dcm")
+						$is_dicom=true;
+
 					$img_count++;
 				}
 				
 			}
 			
+			$cmd="";
+
 			$iX=intval($X);
 			$iY=intval($Y);
 			$iZ=intval($Z);
@@ -60,29 +67,34 @@ if(!empty($_POST)){
             $json_params = json_encode($params);
 			//echo  $json_params;
 			
-			$cfile = fopen($convert_script, "w") or die("Unable to open file $convert_script!");
-			
-			fwrite($cfile, "#!/bin/bash \n");
-			fwrite($cfile, "export CONVERT=$visus_exe \n");
-			
 			$idxfile=$outdir.'/'.$fname.'.idx';
-			
-			fwrite($cfile, '$CONVERT create "'.$idxfile.'" --box "'.$box_str.'" --fields "data '.$dtype_full.'" --time 0 0 time%05d/'."\n");
-			
-			sort($files); // sorting input files in alphabetical order
-			
-			$counter=0;
-			foreach ($files as $f) {
-				fwrite($cfile,'$CONVERT import "'.$f.'" export "'.$idxfile.'" --field data --box "0 '.$box_split[1].' 0 '.$box_split[3].' '.strval($counter).' '.strval($counter).'" \\'."\n");
-				$counter++;
+
+			if($is_dicom){
+				$cmd="python ../../../scripts/convert_dcm.py -f ".$dir." -i ".$idxfile;
 			}
+			else{
+				$cfile = fopen($convert_script, "w") or die("Unable to open file $convert_script!"); 
+				
+				fwrite($cfile, "#!/bin/bash \n");
+				fwrite($cfile, "export CONVERT=$visus_exe \n");
+
+				fwrite($cfile, '$CONVERT create "'.$idxfile.'" --box "'.$box_str.'" --fields "data '.$dtype_full.'" --time 0 0 time%05d/'."\n");
+				
+				sort($files); // sorting input files in alphabetical order
+				
+				$counter=0;
+				foreach ($files as $f) {
+					fwrite($cfile,'$CONVERT import "'.$f.'" export "'.$idxfile.'" --field data --box "0 '.$box_split[1].' 0 '.$box_split[3].' '.strval($counter).' '.strval($counter).'" \\'."\n");
+					$counter++;
+				}
+				
+				fclose($cfile);
 			
-			fclose($cfile);
-			
-			// visus_exe data_dir filename box dtype 
-			//$cmd="scripts/convert_demo_hearth.sh $visus_exe $dir $foldername \"$box\" \"$dtype_full\"";
-			
-			$cmd="sh $convert_script";
+				// visus_exe data_dir filename box dtype 
+				//$cmd="scripts/convert_demo_hearth.sh $visus_exe $dir $foldername \"$box\" \"$dtype_full\"";
+				
+				$cmd="sh $convert_script";
+			}
 			
 			$logfile="$outdir/convert-".strtotime($current_date).".log";
 			$pidfile="$outdir/convert-".strtotime($current_date).".pid";

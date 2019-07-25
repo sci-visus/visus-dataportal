@@ -20,6 +20,10 @@ import pydicom
 import OpenVisus
 from OpenVisus import *
 
+# those are the axis position in DICOM (apparently)
+X_POS=1
+Y_POS=0
+
 def convert(folder_path, idx_path, extname="dcm"):
     images = []
 
@@ -33,7 +37,12 @@ def convert(folder_path, idx_path, extname="dcm"):
 
     first_img=pydicom.dcmread(images[0])
 
-    dims=[first_img.pixel_array.shape[0], first_img.pixel_array.shape[1], len(images)]
+    pixelDims = (int(first_img.Rows), int(first_img.Columns))
+    pixelSpacing = (float(first_img.PixelSpacing[X_POS]), float(first_img.PixelSpacing[Y_POS]), float(first_img.SliceThickness))
+
+    dims=[first_img.pixel_array.shape[X_POS], first_img.pixel_array.shape[Y_POS], len(images)]
+
+    print(dims, pixelSpacing)
 
     # Set logical bounds
     idxfile = IdxFile()
@@ -70,6 +79,8 @@ def convert(folder_path, idx_path, extname="dcm"):
         #print("shape", sh, "dtype", dt)
 
         slice_box=dataset.getBox().getZSlab(i,i+1) 
+        #slice_box=dataset.getLogicBox().getZSlab(i,i+1) 
+        
         #slice_box=BoxNi(PointNi(0, 0, i), PointNi(first_img.pixel_array.shape[0]-1, first_img.pixel_array.shape[1]-1, i+1))
 
         access=dataset.createAccess()

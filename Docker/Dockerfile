@@ -9,7 +9,6 @@ RUN conda install -c conda-forge pydicom gdcm
 # install dataportal
 RUN git clone https://github.com/sci-visus/visus-dataportal ${VISUS_HOME}/dataportal
 WORKDIR ${VISUS_HOME}/dataportal
-RUN git checkout dicom
 RUN git submodule update --init -- ext
 ADD dataportal.conf  /etc/apache2/sites-enabled/dataportal.conf
 ADD local.docker.php  ${VISUS_HOME}/dataportal/local.php
@@ -21,6 +20,7 @@ ADD server-tuning.conf /etc/apache2/mods-enabled/server-tuning.conf
 RUN chgrp -R www-data ${VISUS_HOME}/dataportal
 # create token file for Box (with write permissions)
 RUN touch ${VISUS_HOME}/dataportal/upload/plugins/box/token.box
+RUN chown www-data ${VISUS_HOME}/dataportal/upload/plugins/box/token.box
 RUN chmod 770 ${VISUS_HOME}/dataportal/upload/plugins/box/token.box
 
 # visus.config needs write permissions

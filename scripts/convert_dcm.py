@@ -64,12 +64,13 @@ def convert(folder_path, idx_path, extname="dcm"):
 
     saved = idxfile.save(idx_path)
 
-    #assert saved
+    assert saved
 
     print("Idx file created", saved)
 
     dataset=LoadDataset(idx_path);
-
+    access=dataset.createAccess()
+    
     images.sort()
 
     for i, img in enumerate(images):
@@ -83,26 +84,24 @@ def convert(folder_path, idx_path, extname="dcm"):
         
         #slice_box=BoxNi(PointNi(0, 0, i), PointNi(first_img.pixel_array.shape[0]-1, first_img.pixel_array.shape[1]-1, i+1))
 
-        access=dataset.createAccess()
-
         # convert the field
         query=BoxQuery(dataset, dataset.getDefaultField(),dataset.getDefaultTime(), ord('w'))
-        query.position=Position(slice_box)
-        ret1=dataset.beginQuery(query)
+        query.logic_box=slice_box
+        dataset.beginQuery(query)
 
-     #   assert ret1
+        assert query.isRunning()
 
         print(slice_box.toString(), query.getNumberOfSamples().toString(), query.getNumberOfSamples().innerProduct())
 
-        #assert query.getNumberOfSamples().innerProduct()==(sh[0])*(sh[1])
+        assert query.getNumberOfSamples().innerProduct()==(sh[0])*(sh[1])
 
         query.field=dataset.getDefaultField()
         query.time=0
         query.buffer=Array.fromNumPy(ds.pixel_array)
 
-        ret2=dataset.executeQuery(access, query)
+        exeQ=dataset.executeQuery(access, query)
         
-     #   assert ret2
+        assert exeQ
 
         print("Slice ", i, "imported successfully")
 

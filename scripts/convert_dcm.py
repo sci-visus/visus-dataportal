@@ -48,9 +48,9 @@ def convert(folder_path, idx_path, extname="dcm"):
     idxfile = IdxFile()
 
     # new OpenVisus 
-    #idxfile.box = BoxNi(PointNi(0, 0, 0), PointNi(dims[0], dims[1], dims[2]))
+    idxfile.logic_box = BoxNi(PointNi(0, 0, 0), PointNi(dims[0], dims[1], dims[2]))
     # old OpenVisus
-    idxfile.box = NdBox(NdPoint(0, 0, 0), NdPoint.one(dims[0], dims[1], dims[2]))
+    #idxfile.box = NdBox(NdPoint(0, 0, 0), NdPoint.one(dims[0], dims[1], dims[2]))
 
     # Note: assuming one single field 
     f=Field("data",DType.fromString(str(first_img.pixel_array.dtype)))
@@ -78,23 +78,23 @@ def convert(folder_path, idx_path, extname="dcm"):
         dt = ds.pixel_array.dtype
         #print("shape", sh, "dtype", dt)
 
-        slice_box=dataset.getBox().getZSlab(i,i+1) 
-        #slice_box=dataset.getLogicBox().getZSlab(i,i+1) 
+        #slice_box=dataset.getBox().getZSlab(i,i+1) 
+        slice_box=dataset.getLogicBox().getZSlab(i,i+1) 
         
         #slice_box=BoxNi(PointNi(0, 0, i), PointNi(first_img.pixel_array.shape[0]-1, first_img.pixel_array.shape[1]-1, i+1))
 
         access=dataset.createAccess()
 
         # convert the field
-        query=Query(dataset, ord('w'))
+        query=BoxQuery(dataset, dataset.getDefaultField(),dataset.getDefaultTime(), ord('w'))
         query.position=Position(slice_box)
         ret1=dataset.beginQuery(query)
 
-        assert ret1
+     #   assert ret1
 
-        print(slice_box.toString(), query.nsamples.toString(), query.nsamples.innerProduct())
+        print(slice_box.toString(), query.getNumberOfSamples().toString(), query.getNumberOfSamples().innerProduct())
 
-        assert query.nsamples.innerProduct()==(sh[0])*(sh[1])
+        #assert query.getNumberOfSamples().innerProduct()==(sh[0])*(sh[1])
 
         query.field=dataset.getDefaultField()
         query.time=0
@@ -102,7 +102,7 @@ def convert(folder_path, idx_path, extname="dcm"):
 
         ret2=dataset.executeQuery(access, query)
         
-        assert ret2
+     #   assert ret2
 
         print("Slice ", i, "imported successfully")
 

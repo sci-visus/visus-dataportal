@@ -49,6 +49,7 @@ def convert(folder_path, idx_path, extname="dcm"):
 
     # new OpenVisus 
     idxfile.logic_box = BoxNi(PointNi(0, 0, 0), PointNi(dims[0], dims[1], dims[2]))
+    idxfile.bounds = Position(BoxNd(PointNd(0, 0, 0), PointNd(pixelSpacing[0]*dims[0], pixelSpacing[1]*dims[1], pixelSpacing[2]*dims[2])))
     # old OpenVisus
     #idxfile.box = NdBox(NdPoint(0, 0, 0), NdPoint.one(dims[0], dims[1], dims[2]))
 

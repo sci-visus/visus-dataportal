@@ -25,9 +25,10 @@
 		if($img!=""){
                    $output=shell_exec("../scripts/image_info.sh \"$visus_exe\" \"$img\"");
 		   //echo $output;
-		   
-		   $dpos=strpos($output,"< dims=");
-		   $formatpos=strpos($output,"format=");
+ 
+		   $dpos=strpos($output," dims=") + 7;
+		   $edim=strpos($output, '"', $dpos);
+
 		   $edpos=strpos($output,"</>");
 		   $fpos=strpos($output,"<fields>");
 		   $efpos=strpos($output,"</fields>")+strlen("</fields>");
@@ -35,7 +36,7 @@
 		   
 		   //print htmlspecialchars($dtypeinfo);
 		  
-		   $dims=substr($output, $dpos+8, $formatpos-$dpos-strlen("format=")-3);
+		   $dims=trim(substr($output, $dpos, $edim-$dpos));
 		   //echo "Dimensions: $dims<br />\n";
 		   
 		   $dom=new DOMDocument();

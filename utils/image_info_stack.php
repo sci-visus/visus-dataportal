@@ -37,8 +37,9 @@
 			   //echo $output;
 			}
 
-		   $dpos=strpos($output,"< dims=");
-		   $formatpos=strpos($output,"format=");
+		   $dpos=strpos($output," dims=") + 7;
+                   $edim=strpos($output, '"', $dpos);
+
 		   $edpos=strpos($output,"</>");
 		   $fpos=strpos($output,"<fields>");
 		   $efpos=strpos($output,"</fields>")+strlen("</fields>");
@@ -46,9 +47,9 @@
 		   
 		   //print htmlspecialchars($dtypeinfo);
 		  
-		   $dims=substr($output, $dpos+8, $formatpos-$dpos-strlen("format=")-3);
+		   $dims=trim(substr($output, $dpos, $edim-$dpos)); 
 		   //echo "Image dims: $dims<br />\n";
-		   
+
 		   $dom=new DOMDocument();
 		   $dom->loadXML($dtypeinfo);
 		

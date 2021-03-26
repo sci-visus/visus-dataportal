@@ -1,0 +1,11 @@
+FROM visus/dataportal
+
+# update viewer
+WORKDIR /home/OpenVisus/dataportal/ext/visus
+RUN git checkout master
+RUN git pull
+
+WORKDIR ${VISUS_HOME}
+
+EXPOSE 80
+CMD ["/usr/local/bin/httpd-foreground.sh"]
